@@ -170,6 +170,14 @@ struct CliFileResolver : Luau::FileResolver
             if (context)
                 return Luau::ModuleInfo{context->name + '/' + i->index.value, context->optional};
         }
+        else if (Luau::AstExprIndexExpr* i = node->as<Luau::AstExprIndexExpr>())
+        {
+            if (Luau::AstExprConstantString* index = i->index->as<Luau::AstExprConstantString>())
+            {
+                if (context)
+                    return Luau::ModuleInfo{context->name + '/' + std::string(index->value.data, index->value.size), context->optional};
+            }
+        }
         else if (Luau::AstExprCall* call = node->as<Luau::AstExprCall>(); call && call->self && call->args.size >= 1 && context)
         {
             if (Luau::AstExprConstantString* index = call->args.data[0]->as<Luau::AstExprConstantString>())
