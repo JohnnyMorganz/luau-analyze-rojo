@@ -7,22 +7,17 @@
 
 #include "Luau/FileResolver.h"
 
-struct ProjectNode
+struct SourceNode
 {
-    std::string name;
-    std::string path;
-    mutable std::unordered_map<std::string, ProjectNode> children;
+    std::optional<std::string> path;
+    std::unordered_map<std::string, SourceNode> children;
 };
 
 struct RojoResolver
 {
-    RojoResolver(std::string sourceMapPath);
-    virtual ~RojoResolver() {}
+    std::unordered_map<std::string, SourceNode> roots;
 
+    void parseSourceMap(const std::string& sourceMapPath);
     std::optional<std::string> resolveRequireToRealPath(const std::string& requirePath);
     Luau::SourceCode::Type sourceCodeTypeFromPath(const std::string& path);
-
-public:
-    std::string sourceMapPath;
-    ProjectNode root;
 };

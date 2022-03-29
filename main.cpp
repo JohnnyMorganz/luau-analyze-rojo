@@ -304,10 +304,11 @@ int main(int argc, char** argv)
     frontendOptions.retainFullTypeGraphs = annotate;
 
     CliFileResolver fileResolver;
+    RojoResolver requireResolver;
+    fileResolver.rojoResolver = &requireResolver;
     if (projectPath)
     {
-        RojoResolver requireResolver(*projectPath);
-        fileResolver.rojoResolver = &requireResolver;
+        requireResolver.parseSourceMap(*projectPath);
     }
 
     CliConfigResolver configResolver;

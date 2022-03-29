@@ -104,7 +104,7 @@ static void joinPaths(std::basic_string<Ch>& str, const Ch* lhs, const Ch* rhs)
 }
 
 #ifdef _WIN32
-static bool traverseDirectoryRec(const std::wstring& path, const std::function<void(const std::string& name)>& callback)
+static bool traverseDirectoryRec(const std::wstring& path, bool recursive, const std::function<void(const std::string& name)>& callback)
 {
     std::wstring query = path + std::wstring(L"/*");
 
@@ -126,9 +126,9 @@ static bool traverseDirectoryRec(const std::wstring& path, const std::function<v
             {
                 // Skip reparse points to avoid handling cycles
             }
-            else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            else if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && recursive)
             {
-                traverseDirectoryRec(buf, callback);
+                traverseDirectoryRec(buf, recursive, callback);
             }
             else
             {
@@ -142,12 +142,12 @@ static bool traverseDirectoryRec(const std::wstring& path, const std::function<v
     return true;
 }
 
-bool traverseDirectory(const std::string& path, const std::function<void(const std::string& name)>& callback)
+bool traverseDirectory(const std::string& path, bool recursive, const std::function<void(const std::string& name)>& callback)
 {
-    return traverseDirectoryRec(fromUtf8(path), callback);
+    return traverseDirectoryRec(fromUtf8(path), recursive, callback);
 }
 #else
-static bool traverseDirectoryRec(const std::string& path, const std::function<void(const std::string& name)>& callback)
+static bool traverseDirectoryRec(const std::string& path, bool recursive, const std::function<void(const std::string& name)>& callback)
 {
     int fd = open(path.c_str(), O_DIRECTORY);
     DIR* dir = fdopendir(fd);
@@ -181,7 +181,7 @@ static bool traverseDirectoryRec(const std::string& path, const std::function<vo
                 mode = st.st_mode;
             }
 
-            if (type == DT_DIR || mode == S_IFDIR)
+            if ((type == DT_DIR || mode == S_IFDIR) && recursive)
             {
                 traverseDirectoryRec(buf, callback);
             }
@@ -201,9 +201,9 @@ static bool traverseDirectoryRec(const std::string& path, const std::function<vo
     return true;
 }
 
-bool traverseDirectory(const std::string& path, const std::function<void(const std::string& name)>& callback)
+bool traverseDirectory(const std::string& path, bool recursive, const std::function<void(const std::string& name)>& callback)
 {
-    return traverseDirectoryRec(path, callback);
+    return traverseDirectoryRec(path, recursive, callback);
 }
 #endif
 
@@ -251,7 +251,28 @@ std::optional<std::string> getParentPath(const std::string& path)
     return "";
 }
 
-static std::string getExtension(const std::string& path)
+std::string getFileName(const std::string& path)
+{
+    std::string::size_type slash = path.find_last_of("\\/", path.size() - 1);
+    if (slash != std::string::npos)
+    {
+        std::string nameWithExtension = path.substr(slash + 1);
+
+        // Remove specific extensions
+        for (auto& ext : {".server.lua", ".server.luau", ".client.lua", ".client.luau", ".lua", ".luau"})
+        {
+            std::string::size_type extension = nameWithExtension.find(ext);
+            if (extension != std::string::npos)
+                return nameWithExtension.erase(extension, strlen(ext));
+        }
+
+        return nameWithExtension;
+    }
+
+    return "";
+}
+
+std::string getExtension(const std::string& path)
 {
     std::string::size_type dot = path.find_last_of(".\\/");
 
@@ -274,7 +295,7 @@ std::vector<std::string> getSourceFiles(int argc, char** argv)
 
         if (isDirectory(argv[i]))
         {
-            traverseDirectory(argv[i],
+            traverseDirectory(argv[i], true,
                 [&](const std::string& name)
                 {
                     std::string ext = getExtension(name);
