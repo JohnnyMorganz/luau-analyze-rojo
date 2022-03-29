@@ -5253,7 +5253,7 @@ declare class Studio extends Instance
 	Search_Content_For_Core_Scripts: boolean
 	Secondary_Text_Color: Color3
 	Select_Color: Color3
-	Select/Hover_Color: Color3
+	Select_Hover_Color: Color3
 	Selected_Menu_Item_Background_Color: Color3
 	Selected_Text_Color: Color3
 	Selection_Background_Color: Color3

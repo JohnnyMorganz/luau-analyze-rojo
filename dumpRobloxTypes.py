@@ -23,7 +23,7 @@ TYPE_INDEX = {
 def escapeName(name: str):
     if name == "function":
         return "func"
-    return name.replace(' ', '_').replace('-', '').replace('"', '').replace('(', '').replace(')', '')
+    return name.replace(' ', '_').replace('-', '').replace('"', '').replace('(', '').replace(')', '').replace('/', '_')
 
 def resolveType(type):
     name, category = type['Name'], type['Category'] if 'Category' in type else 'Primitive'
