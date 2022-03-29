@@ -22,3 +22,5 @@ struct RojoResolver
     std::optional<std::string> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
     Luau::SourceCode::Type sourceCodeTypeFromPath(const std::string& path);
 };
+
+void dumpSourceMap(const SourceNode& root, int level);

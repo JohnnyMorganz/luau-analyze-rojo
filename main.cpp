@@ -279,6 +279,7 @@ int main(int argc, char** argv)
 
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
+    bool dumpMap = false;
     std::optional<std::string> projectPath = std::nullopt;
     std::optional<std::string> globalDefsPath = std::nullopt;
 
@@ -295,6 +296,8 @@ int main(int argc, char** argv)
             annotate = true;
         else if (strcmp(argv[i], "--timetrace") == 0)
             FFlag::DebugLuauTimeTracing.value = true;
+        else if (strcmp(argv[i], "--dump-source-map") == 0)
+            dumpMap = true;
         else if (strncmp(argv[i], "--project=", 10) == 0)
             projectPath = std::string(argv[i] + 10);
         else if (strncmp(argv[i], "--defs=", 7) == 0)
@@ -321,6 +324,8 @@ int main(int argc, char** argv)
         if (sourceNode)
         {
             fileResolver.sourceMapRoot = sourceNode.value();
+            if (dumpMap)
+                dumpSourceMap(fileResolver.sourceMapRoot, 0);
         }
     }
 

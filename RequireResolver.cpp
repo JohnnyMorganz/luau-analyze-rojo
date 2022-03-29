@@ -151,8 +151,6 @@ std::optional<SourceNode> RojoResolver::parseSourceMap(const std::string& source
         {
             populateChildren(rootNode, child.first, *child.second.get(), "");
         }
-        printf("game\n");
-        dumpSourceMap(rootNode, 4);
         return rootNode; // TODO: handle if root is not a datamodel
     }
 
