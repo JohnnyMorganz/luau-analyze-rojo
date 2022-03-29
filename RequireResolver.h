@@ -4,20 +4,21 @@
 #include <string>
 #include <functional>
 #include <vector>
+#include <memory>
 
 #include "Luau/FileResolver.h"
 
 struct SourceNode
 {
     std::optional<std::string> path;
-    std::unordered_map<std::string, SourceNode> children;
+    std::unordered_map<std::string, std::shared_ptr<SourceNode>> children;
 };
 
 struct RojoResolver
 {
     std::unordered_map<std::string, SourceNode> roots;
 
-    void parseSourceMap(const std::string& sourceMapPath);
-    std::optional<std::string> resolveRequireToRealPath(const std::string& requirePath);
+    std::optional<SourceNode> parseSourceMap(const std::string& sourceMapPath);
+    std::optional<std::string> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
     Luau::SourceCode::Type sourceCodeTypeFromPath(const std::string& path);
 };

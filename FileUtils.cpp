@@ -183,7 +183,7 @@ static bool traverseDirectoryRec(const std::string& path, bool recursive, const 
 
             if ((type == DT_DIR || mode == S_IFDIR) && recursive)
             {
-                traverseDirectoryRec(buf, callback);
+                traverseDirectoryRec(buf, recursive, callback);
             }
             else if (type == DT_REG || mode == S_IFREG)
             {

@@ -121,6 +121,7 @@ static int assertionHandler(const char* expr, const char* file, int line, const 
 struct CliFileResolver : Luau::FileResolver
 {
     RojoResolver* rojoResolver;
+    SourceNode sourceMapRoot;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
@@ -137,7 +138,7 @@ struct CliFileResolver : Luau::FileResolver
         {
             if (rojoResolver)
             {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name);
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMapRoot);
                 if (realFilePath)
                 {
 
@@ -201,7 +202,7 @@ struct CliFileResolver : Luau::FileResolver
         {
             if (rojoResolver)
             {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name);
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMapRoot);
                 if (realFilePath)
                     return name + " (" + *realFilePath + ")";
                 else
@@ -316,7 +317,11 @@ int main(int argc, char** argv)
     fileResolver.rojoResolver = &requireResolver;
     if (projectPath)
     {
-        requireResolver.parseSourceMap(*projectPath);
+        auto sourceNode = requireResolver.parseSourceMap(*projectPath);
+        if (sourceNode)
+        {
+            fileResolver.sourceMapRoot = sourceNode.value();
+        }
     }
 
     CliConfigResolver configResolver;

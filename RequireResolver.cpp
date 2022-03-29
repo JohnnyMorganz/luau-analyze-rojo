@@ -13,7 +13,7 @@ struct ProjectNode
 {
     std::optional<std::string> class_name;
     std::optional<std::string> path;
-    std::unordered_map<std::string, ProjectNode> children;
+    std::unordered_map<std::string, std::shared_ptr<ProjectNode>> children;
 };
 
 struct Project
@@ -33,7 +33,7 @@ void from_json(const json& j, ProjectNode& p)
     {
         if (!Luau::startsWith(el.key(), "$"))
         {
-            p.children[el.key()] = el.value().get<ProjectNode>();
+            p.children.insert({el.key(), std::make_shared<ProjectNode>(el.value().get<ProjectNode>())});
         };
     }
 };
@@ -47,7 +47,7 @@ void from_json(const json& j, Project& p)
 
 
 void handleNodePath(SourceNode& node, const std::string& path, const std::string& basePath);
-void populateChildren(SourceNode& parent, const std::string& name, ns::ProjectNode node, const std::string& basePath);
+void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath);
 
 void handleNodePath(SourceNode& node, const std::string& path, const std::string& basePath)
 {
@@ -70,7 +70,7 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
 
             for (auto& child : project.tree.children)
             {
-                populateChildren(node, child.first, child.second, fullPath);
+                populateChildren(node, child.first, *child.second.get(), fullPath);
             }
         }
         else
@@ -88,7 +88,7 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
                     {
                         SourceNode childNode;
                         handleNodePath(childNode, name, ""); // Don't need to basePath here since name is the full path
-                        node.children[fileName] = childNode;
+                        node.children.insert(std::pair(fileName, std::make_shared<SourceNode>(childNode)));
                     }
                 });
         }
@@ -99,7 +99,7 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
     }
 }
 
-void populateChildren(SourceNode& parent, const std::string& name, ns::ProjectNode node, const std::string& basePath)
+void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath)
 {
     SourceNode childNode;
     if (node.path)
@@ -110,13 +110,13 @@ void populateChildren(SourceNode& parent, const std::string& name, ns::ProjectNo
 
     for (auto& child : node.children)
     {
-        populateChildren(childNode, child.first, child.second, basePath);
+        populateChildren(childNode, child.first, *child.second.get(), basePath);
     }
 
-    parent.children[name] = childNode;
+    parent.children.insert(std::pair(name, std::make_shared<SourceNode>(childNode)));
 }
 
-void dumpSourceMap(SourceNode root, int level = 0)
+void dumpSourceMap(const SourceNode& root, int level = 0)
 {
     if (root.path)
     {
@@ -133,12 +133,12 @@ void dumpSourceMap(SourceNode root, int level = 0)
         for (auto& child : root.children)
         {
             printf("%*s%s\n", level, "", child.first.c_str());
-            dumpSourceMap(child.second, level + 4);
+            dumpSourceMap(*child.second.get(), level + 4);
         }
     }
 }
 
-void RojoResolver::parseSourceMap(const std::string& sourceMapPath)
+std::optional<SourceNode> RojoResolver::parseSourceMap(const std::string& sourceMapPath)
 {
     std::optional<std::string> projectSource = readFile(sourceMapPath);
     if (projectSource)
@@ -149,56 +149,45 @@ void RojoResolver::parseSourceMap(const std::string& sourceMapPath)
         SourceNode rootNode;
         for (auto& child : project.tree.children)
         {
-            populateChildren(rootNode, child.first, child.second, "");
+            populateChildren(rootNode, child.first, *child.second.get(), "");
         }
         printf("game\n");
         dumpSourceMap(rootNode, 4);
-        roots["game"] = rootNode; // TODO: handle if root is not a datamodel
-    }
-}
-
-std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::string& requirePath)
-{
-    printf("attempting to resolve %s\n", requirePath.c_str());
-
-    auto pathParts = Luau::split(requirePath, '/');
-    std::optional<SourceNode> currentNode = std::nullopt;
-
-    return roots["game"].children["ReplicatedStorage"].children["SharedModule1"].path;
-
-    for (auto& part : pathParts)
-    {
-        printf("searching: %s\n", std::string(part).c_str());
-        if (currentNode)
-        {
-            if (currentNode.value().children.find(std::string(part)) != currentNode.value().children.end())
-            {
-                currentNode = currentNode.value().children.at(std::string(part));
-            }
-            else
-            {
-                return std::nullopt;
-            }
-        }
-        else
-        {
-            if (roots.count(std::string(part)) > 0)
-            {
-                currentNode = roots.at(std::string(part));
-            }
-            else
-            {
-                return std::nullopt;
-            }
-        };
-    }
-
-    if (currentNode)
-    {
-        return (*currentNode).path;
+        return rootNode; // TODO: handle if root is not a datamodel
     }
 
     return std::nullopt;
+}
+
+std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
+{
+    auto pathParts = Luau::split(requirePath, '/');
+    // auto root = pathParts.front();
+
+    // if (roots.find(std::string(root)) == roots.end())
+    //     return std::nullopt;
+
+    // SourceNode currentNode = roots.at(std::string(root));
+    SourceNode currentNode = root;
+
+    auto it = ++pathParts.begin(); // Skip first element
+    while (it != pathParts.end())
+    {
+        auto part = *it;
+
+        if (currentNode.children.find(std::string(part)) != currentNode.children.end())
+        {
+            currentNode = *currentNode.children.at(std::string(part));
+        }
+        else
+        {
+            return std::nullopt;
+        }
+
+        it++;
+    }
+
+    return currentNode.path;
 }
 
 
