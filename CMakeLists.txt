@@ -6,7 +6,7 @@ project(luau-cli-tool LANGUAGES CXX)
 
 add_subdirectory(luau)
 
-add_executable(luau-cli-tool main.cpp FileUtils.cpp)
+add_executable(luau-cli-tool main.cpp FileUtils.cpp RequireResolver.cpp extern/json.hpp)
 
 target_compile_features(luau-cli-tool PUBLIC cxx_std_17)
 

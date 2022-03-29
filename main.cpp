@@ -7,6 +7,7 @@
 #include "Luau/Transpiler.h"
 
 #include "FileUtils.h"
+#include "RequireResolver.h"
 
 LUAU_FASTFLAG(DebugLuauTimeTracing)
 
@@ -119,6 +120,8 @@ static int assertionHandler(const char* expr, const char* file, int line, const 
 
 struct CliFileResolver : Luau::FileResolver
 {
+    RojoResolver* rojoResolver;
+
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
         Luau::SourceCode::Type sourceType;
@@ -132,8 +135,16 @@ struct CliFileResolver : Luau::FileResolver
         }
         else if (name.rfind("game/", 0) == 0)
         {
-            // TODO: resolve path from rojo
-            return std::nullopt;
+            if (rojoResolver)
+            {
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name);
+                if (realFilePath)
+                {
+
+                    source = readFile(*realFilePath);
+                    sourceType = (*rojoResolver).sourceCodeTypeFromPath(*realFilePath);
+                }
+            }
         }
         else
         {
@@ -180,13 +191,18 @@ struct CliFileResolver : Luau::FileResolver
 
         if (name.rfind("game/", 0) == 0)
         {
-            // Get the real path from the rojo name
-            // TODO: resolve real file path from Rojo
-            std::optional<std::string> realFilePath = std::nullopt;
-            if (realFilePath)
-                return name + " (" + *realFilePath + ")";
+            if (rojoResolver)
+            {
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name);
+                if (realFilePath)
+                    return name + " (" + *realFilePath + ")";
+                else
+                    return name + " (failed to resolve Rojo file path)";
+            }
             else
-                return name + " (failed to resolve Rojo file path)";
+            {
+                return name + " (no Rojo resolver available)";
+            }
         }
         else
         {
@@ -254,6 +270,7 @@ int main(int argc, char** argv)
 
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
+    std::optional<std::string> projectPath = std::nullopt;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -268,6 +285,8 @@ int main(int argc, char** argv)
             annotate = true;
         else if (strcmp(argv[i], "--timetrace") == 0)
             FFlag::DebugLuauTimeTracing.value = true;
+        else if (strncmp(argv[i], "--project=", 10) == 0)
+            projectPath = std::string(argv[i] + 10);
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
@@ -282,6 +301,12 @@ int main(int argc, char** argv)
     frontendOptions.retainFullTypeGraphs = annotate;
 
     CliFileResolver fileResolver;
+    if (projectPath)
+    {
+        RojoResolver requireResolver(*projectPath);
+        fileResolver.rojoResolver = &requireResolver;
+    }
+
     CliConfigResolver configResolver;
     Luau::Frontend frontend(&fileResolver, &configResolver, frontendOptions);
 
