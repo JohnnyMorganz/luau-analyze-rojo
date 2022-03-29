@@ -130,6 +130,11 @@ struct CliFileResolver : Luau::FileResolver
             source = readStdin();
             sourceType = Luau::SourceCode::Script;
         }
+        else if (name.rfind("game/", 0) == 0)
+        {
+            // TODO: resolve path from rojo
+            return std::nullopt;
+        }
         else
         {
             source = readFile(name);
@@ -144,16 +149,25 @@ struct CliFileResolver : Luau::FileResolver
 
     std::optional<Luau::ModuleInfo> resolveModule(const Luau::ModuleInfo* context, Luau::AstExpr* node) override
     {
-        if (Luau::AstExprConstantString* expr = node->as<Luau::AstExprConstantString>())
+        if (Luau::AstExprGlobal* g = node->as<Luau::AstExprGlobal>())
         {
-            Luau::ModuleName name = std::string(expr->value.data, expr->value.size) + ".luau";
-            if (!readFile(name))
+            if (g->name == "game")
+                return Luau::ModuleInfo{"game"};
+        }
+        else if (Luau::AstExprIndexName* i = node->as<Luau::AstExprIndexName>())
+        {
+            if (context)
+                return Luau::ModuleInfo{context->name + '/' + i->index.value, context->optional};
+        }
+        else if (Luau::AstExprCall* call = node->as<Luau::AstExprCall>(); call && call->self && call->args.size >= 1 && context)
+        {
+            if (Luau::AstExprConstantString* index = call->args.data[0]->as<Luau::AstExprConstantString>())
             {
-                // fall back to .lua if a module with .luau doesn't exist
-                name = std::string(expr->value.data, expr->value.size) + ".lua";
-            }
+                Luau::AstName func = call->func->as<Luau::AstExprIndexName>()->index;
 
-            return {{name}};
+                if (func == "GetService" && context->name == "game")
+                    return Luau::ModuleInfo{"game/" + std::string(index->value.data, index->value.size)};
+            }
         }
 
         return std::nullopt;
@@ -163,7 +177,21 @@ struct CliFileResolver : Luau::FileResolver
     {
         if (name == "-")
             return "stdin";
-        return name;
+
+        if (name.rfind("game/", 0) == 0)
+        {
+            // Get the real path from the rojo name
+            // TODO: resolve real file path from Rojo
+            std::optional<std::string> realFilePath = std::nullopt;
+            if (realFilePath)
+                return name + " (" + *realFilePath + ")";
+            else
+                return name + " (failed to resolve Rojo file path)";
+        }
+        else
+        {
+            return name;
+        }
     }
 };
 
