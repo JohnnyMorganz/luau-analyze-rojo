@@ -271,6 +271,7 @@ int main(int argc, char** argv)
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
     std::optional<std::string> projectPath = std::nullopt;
+    std::optional<std::string> globalDefsPath = std::nullopt;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -287,6 +288,8 @@ int main(int argc, char** argv)
             FFlag::DebugLuauTimeTracing.value = true;
         else if (strncmp(argv[i], "--project=", 10) == 0)
             projectPath = std::string(argv[i] + 10);
+        else if (strncmp(argv[i], "--defs=", 7) == 0)
+            globalDefsPath = std::string(argv[i] + 7);
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
@@ -311,6 +314,28 @@ int main(int argc, char** argv)
     Luau::Frontend frontend(&fileResolver, &configResolver, frontendOptions);
 
     Luau::registerBuiltinTypes(frontend.typeChecker);
+
+    // If global definitions have been provided, then also register them
+    if (globalDefsPath)
+    {
+        std::optional<std::string> defs = readFile(*globalDefsPath);
+        if (defs)
+        {
+            auto loadResult = Luau::loadDefinitionFile(frontend.typeChecker, frontend.typeChecker.globalScope, *defs, "@luau");
+            if (!loadResult.success)
+            {
+                fprintf(stderr, "Failed to load definitions\n");
+                for (const auto& error : loadResult.parseResult.errors)
+                    report(format, (*globalDefsPath).c_str(), error.getLocation(), "SyntaxError", error.getMessage().c_str());
+                for (const auto& error : loadResult.module->errors)
+                    if (const Luau::SyntaxError* syntaxError = Luau::get_if<Luau::SyntaxError>(&error.data))
+                        report(format, (*globalDefsPath).c_str(), error.location, "SyntaxError", syntaxError->message.c_str());
+                    else
+                        report(format, (*globalDefsPath).c_str(), error.location, "TypeError", Luau::toString(error).c_str());
+            }
+        }
+    }
+
     Luau::freeze(frontend.typeChecker.globalTypes);
 
     std::vector<std::string> files = getSourceFiles(argc, argv);
