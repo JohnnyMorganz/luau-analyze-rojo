@@ -1,17 +1,23 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(luau-cli-tool LANGUAGES CXX)
+project(luau-analyze-rojo LANGUAGES CXX)
 
 # include(CTest)
 # enable_testing()
 
 add_subdirectory(luau)
 
-add_executable(luau-cli-tool main.cpp FileUtils.cpp RequireResolver.cpp extern/json.hpp)
+add_executable(luau-analyze-rojo main.cpp FileUtils.cpp RequireResolver.cpp extern/json.hpp)
 
-target_compile_features(luau-cli-tool PUBLIC cxx_std_17)
+target_compile_features(luau-analyze-rojo PUBLIC cxx_std_17)
 
-target_include_directories(luau-cli-tool PUBLIC "${PROJECT_BINARY_DIR}" luau/Analysis/include luau/Ast/include luau/VM/include luau/Compiler/include)
-target_link_libraries(luau-cli-tool PUBLIC Luau.Ast Luau.Analysis)
+target_include_directories(luau-analyze-rojo PUBLIC "${PROJECT_BINARY_DIR}" luau/Analysis/include luau/Ast/include luau/VM/include luau/Compiler/include)
+target_link_libraries(luau-analyze-rojo PUBLIC Luau.Ast Luau.Analysis)
+
+# if(MSVC)
+#   target_compile_options(luau-analyze-rojo PRIVATE /W4 /WX /D_CRT_SECURE_NO_WARNINGS)
+# else()
+#   target_compile_options(luau-analyze-rojo PRIVATE -Wall -Wextra -Wpedantic -Werror)
+# endif()
 
 # set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 # set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
