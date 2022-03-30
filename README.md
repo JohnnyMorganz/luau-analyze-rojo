@@ -5,9 +5,27 @@ A fork of [Luau's](https://github.com/Roblox/luau) `luau-analyze` tool, with Roj
 This tool adds in support for Rojo requires, using a `project.json` file as a source map.
 It also adds in support to registering global types from an API dump.
 
+## Installation
+
+- [GitHub Releases](https://github.com/JohnnyMorganz/luau-analyze-rojo/releases)
+- [Foreman](https://github.com/Roblox/foreman)
+
+```toml
+[tools]
+luau-analyze = { source = "JohnnyMorganz/luau-analyze-rojo", version = "*" }
+```
+
+- From Source
+
+```sh
+mkdir build && cd build
+cmake ..
+cmake --build . --target luau-analyze-cli
+```
+
 ## Usage
 
-```
+```sh
 luau-analyze --project=default.project.json --defs=globalTypes.d.lua fileToAnalyse.luau
 ```
 
@@ -27,7 +45,7 @@ You can create a definition file to register as global types.
 
 The project comes with a tool to automate pulling in the latest API dump and converting it into types
 
-```
+```sh
 python dumpRobloxTypes.py > globalTypes.d.lua
 ```
 
