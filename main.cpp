@@ -129,7 +129,6 @@ bool isManagedModule(const Luau::ModuleName& name)
 
 struct CliFileResolver : Luau::FileResolver
 {
-    RojoResolver* rojoResolver;
     ResolvedSourceMap sourceMap;
     std::optional<std::string> stdinFilepath;
 
@@ -142,9 +141,9 @@ struct CliFileResolver : Luau::FileResolver
         if (name == "-")
         {
             source = readStdin();
-            if (rojoResolver && stdinFilepath)
+            if (stdinFilepath)
             {
-                sourceType = (*rojoResolver).sourceCodeTypeFromPath(*stdinFilepath);
+                sourceType = RojoResolver::sourceCodeTypeFromPath(*stdinFilepath);
             }
             else
             {
@@ -153,29 +152,18 @@ struct CliFileResolver : Luau::FileResolver
         }
         else if (isManagedModule(name))
         {
-            if (rojoResolver)
+            std::optional<std::string> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
+            if (realFilePath)
             {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMap.root);
-                if (realFilePath)
-                {
 
-                    source = readFile(*realFilePath);
-                    sourceType = (*rojoResolver).sourceCodeTypeFromPath(*realFilePath);
-                }
+                source = readFile(*realFilePath);
+                sourceType = RojoResolver::sourceCodeTypeFromPath(*realFilePath);
             }
         }
         else
         {
             source = readFile(name);
-            if (rojoResolver)
-            {
-                sourceType = (*rojoResolver).sourceCodeTypeFromPath(name);
-            }
-            else
-            {
-
-                sourceType = Luau::SourceCode::Module;
-            }
+            sourceType = RojoResolver::sourceCodeTypeFromPath(name);
         }
 
         if (!source)
@@ -199,7 +187,7 @@ struct CliFileResolver : Luau::FileResolver
                     // We can just use this as the starting point
                     return Luau::ModuleInfo{context->name};
                 }
-                else if (rojoResolver)
+                else
                 {
                     // context->name is a file path which we need to translate to a Rojo path
                     std::string filePath = context->name;
@@ -257,12 +245,9 @@ struct CliFileResolver : Luau::FileResolver
 
         if (isManagedModule(name))
         {
-            if (rojoResolver)
-            {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMap.root);
-                if (realFilePath)
-                    return realFilePath.value() + "[" + name + "]";
-            }
+            std::optional<std::string> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
+            if (realFilePath)
+                return realFilePath.value() + "[" + name + "]";
 
             return "<UNKNOWN>[" + name + "]";
         }
@@ -372,12 +357,10 @@ int main(int argc, char** argv)
     frontendOptions.retainFullTypeGraphs = annotate;
 
     CliFileResolver fileResolver;
-    RojoResolver requireResolver;
     fileResolver.stdinFilepath = stdinFilepath;
-    fileResolver.rojoResolver = &requireResolver;
     if (projectPath)
     {
-        auto sourceMap = requireResolver.parseSourceMap(*projectPath);
+        auto sourceMap = RojoResolver::parseSourceMap(*projectPath);
         if (sourceMap)
         {
             fileResolver.sourceMap = sourceMap.value();
