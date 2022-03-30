@@ -112,6 +112,7 @@ static void displayHelp(const char* argv0)
     printf("  --timetrace: record compiler time tracing information into trace.json\n");
     printf("  --project=PATH: path to Rojo .project.json for resolving\n");
     printf("  --defs=PATH: path to definition file for global types\n");
+    printf("  --stdin-filepath=PATH: path to file being sent through stdin. Used for require resolution\n");
     printf("  --dump-source-map: dump the currently resolved source map\n");
 }
 
@@ -130,6 +131,7 @@ struct CliFileResolver : Luau::FileResolver
 {
     RojoResolver* rojoResolver;
     SourceNode sourceMapRoot;
+    std::optional<std::string> stdinFilepath;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
@@ -140,7 +142,14 @@ struct CliFileResolver : Luau::FileResolver
         if (name == "-")
         {
             source = readStdin();
-            sourceType = Luau::SourceCode::Script;
+            if (rojoResolver && stdinFilepath)
+            {
+                sourceType = (*rojoResolver).sourceCodeTypeFromPath(*stdinFilepath);
+            }
+            else
+            {
+                sourceType = Luau::SourceCode::Script;
+            }
         }
         else if (isManagedModule(name))
         {
@@ -158,7 +167,15 @@ struct CliFileResolver : Luau::FileResolver
         else
         {
             source = readFile(name);
-            sourceType = Luau::SourceCode::Module;
+            if (rojoResolver)
+            {
+                sourceType = (*rojoResolver).sourceCodeTypeFromPath(name);
+            }
+            else
+            {
+
+                sourceType = Luau::SourceCode::Module;
+            }
         }
 
         if (!source)
@@ -182,9 +199,16 @@ struct CliFileResolver : Luau::FileResolver
                     // We can just use this as the starting point
                     return Luau::ModuleInfo{context->name};
                 }
-                else
+                else if (rojoResolver)
                 {
                     // TODO: context->name is a file path which we need to translate to a Rojo path
+                    if (context->name == "-")
+                    {
+                        // TODO: get stdin path?
+                    }
+                    else
+                    {
+                    }
                 }
             }
         }
@@ -303,6 +327,7 @@ int main(int argc, char** argv)
     bool dumpMap = false;
     std::optional<std::string> projectPath = std::nullopt;
     std::optional<std::string> globalDefsPath = std::nullopt;
+    std::optional<std::string> stdinFilepath = std::nullopt;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -323,6 +348,8 @@ int main(int argc, char** argv)
             projectPath = std::string(argv[i] + 10);
         else if (strncmp(argv[i], "--defs=", 7) == 0)
             globalDefsPath = std::string(argv[i] + 7);
+        else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
+            stdinFilepath = std::string(argv[i] + 17);
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
@@ -338,6 +365,7 @@ int main(int argc, char** argv)
 
     CliFileResolver fileResolver;
     RojoResolver requireResolver;
+    fileResolver.stdinFilepath = stdinFilepath;
     fileResolver.rojoResolver = &requireResolver;
     if (projectPath)
     {
