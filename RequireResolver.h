@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 #include "Luau/FileResolver.h"
 
