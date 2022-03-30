@@ -187,6 +187,9 @@ struct CliFileResolver : Luau::FileResolver
 
                 if (func == "GetService" && context->name == "game")
                     return Luau::ModuleInfo{"game/" + std::string(index->value.data, index->value.size)};
+                if (func == "WaitForChild" || func == "FindFirstChild")
+                    if (context)
+                        return Luau::ModuleInfo{context->name + '/' + std::string(index->value.data, index->value.size), context->optional};
             }
         }
 
