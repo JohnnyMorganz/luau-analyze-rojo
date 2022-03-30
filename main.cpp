@@ -312,6 +312,45 @@ struct CliConfigResolver : Luau::ConfigResolver
     }
 };
 
+std::optional<Luau::TypeFun> findExportedType(Luau::TypeChecker& typeChecker, const std::string& name)
+{
+
+    if (typeChecker.globalScope->exportedTypeBindings.find(name) != typeChecker.globalScope->exportedTypeBindings.end())
+    {
+        return typeChecker.globalScope->exportedTypeBindings.at(name);
+    }
+    return std::nullopt;
+}
+
+Luau::TypeId makeInstanceType(Luau::TypeChecker& typeChecker, const SourceNode& node)
+{
+    std::optional<Luau::TypeFun> baseType;
+    if (node.className.has_value())
+    {
+        baseType = findExportedType(typeChecker, node.className.value());
+    }
+    if (!baseType.has_value())
+    {
+        baseType = findExportedType(typeChecker, "Instance");
+    }
+    LUAU_ASSERT(baseType); // TODO: is this ensured??
+    auto typeId = baseType.value().type;
+
+    if (node.children.size() > 0)
+    {
+        // Add the children
+        Luau::TableTypeVar children{Luau::TableState::Sealed, typeChecker.globalScope->level};
+        for (const auto& child : node.children)
+        {
+            auto childProperty = Luau::makeProperty(makeInstanceType(typeChecker, *child.second), "@luau/instance");
+            children.props[child.first] = childProperty;
+        }
+        Luau::TypeId childId = typeChecker.globalTypes.addType(children);
+        typeId = Luau::makeIntersection(typeChecker.globalTypes, {typeId, childId});
+    }
+    return typeId;
+}
+
 int main(int argc, char** argv)
 {
     Luau::assertHandler() = assertionHandler;
@@ -402,6 +441,30 @@ int main(int argc, char** argv)
                         report(format, (*globalDefsPath).c_str(), error.location, "SyntaxError", syntaxError->message.c_str());
                     else
                         report(format, (*globalDefsPath).c_str(), error.location, "TypeError", Luau::toString(error).c_str());
+            }
+            else
+            {
+                // Try to extend the globally registered types with the project format
+                auto root = fileResolver.sourceMap.root;
+                if (root.className.has_value() && root.className.value() == "DataModel")
+                {
+                    for (const auto& services : root.children)
+                    {
+                        auto serviceType = findExportedType(frontend.typeChecker, services.first);
+                        if (serviceType.has_value())
+                        {
+                            if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
+                            {
+                                // Extend the props to include the children
+                                for (const auto& child : (*services.second).children)
+                                {
+                                    ctv->props[child.first] =
+                                        makeProperty(makeInstanceType(frontend.typeChecker, *(child.second)), "@luau/serviceChild");
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

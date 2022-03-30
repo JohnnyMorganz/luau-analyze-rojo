@@ -12,6 +12,7 @@
 struct SourceNode
 {
     std::optional<std::string> path;
+    std::optional<std::string> className;
     std::unordered_map<std::string, std::shared_ptr<SourceNode>> children;
 };
 

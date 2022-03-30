@@ -102,9 +102,9 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
 void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath)
 {
     SourceNode childNode;
+    childNode.className = node.class_name;
     if (node.path)
     {
-
         handleNodePath(childNode, *node.path, basePath);
     }
 
@@ -126,6 +126,10 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
     else
     {
         printf("%*sNO PATH\n", level, "");
+    }
+    if (root.className)
+    {
+        printf("%*sClassName: %s\n", level, "", (*root.className).c_str());
     }
 
     if (root.children.size() > 0)
@@ -161,6 +165,7 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
 
         // Create root node
         SourceNode rootNode;
+        rootNode.className = project.tree.class_name;
         if (project.tree.path)
         {
 
