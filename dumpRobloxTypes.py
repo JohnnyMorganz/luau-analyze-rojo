@@ -7,6 +7,7 @@ import json
 
 DATA_TYPES_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/master/server/api/DataTypes.json"
 API_DUMP_URL = "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json"
+CORRECTIONS_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/master/server/api/Corrections.json"
 TYPE_INDEX = {
     'Tuple': "any", 'Variant': "any",
     'Function': "(any) -> (any)", "function": "(any) -> (any)",
@@ -163,15 +164,25 @@ def declareClass(klass: Dict[str, Any]):
         out += " extends " + klass['Superclass']
     out += "\n"
 
+    isGetService = False
+
     for member in klass['Members']:
         if member['MemberType'] == "Property":
             out += f"\t{escapeName(member['Name'])}: {resolveType(member['ValueType'])}\n"
         elif member['MemberType'] == "Function":
+            if klass['Name'] == 'ServiceProvider' and member['Name'] == 'GetService':
+                isGetService = True
+                continue
             out += f"\tfunction {escapeName(member['Name'])}(self{', ' if len(member['Parameters']) > 0 else ''}{resolveParameterList(member['Parameters'])}): {resolveReturnType(member)}\n"
         elif member['MemberType'] == "Event":
             out += f"\t{escapeName(member['Name'])}: RBXScriptSignal\n" # TODO: type this
         elif member['MemberType'] == "Callback":
             out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"
+
+    # Special case ServiceProvider:GetService()
+    if isGetService:
+        for service in SERVICES:
+            out += f"\tfunction GetService(self, service: \"{service}\"): {service}\n"
 
     out += "end"
 
@@ -245,10 +256,15 @@ def printDataTypeConstructors(types):
         name = klass['Name']
         members = klass['Members']
 
+        isInstanceNew = False
+
         # Handle overloadable functions
         functions = defaultdict(list)
         for member in members:
             if member['MemberType'] == 'Function':
+                if name == 'Instance' and member['Name'] == 'new':
+                    isInstanceNew = True
+                    continue
                 functions[member['Name']].append(member)
 
         out = "declare " + name + ": {\n"
@@ -260,21 +276,88 @@ def printDataTypeConstructors(types):
             elif member['MemberType'] == "Event":
                 out += f"\t{escapeName(member['Name'])}: RBXScriptSignal,\n" # TODO: type this
 
+        # Special case instance new
+        if isInstanceNew:
+            functions['new'] = list(map(lambda inst: {
+                'Parameters': [{
+                    'Name': 'className',
+                    'Type': {
+                        'Name': f'"{inst}"',
+                        'Category': 'PRIMITIVE_SERVICE_NAME'
+                    }
+                }],
+                'ReturnType': {
+                    'Name': inst,
+                    'Category': 'PRIMITIVE_SERVICE'
+                }
+            }, CREATABLE))
+            
         for function, overloads in functions.items():
             overloads = map(lambda member: f"(({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)})", overloads)
-            out += f"\t{escapeName(function)}: {' & '.join(overloads)},\n"              
+            out += f"\t{escapeName(function)}: {' & '.join(overloads)},\n"          
 
         out += "}"
         print(out)
         print()
+    
+def applyCorrections(dump, corrections):
+    for klass in corrections['Classes']:
+        for otherClass in dump['Classes']:
+            if otherClass['Name'] == klass['Name']:
+                for member in klass['Members']:
+                    for otherMember in otherClass['Members']:
+                        if otherMember['Name'] == member['Name']:
+                            if 'TupleReturns' in member:
+                                del otherMember['ReturnType']
+                                otherMember['TupleReturns'] = member['TupleReturns']
+                            elif 'ReturnType' in member:
+                                otherMember['ReturnType']['Name'] = member['ReturnType']['Name'] if 'Name' in member['ReturnType'] else otherMember['ReturnType']['Name']
+                                if 'Generic' in member['ReturnType']:
+                                    otherMember['ReturnType']['Generic'] = member['ReturnType']['Generic']
+                            elif 'ValueType' in member:
+                                otherMember['ValueType']['Name'] = member['ValueType']['Name'] if 'Name' in member['ValueType'] else otherMember['ValueType']['Name']
+                                if 'Generic' in member['ValueType']:
+                                    otherMember['ValueType']['Generic'] = member['ValueType']['Generic']
+
+                            if 'Parameters' in member:
+                                for param in member['Parameters']:
+                                    for otherParam in otherMember['Parameters']:
+                                        if otherParam['Name'] == param['Name']:
+                                            if 'Type' in param:
+                                                otherParam['Type']['Name'] = param['Type']['Name'] if 'Name' in param['Type'] else otherParam['Type']['Name']
+                                                if 'Generic' in param['Type']:
+                                                    otherParam['Type']['Generic'] = param['Type']['Generic']
+                                            if 'Default' in param:
+                                                otherParam['Default'] = param['Default']
+
+                            break
+                break
+
 
 # Print global types
 dataTypes = json.loads(requests.get(DATA_TYPES_URL).text)
 dump = json.loads(requests.get(API_DUMP_URL).text)
 
+# Load services and creatable instances
+SERVICES = []
+CREATABLE = []
+for klass in dump['Classes']:
+    isCreatable = True
+    if 'Tags' in klass:
+        if 'Service' in klass['Tags']:
+            SERVICES.append(klass['Name'])
+        if 'NotCreatable' in klass['Tags']:
+            isCreatable = False
+    if isCreatable:
+        CREATABLE.append(klass['Name'])
+
+# Apply any corrections on the dump
+corrections = json.loads(requests.get(API_DUMP_URL).text)
+applyCorrections(dump, corrections)
+
 print(START_BASE)
 printEnums(dump)
 printDataTypes(dataTypes)
-printDataTypeConstructors(dataTypes)
 printClasses(dump)
+printDataTypeConstructors(dataTypes)
 print(END_BASE)

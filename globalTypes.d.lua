@@ -3183,169 +3183,6 @@ declare class CatalogSearchParams
 	AssetTypes: { any }
 end
 
-declare Instance: {
-	new: ((className: string, parent: Instance?) -> Instance),
-}
-
-declare Ray: {
-	new: ((Origin: Vector3, Direction: Vector3) -> Ray),
-}
-
-declare NumberRange: {
-	new: ((value: number) -> NumberRange) & ((min: number, max: number) -> NumberRange),
-}
-
-declare PathWaypoint: {
-	new: ((position: Vector3, action: EnumPathWaypointAction) -> PathWaypoint),
-}
-
-declare BrickColor: {
-	Red: (() -> BrickColor),
-	Yellow: (() -> BrickColor),
-	Blue: (() -> BrickColor),
-	Gray: (() -> BrickColor),
-	DarkGray: (() -> BrickColor),
-	White: (() -> BrickColor),
-	random: (() -> BrickColor),
-	Green: (() -> BrickColor),
-	Black: (() -> BrickColor),
-	palette: ((paletteValue: number) -> BrickColor),
-	new: ((val: number) -> BrickColor) & ((r: number, g: number, b: number) -> BrickColor) & ((val: string) -> BrickColor) & ((color: Color3) -> BrickColor),
-}
-
-declare Vector2: {
-	zero: Vector2,
-	one: Vector2,
-	xAxis: Vector2,
-	yAxis: Vector2,
-	new: ((x: number?, y: number?) -> Vector2),
-}
-
-declare Vector2int16: {
-	new: ((x: number, y: number) -> Vector2int16),
-}
-
-declare Color3: {
-	fromRGB: ((red: number?, green: number?, blue: number?) -> Color3),
-	fromHSV: ((hue: number, saturation: number, value: number) -> Color3),
-	toHSV: ((color: Color3) -> (number, number, number)),
-	new: ((red: number?, green: number?, blue: number?) -> Color3),
-	fromHex: ((hex: string) -> Color3),
-}
-
-declare UDim: {
-	new: ((Scale: number?, Offset: number?) -> UDim),
-}
-
-declare PhysicalProperties: {
-	new: ((material: EnumMaterial) -> PhysicalProperties) & ((density: number, friction: number, elasticy: number, frictionWeight: number?, elasticyWeight: number?) -> PhysicalProperties),
-}
-
-declare Axes: {
-	new: ((axes: any) -> Axes),
-}
-
-declare Region3: {
-	new: ((min: Vector3, max: Vector3) -> Region3),
-}
-
-declare Region3int16: {
-	new: ((min: Vector3int16, max: Vector3int16) -> Region3int16),
-}
-
-declare UDim2: {
-	fromScale: ((xScale: number, yScale: number) -> UDim2),
-	fromOffset: ((xOffset: number, yOffset: number) -> UDim2),
-	new: ((x: UDim, y: UDim) -> UDim2) & ((xScale: number?, xOffset: number?, yScale: number?, yOffset: number?) -> UDim2),
-}
-
-declare CFrame: {
-	identity: CFrame,
-	Rotation: CFrame,
-	fromEulerAnglesYXZ: ((rx: number, ry: number, rz: number) -> CFrame),
-	Angles: ((rx: number, ry: number, rz: number) -> CFrame),
-	fromMatrix: ((pos: Vector3, vX: Vector3, vY: Vector3, vZ: Vector3) -> CFrame),
-	fromAxisAngle: ((v: Vector3, r: number) -> CFrame),
-	fromOrientation: ((rx: number, ry: number, rz: number) -> CFrame),
-	fromEulerAnglesXYZ: ((rx: number, ry: number, rz: number) -> CFrame),
-	lookAt: ((at: Vector3, target: Vector3, up: Vector3?) -> CFrame),
-	new: (() -> CFrame) & ((pos: Vector3) -> CFrame) & ((pos: Vector3, lookAt: Vector3) -> CFrame) & ((x: number, y: number, z: number) -> CFrame) & ((x: number, y: number, z: number, qX: number, qY: number, qZ: number, qW: number) -> CFrame) & ((x: number, y: number, z: number, R00: number, R01: number, R02: number, R10: number, R11: number, R12: number, R20: number, R21: number, R22: number) -> CFrame),
-}
-
-declare Faces: {
-	new: ((normalIds: any) -> Faces),
-}
-
-declare Rect: {
-	new: ((min: Vector2, max: Vector2) -> Rect) & ((minX: number, minY: number, maxX: number, maxY: number) -> Rect),
-}
-
-declare Vector3: {
-	zero: Vector3,
-	one: Vector3,
-	xAxis: Vector3,
-	yAxis: Vector3,
-	zAxis: Vector3,
-	fromNormalId: ((normal: EnumNormalId) -> Vector3),
-	fromAxis: ((axis: EnumAxis) -> Vector3),
-	FromNormalId: ((normal: EnumNormalId) -> Vector3),
-	FromAxis: ((axis: EnumAxis) -> Vector3),
-	new: ((x: number?, y: number?, z: number?) -> Vector3),
-}
-
-declare Vector3int16: {
-	new: ((x: number?, y: number?, z: number?) -> Vector3int16),
-}
-
-declare Random: {
-	new: ((seed: number?) -> Random),
-}
-
-declare TweenInfo: {
-	new: ((time: number?, easingStyle: EnumEasingStyle?, easingDirection: EnumEasingDirection?, repeatCount: number?, reverses: boolean?, delayTime: number?) -> TweenInfo),
-}
-
-declare DateTime: {
-	now: (() -> DateTime),
-	fromUnixTimestamp: ((unixTimestamp: number) -> DateTime),
-	fromUnixTimestampMillis: ((unixTimestampMillis: number) -> DateTime),
-	fromUniversalTime: ((year: number?, month: number?, day: number?, hour: number?, minute: number?, second: number?, millisecond: number?) -> DateTime),
-	fromLocalTime: ((year: number?, month: number?, day: number?, hour: number?, minute: number?, second: number?, millisecond: number?) -> DateTime),
-	fromIsoDate: ((isoDate: string) -> DateTime),
-}
-
-declare NumberSequence: {
-	new: ((n: number) -> NumberSequence) & ((n0: number, n1: number) -> NumberSequence) & ((keypoints: { any }) -> NumberSequence),
-}
-
-declare ColorSequence: {
-	new: ((c: Color3) -> ColorSequence) & ((c0: Color3, c1: Color3) -> ColorSequence) & ((keypoints: { any }) -> ColorSequence),
-}
-
-declare NumberSequenceKeypoint: {
-	new: ((time: number, value: number, envelop: number?) -> NumberSequenceKeypoint),
-}
-
-declare ColorSequenceKeypoint: {
-	new: ((time: number, color: Color3) -> ColorSequenceKeypoint),
-}
-
-declare RaycastParams: {
-	new: (() -> RaycastParams),
-}
-
-declare OverlapParams: {
-	new: (() -> OverlapParams),
-}
-
-declare DockWidgetPluginGuiInfo: {
-	new: ((initDockState: EnumInitialDockState?, initEnabled: boolean?, overrideEnabledRestore: boolean?, floatXSize: number?, floatYSize: number?, minWidth: number?, minHeight: number?) -> DockWidgetPluginGuiInfo),
-}
-
-declare CatalogSearchParams: {
-	new: (() -> CatalogSearchParams),
-}
-
 type Instance = any
 type ABTestService = any
 type Accoutrement = any
@@ -8294,13 +8131,187 @@ end
 
 declare class ServiceProvider extends Instance
 	function FindService(self, className: string): Instance
-	function GetService(self, className: string): Instance
 	function getService(self, className: string): Instance
 	function service(self, className: string): Instance
 	Close: RBXScriptSignal
 	CloseLate: RBXScriptSignal
 	ServiceAdded: RBXScriptSignal
 	ServiceRemoving: RBXScriptSignal
+	function GetService(self, service: "ABTestService"): ABTestService
+	function GetService(self, service: "AdService"): AdService
+	function GetService(self, service: "AnalyticsService"): AnalyticsService
+	function GetService(self, service: "AnimationClipProvider"): AnimationClipProvider
+	function GetService(self, service: "AnimationFromVideoCreatorService"): AnimationFromVideoCreatorService
+	function GetService(self, service: "AnimationFromVideoCreatorStudioService"): AnimationFromVideoCreatorStudioService
+	function GetService(self, service: "AppUpdateService"): AppUpdateService
+	function GetService(self, service: "AssetCounterService"): AssetCounterService
+	function GetService(self, service: "AssetDeliveryProxy"): AssetDeliveryProxy
+	function GetService(self, service: "AssetImportService"): AssetImportService
+	function GetService(self, service: "AssetManagerService"): AssetManagerService
+	function GetService(self, service: "AssetService"): AssetService
+	function GetService(self, service: "AvatarEditorService"): AvatarEditorService
+	function GetService(self, service: "AvatarImportService"): AvatarImportService
+	function GetService(self, service: "BadgeService"): BadgeService
+	function GetService(self, service: "CoreGui"): CoreGui
+	function GetService(self, service: "StarterGui"): StarterGui
+	function GetService(self, service: "BreakpointManager"): BreakpointManager
+	function GetService(self, service: "BrowserService"): BrowserService
+	function GetService(self, service: "BulkImportService"): BulkImportService
+	function GetService(self, service: "CacheableContentProvider"): CacheableContentProvider
+	function GetService(self, service: "HSRDataContentProvider"): HSRDataContentProvider
+	function GetService(self, service: "MeshContentProvider"): MeshContentProvider
+	function GetService(self, service: "SolidModelContentProvider"): SolidModelContentProvider
+	function GetService(self, service: "CalloutService"): CalloutService
+	function GetService(self, service: "ChangeHistoryService"): ChangeHistoryService
+	function GetService(self, service: "Chat"): Chat
+	function GetService(self, service: "ClusterPacketCache"): ClusterPacketCache
+	function GetService(self, service: "CollectionService"): CollectionService
+	function GetService(self, service: "CommandService"): CommandService
+	function GetService(self, service: "ConfigureServerService"): ConfigureServerService
+	function GetService(self, service: "ContentProvider"): ContentProvider
+	function GetService(self, service: "ContextActionService"): ContextActionService
+	function GetService(self, service: "ControllerService"): ControllerService
+	function GetService(self, service: "CookiesService"): CookiesService
+	function GetService(self, service: "CorePackages"): CorePackages
+	function GetService(self, service: "CoreScriptSyncService"): CoreScriptSyncService
+	function GetService(self, service: "CrossDMScriptChangeListener"): CrossDMScriptChangeListener
+	function GetService(self, service: "DataModelPatchService"): DataModelPatchService
+	function GetService(self, service: "DataStoreService"): DataStoreService
+	function GetService(self, service: "Debris"): Debris
+	function GetService(self, service: "DebuggablePluginWatcher"): DebuggablePluginWatcher
+	function GetService(self, service: "DebuggerConnectionManager"): DebuggerConnectionManager
+	function GetService(self, service: "DebuggerManager"): DebuggerManager
+	function GetService(self, service: "DebuggerUIService"): DebuggerUIService
+	function GetService(self, service: "DraftsService"): DraftsService
+	function GetService(self, service: "DraggerService"): DraggerService
+	function GetService(self, service: "EventIngestService"): EventIngestService
+	function GetService(self, service: "FlagStandService"): FlagStandService
+	function GetService(self, service: "FlyweightService"): FlyweightService
+	function GetService(self, service: "CSGDictionaryService"): CSGDictionaryService
+	function GetService(self, service: "NonReplicatedCSGDictionaryService"): NonReplicatedCSGDictionaryService
+	function GetService(self, service: "FriendService"): FriendService
+	function GetService(self, service: "GamePassService"): GamePassService
+	function GetService(self, service: "GamepadService"): GamepadService
+	function GetService(self, service: "Geometry"): Geometry
+	function GetService(self, service: "GoogleAnalyticsConfiguration"): GoogleAnalyticsConfiguration
+	function GetService(self, service: "GroupService"): GroupService
+	function GetService(self, service: "GuiService"): GuiService
+	function GetService(self, service: "GuidRegistryService"): GuidRegistryService
+	function GetService(self, service: "HapticService"): HapticService
+	function GetService(self, service: "HeightmapImporterService"): HeightmapImporterService
+	function GetService(self, service: "Hopper"): Hopper
+	function GetService(self, service: "HttpRbxApiService"): HttpRbxApiService
+	function GetService(self, service: "HttpService"): HttpService
+	function GetService(self, service: "ILegacyStudioBridge"): ILegacyStudioBridge
+	function GetService(self, service: "LegacyStudioBridge"): LegacyStudioBridge
+	function GetService(self, service: "IXPService"): IXPService
+	function GetService(self, service: "IncrementalPatchBuilder"): IncrementalPatchBuilder
+	function GetService(self, service: "InsertService"): InsertService
+	function GetService(self, service: "JointsService"): JointsService
+	function GetService(self, service: "KeyboardService"): KeyboardService
+	function GetService(self, service: "KeyframeSequenceProvider"): KeyframeSequenceProvider
+	function GetService(self, service: "LSPService"): LSPService
+	function GetService(self, service: "LanguageService"): LanguageService
+	function GetService(self, service: "Lighting"): Lighting
+	function GetService(self, service: "LocalStorageService"): LocalStorageService
+	function GetService(self, service: "AppStorageService"): AppStorageService
+	function GetService(self, service: "UserStorageService"): UserStorageService
+	function GetService(self, service: "LocalizationService"): LocalizationService
+	function GetService(self, service: "LodDataService"): LodDataService
+	function GetService(self, service: "LogService"): LogService
+	function GetService(self, service: "LoginService"): LoginService
+	function GetService(self, service: "LuaWebService"): LuaWebService
+	function GetService(self, service: "LuauScriptAnalyzerService"): LuauScriptAnalyzerService
+	function GetService(self, service: "MarketplaceService"): MarketplaceService
+	function GetService(self, service: "MaterialService"): MaterialService
+	function GetService(self, service: "MemStorageService"): MemStorageService
+	function GetService(self, service: "MemoryStoreService"): MemoryStoreService
+	function GetService(self, service: "MessageBusService"): MessageBusService
+	function GetService(self, service: "MessagingService"): MessagingService
+	function GetService(self, service: "MouseService"): MouseService
+	function GetService(self, service: "NetworkClient"): NetworkClient
+	function GetService(self, service: "NetworkServer"): NetworkServer
+	function GetService(self, service: "NetworkSettings"): NetworkSettings
+	function GetService(self, service: "NotificationService"): NotificationService
+	function GetService(self, service: "Workspace"): Workspace
+	function GetService(self, service: "PackageService"): PackageService
+	function GetService(self, service: "PackageUIService"): PackageUIService
+	function GetService(self, service: "PathfindingService"): PathfindingService
+	function GetService(self, service: "PermissionsService"): PermissionsService
+	function GetService(self, service: "PhysicsService"): PhysicsService
+	function GetService(self, service: "PlayerEmulatorService"): PlayerEmulatorService
+	function GetService(self, service: "Players"): Players
+	function GetService(self, service: "PluginDebugService"): PluginDebugService
+	function GetService(self, service: "PluginGuiService"): PluginGuiService
+	function GetService(self, service: "PluginPolicyService"): PluginPolicyService
+	function GetService(self, service: "PointsService"): PointsService
+	function GetService(self, service: "PolicyService"): PolicyService
+	function GetService(self, service: "ProcessInstancePhysicsService"): ProcessInstancePhysicsService
+	function GetService(self, service: "ProximityPromptService"): ProximityPromptService
+	function GetService(self, service: "PublishService"): PublishService
+	function GetService(self, service: "RbxAnalyticsService"): RbxAnalyticsService
+	function GetService(self, service: "RemoteDebuggerServer"): RemoteDebuggerServer
+	function GetService(self, service: "RenderSettings"): RenderSettings
+	function GetService(self, service: "ReplicatedFirst"): ReplicatedFirst
+	function GetService(self, service: "ReplicatedScriptService"): ReplicatedScriptService
+	function GetService(self, service: "ReplicatedStorage"): ReplicatedStorage
+	function GetService(self, service: "RobloxPluginGuiService"): RobloxPluginGuiService
+	function GetService(self, service: "RobloxReplicatedStorage"): RobloxReplicatedStorage
+	function GetService(self, service: "RunService"): RunService
+	function GetService(self, service: "RuntimeScriptService"): RuntimeScriptService
+	function GetService(self, service: "ScriptChangeService"): ScriptChangeService
+	function GetService(self, service: "ScriptCloneWatcher"): ScriptCloneWatcher
+	function GetService(self, service: "ScriptCloneWatcherHelper"): ScriptCloneWatcherHelper
+	function GetService(self, service: "ScriptContext"): ScriptContext
+	function GetService(self, service: "ScriptRegistrationService"): ScriptRegistrationService
+	function GetService(self, service: "ScriptService"): ScriptService
+	function GetService(self, service: "Selection"): Selection
+	function GetService(self, service: "ServerScriptService"): ServerScriptService
+	function GetService(self, service: "ServerStorage"): ServerStorage
+	function GetService(self, service: "SessionService"): SessionService
+	function GetService(self, service: "SocialService"): SocialService
+	function GetService(self, service: "SoundService"): SoundService
+	function GetService(self, service: "SpawnerService"): SpawnerService
+	function GetService(self, service: "StarterPack"): StarterPack
+	function GetService(self, service: "StarterPlayer"): StarterPlayer
+	function GetService(self, service: "Stats"): Stats
+	function GetService(self, service: "StopWatchReporter"): StopWatchReporter
+	function GetService(self, service: "Studio"): Studio
+	function GetService(self, service: "StudioAssetService"): StudioAssetService
+	function GetService(self, service: "StudioData"): StudioData
+	function GetService(self, service: "StudioDeviceEmulatorService"): StudioDeviceEmulatorService
+	function GetService(self, service: "StudioHighDpiService"): StudioHighDpiService
+	function GetService(self, service: "StudioPublishService"): StudioPublishService
+	function GetService(self, service: "StudioScriptDebugEventListener"): StudioScriptDebugEventListener
+	function GetService(self, service: "StudioService"): StudioService
+	function GetService(self, service: "TaskScheduler"): TaskScheduler
+	function GetService(self, service: "Teams"): Teams
+	function GetService(self, service: "TeleportService"): TeleportService
+	function GetService(self, service: "TemporaryCageMeshProvider"): TemporaryCageMeshProvider
+	function GetService(self, service: "TemporaryScriptService"): TemporaryScriptService
+	function GetService(self, service: "TestService"): TestService
+	function GetService(self, service: "TextBoxService"): TextBoxService
+	function GetService(self, service: "TextChatService"): TextChatService
+	function GetService(self, service: "TextService"): TextService
+	function GetService(self, service: "ThirdPartyUserService"): ThirdPartyUserService
+	function GetService(self, service: "TimerService"): TimerService
+	function GetService(self, service: "ToastNotificationService"): ToastNotificationService
+	function GetService(self, service: "ToolboxService"): ToolboxService
+	function GetService(self, service: "TouchInputService"): TouchInputService
+	function GetService(self, service: "TracerService"): TracerService
+	function GetService(self, service: "TweenService"): TweenService
+	function GetService(self, service: "UGCValidationService"): UGCValidationService
+	function GetService(self, service: "UnvalidatedAssetService"): UnvalidatedAssetService
+	function GetService(self, service: "UserInputService"): UserInputService
+	function GetService(self, service: "UserService"): UserService
+	function GetService(self, service: "VRService"): VRService
+	function GetService(self, service: "VersionControlService"): VersionControlService
+	function GetService(self, service: "VirtualInputManager"): VirtualInputManager
+	function GetService(self, service: "VirtualUser"): VirtualUser
+	function GetService(self, service: "VisibilityService"): VisibilityService
+	function GetService(self, service: "Visit"): Visit
+	function GetService(self, service: "VoiceChatInternal"): VoiceChatInternal
+	function GetService(self, service: "VoiceChatService"): VoiceChatService
 end
 
 declare class DataModel extends ServiceProvider
@@ -9681,6 +9692,169 @@ declare class WeldConstraint extends Instance
 	Part0: BasePart
 	Part1: BasePart
 end
+
+declare Instance: {
+	new: ((className: "Accoutrement") -> Accoutrement) & ((className: "Accessory") -> Accessory) & ((className: "Hat") -> Hat) & ((className: "AdvancedDragger") -> AdvancedDragger) & ((className: "AnalyticsService") -> AnalyticsService) & ((className: "Animation") -> Animation) & ((className: "CurveAnimation") -> CurveAnimation) & ((className: "KeyframeSequence") -> KeyframeSequence) & ((className: "AnimationController") -> AnimationController) & ((className: "AnimationRigData") -> AnimationRigData) & ((className: "Animator") -> Animator) & ((className: "Atmosphere") -> Atmosphere) & ((className: "Attachment") -> Attachment) & ((className: "Bone") -> Bone) & ((className: "Backpack") -> Backpack) & ((className: "HopperBin") -> HopperBin) & ((className: "Tool") -> Tool) & ((className: "Flag") -> Flag) & ((className: "WrapLayer") -> WrapLayer) & ((className: "WrapTarget") -> WrapTarget) & ((className: "Beam") -> Beam) & ((className: "BindableEvent") -> BindableEvent) & ((className: "BindableFunction") -> BindableFunction) & ((className: "BodyAngularVelocity") -> BodyAngularVelocity) & ((className: "BodyForce") -> BodyForce) & ((className: "BodyGyro") -> BodyGyro) & ((className: "BodyPosition") -> BodyPosition) & ((className: "BodyThrust") -> BodyThrust) & ((className: "BodyVelocity") -> BodyVelocity) & ((className: "RocketPropulsion") -> RocketPropulsion) & ((className: "Breakpoint") -> Breakpoint) & ((className: "Camera") -> Camera) & ((className: "BodyColors") -> BodyColors) & ((className: "CharacterMesh") -> CharacterMesh) & ((className: "Pants") -> Pants) & ((className: "Shirt") -> Shirt) & ((className: "ShirtGraphic") -> ShirtGraphic) & ((className: "Skin") -> Skin) & ((className: "ClickDetector") -> ClickDetector) & ((className: "Clouds") -> Clouds) & ((className: "Configuration") -> Configuration) & ((className: "AlignOrientation") -> AlignOrientation) & ((className: "AlignPosition") -> AlignPosition) & ((className: "AngularVelocity") -> AngularVelocity) & ((className: "BallSocketConstraint") -> BallSocketConstraint) & ((className: "HingeConstraint") -> HingeConstraint) & ((className: "LineForce") -> LineForce) & ((className: "LinearVelocity") -> LinearVelocity) & ((className: "Plane") -> Plane) & ((className: "RigidConstraint") -> RigidConstraint) & ((className: "RodConstraint") -> RodConstraint) & ((className: "RopeConstraint") -> RopeConstraint) & ((className: "CylindricalConstraint") -> CylindricalConstraint) & ((className: "PrismaticConstraint") -> PrismaticConstraint) & ((className: "SpringConstraint") -> SpringConstraint) & ((className: "Torque") -> Torque) & ((className: "TorsionSpringConstraint") -> TorsionSpringConstraint) & ((className: "UniversalConstraint") -> UniversalConstraint) & ((className: "VectorForce") -> VectorForce) & ((className: "HumanoidController") -> HumanoidController) & ((className: "SkateboardController") -> SkateboardController) & ((className: "VehicleController") -> VehicleController) & ((className: "CustomEvent") -> CustomEvent) & ((className: "CustomEventReceiver") -> CustomEventReceiver) & ((className: "BlockMesh") -> BlockMesh) & ((className: "CylinderMesh") -> CylinderMesh) & ((className: "FileMesh") -> FileMesh) & ((className: "SpecialMesh") -> SpecialMesh) & ((className: "DataStoreIncrementOptions") -> DataStoreIncrementOptions) & ((className: "DataStoreOptions") -> DataStoreOptions) & ((className: "DataStoreSetOptions") -> DataStoreSetOptions) & ((className: "DebuggerWatch") -> DebuggerWatch) & ((className: "Dialog") -> Dialog) & ((className: "DialogChoice") -> DialogChoice) & ((className: "Dragger") -> Dragger) & ((className: "EulerRotationCurve") -> EulerRotationCurve) & ((className: "Explosion") -> Explosion) & ((className: "FaceControls") -> FaceControls) & ((className: "Decal") -> Decal) & ((className: "Texture") -> Texture) & ((className: "Hole") -> Hole) & ((className: "MotorFeature") -> MotorFeature) & ((className: "Fire") -> Fire) & ((className: "FloatCurve") -> FloatCurve) & ((className: "FlyweightService") -> FlyweightService) & ((className: "CSGDictionaryService") -> CSGDictionaryService) & ((className: "NonReplicatedCSGDictionaryService") -> NonReplicatedCSGDictionaryService) & ((className: "Folder") -> Folder) & ((className: "ForceField") -> ForceField) & ((className: "FunctionalTest") -> FunctionalTest) & ((className: "CanvasGroup") -> CanvasGroup) & ((className: "Frame") -> Frame) & ((className: "ImageButton") -> ImageButton) & ((className: "TextButton") -> TextButton) & ((className: "ImageLabel") -> ImageLabel) & ((className: "TextLabel") -> TextLabel) & ((className: "ScrollingFrame") -> ScrollingFrame) & ((className: "TextBox") -> TextBox) & ((className: "VideoFrame") -> VideoFrame) & ((className: "ViewportFrame") -> ViewportFrame) & ((className: "BillboardGui") -> BillboardGui) & ((className: "ScreenGui") -> ScreenGui) & ((className: "GuiMain") -> GuiMain) & ((className: "SurfaceGui") -> SurfaceGui) & ((className: "FloorWire") -> FloorWire) & ((className: "SelectionBox") -> SelectionBox) & ((className: "BoxHandleAdornment") -> BoxHandleAdornment) & ((className: "ConeHandleAdornment") -> ConeHandleAdornment) & ((className: "CylinderHandleAdornment") -> CylinderHandleAdornment) & ((className: "ImageHandleAdornment") -> ImageHandleAdornment) & ((className: "LineHandleAdornment") -> LineHandleAdornment) & ((className: "SphereHandleAdornment") -> SphereHandleAdornment) & ((className: "ParabolaAdornment") -> ParabolaAdornment) & ((className: "SelectionSphere") -> SelectionSphere) & ((className: "ArcHandles") -> ArcHandles) & ((className: "Handles") -> Handles) & ((className: "SurfaceSelection") -> SurfaceSelection) & ((className: "SelectionPartLasso") -> SelectionPartLasso) & ((className: "SelectionPointLasso") -> SelectionPointLasso) & ((className: "HeightmapImporterService") -> HeightmapImporterService) & ((className: "HiddenSurfaceRemovalAsset") -> HiddenSurfaceRemovalAsset) & ((className: "Highlight") -> Highlight) & ((className: "Humanoid") -> Humanoid) & ((className: "HumanoidDescription") -> HumanoidDescription) & ((className: "RotateP") -> RotateP) & ((className: "RotateV") -> RotateV) & ((className: "Glue") -> Glue) & ((className: "ManualGlue") -> ManualGlue) & ((className: "ManualWeld") -> ManualWeld) & ((className: "Motor") -> Motor) & ((className: "Motor6D") -> Motor6D) & ((className: "Rotate") -> Rotate) & ((className: "Snap") -> Snap) & ((className: "VelocityMotor") -> VelocityMotor) & ((className: "Weld") -> Weld) & ((className: "Keyframe") -> Keyframe) & ((className: "KeyframeMarker") -> KeyframeMarker) & ((className: "LSPService") -> LSPService) & ((className: "PointLight") -> PointLight) & ((className: "SpotLight") -> SpotLight) & ((className: "SurfaceLight") -> SurfaceLight) & ((className: "LocalizationTable") -> LocalizationTable) & ((className: "Script") -> Script) & ((className: "LocalScript") -> LocalScript) & ((className: "ModuleScript") -> ModuleScript) & ((className: "MarkerCurve") -> MarkerCurve) & ((className: "MaterialVariant") -> MaterialVariant) & ((className: "MemoryStoreService") -> MemoryStoreService) & ((className: "Message") -> Message) & ((className: "Hint") -> Hint) & ((className: "NoCollisionConstraint") -> NoCollisionConstraint) & ((className: "CornerWedgePart") -> CornerWedgePart) & ((className: "Part") -> Part) & ((className: "FlagStand") -> FlagStand) & ((className: "Seat") -> Seat) & ((className: "SkateboardPlatform") -> SkateboardPlatform) & ((className: "SpawnLocation") -> SpawnLocation) & ((className: "WedgePart") -> WedgePart) & ((className: "MeshPart") -> MeshPart) & ((className: "PartOperation") -> PartOperation) & ((className: "NegateOperation") -> NegateOperation) & ((className: "UnionOperation") -> UnionOperation) & ((className: "TrussPart") -> TrussPart) & ((className: "VehicleSeat") -> VehicleSeat) & ((className: "Model") -> Model) & ((className: "Actor") -> Actor) & ((className: "WorldModel") -> WorldModel) & ((className: "PartOperationAsset") -> PartOperationAsset) & ((className: "ParticleEmitter") -> ParticleEmitter) & ((className: "PathfindingLink") -> PathfindingLink) & ((className: "PathfindingModifier") -> PathfindingModifier) & ((className: "Player") -> Player) & ((className: "PluginAction") -> PluginAction) & ((className: "NumberPose") -> NumberPose) & ((className: "Pose") -> Pose) & ((className: "BloomEffect") -> BloomEffect) & ((className: "BlurEffect") -> BlurEffect) & ((className: "ColorCorrectionEffect") -> ColorCorrectionEffect) & ((className: "DepthOfFieldEffect") -> DepthOfFieldEffect) & ((className: "SunRaysEffect") -> SunRaysEffect) & ((className: "ProximityPrompt") -> ProximityPrompt) & ((className: "ProximityPromptService") -> ProximityPromptService) & ((className: "ReflectionMetadata") -> ReflectionMetadata) & ((className: "ReflectionMetadataCallbacks") -> ReflectionMetadataCallbacks) & ((className: "ReflectionMetadataClasses") -> ReflectionMetadataClasses) & ((className: "ReflectionMetadataEnums") -> ReflectionMetadataEnums) & ((className: "ReflectionMetadataEvents") -> ReflectionMetadataEvents) & ((className: "ReflectionMetadataFunctions") -> ReflectionMetadataFunctions) & ((className: "ReflectionMetadataClass") -> ReflectionMetadataClass) & ((className: "ReflectionMetadataEnum") -> ReflectionMetadataEnum) & ((className: "ReflectionMetadataEnumItem") -> ReflectionMetadataEnumItem) & ((className: "ReflectionMetadataMember") -> ReflectionMetadataMember) & ((className: "ReflectionMetadataProperties") -> ReflectionMetadataProperties) & ((className: "ReflectionMetadataYieldFunctions") -> ReflectionMetadataYieldFunctions) & ((className: "RemoteEvent") -> RemoteEvent) & ((className: "RemoteFunction") -> RemoteFunction) & ((className: "RenderingTest") -> RenderingTest) & ((className: "RotationCurve") -> RotationCurve) & ((className: "Sky") -> Sky) & ((className: "Smoke") -> Smoke) & ((className: "Sound") -> Sound) & ((className: "ChorusSoundEffect") -> ChorusSoundEffect) & ((className: "CompressorSoundEffect") -> CompressorSoundEffect) & ((className: "ChannelSelectorSoundEffect") -> ChannelSelectorSoundEffect) & ((className: "DistortionSoundEffect") -> DistortionSoundEffect) & ((className: "EchoSoundEffect") -> EchoSoundEffect) & ((className: "EqualizerSoundEffect") -> EqualizerSoundEffect) & ((className: "FlangeSoundEffect") -> FlangeSoundEffect) & ((className: "PitchShiftSoundEffect") -> PitchShiftSoundEffect) & ((className: "ReverbSoundEffect") -> ReverbSoundEffect) & ((className: "TremoloSoundEffect") -> TremoloSoundEffect) & ((className: "SoundGroup") -> SoundGroup) & ((className: "Sparkles") -> Sparkles) & ((className: "Speaker") -> Speaker) & ((className: "StandalonePluginScripts") -> StandalonePluginScripts) & ((className: "StarterGear") -> StarterGear) & ((className: "SurfaceAppearance") -> SurfaceAppearance) & ((className: "Team") -> Team) & ((className: "TeleportOptions") -> TeleportOptions) & ((className: "TerrainDetail") -> TerrainDetail) & ((className: "TerrainRegion") -> TerrainRegion) & ((className: "TestService") -> TestService) & ((className: "TextChannel") -> TextChannel) & ((className: "TextChatCommand") -> TextChatCommand) & ((className: "TextChatMessageProperties") -> TextChatMessageProperties) & ((className: "Trail") -> Trail) & ((className: "Tween") -> Tween) & ((className: "UIAspectRatioConstraint") -> UIAspectRatioConstraint) & ((className: "UISizeConstraint") -> UISizeConstraint) & ((className: "UITextSizeConstraint") -> UITextSizeConstraint) & ((className: "UICorner") -> UICorner) & ((className: "UIGradient") -> UIGradient) & ((className: "UIGridLayout") -> UIGridLayout) & ((className: "UIListLayout") -> UIListLayout) & ((className: "UIPageLayout") -> UIPageLayout) & ((className: "UITableLayout") -> UITableLayout) & ((className: "UIPadding") -> UIPadding) & ((className: "UIScale") -> UIScale) & ((className: "UIStroke") -> UIStroke) & ((className: "BinaryStringValue") -> BinaryStringValue) & ((className: "BoolValue") -> BoolValue) & ((className: "BrickColorValue") -> BrickColorValue) & ((className: "CFrameValue") -> CFrameValue) & ((className: "Color3Value") -> Color3Value) & ((className: "DoubleConstrainedValue") -> DoubleConstrainedValue) & ((className: "IntConstrainedValue") -> IntConstrainedValue) & ((className: "IntValue") -> IntValue) & ((className: "NumberValue") -> NumberValue) & ((className: "ObjectValue") -> ObjectValue) & ((className: "RayValue") -> RayValue) & ((className: "StringValue") -> StringValue) & ((className: "Vector3Value") -> Vector3Value) & ((className: "Vector3Curve") -> Vector3Curve) & ((className: "VirtualInputManager") -> VirtualInputManager) & ((className: "VoiceChannel") -> VoiceChannel) & ((className: "WeldConstraint") -> WeldConstraint),
+}
+
+declare Ray: {
+	new: ((Origin: Vector3, Direction: Vector3) -> Ray),
+}
+
+declare NumberRange: {
+	new: ((value: number) -> NumberRange) & ((min: number, max: number) -> NumberRange),
+}
+
+declare PathWaypoint: {
+	new: ((position: Vector3, action: EnumPathWaypointAction) -> PathWaypoint),
+}
+
+declare BrickColor: {
+	Red: (() -> BrickColor),
+	Yellow: (() -> BrickColor),
+	Blue: (() -> BrickColor),
+	Gray: (() -> BrickColor),
+	DarkGray: (() -> BrickColor),
+	White: (() -> BrickColor),
+	random: (() -> BrickColor),
+	Green: (() -> BrickColor),
+	Black: (() -> BrickColor),
+	palette: ((paletteValue: number) -> BrickColor),
+	new: ((val: number) -> BrickColor) & ((r: number, g: number, b: number) -> BrickColor) & ((val: string) -> BrickColor) & ((color: Color3) -> BrickColor),
+}
+
+declare Vector2: {
+	zero: Vector2,
+	one: Vector2,
+	xAxis: Vector2,
+	yAxis: Vector2,
+	new: ((x: number?, y: number?) -> Vector2),
+}
+
+declare Vector2int16: {
+	new: ((x: number, y: number) -> Vector2int16),
+}
+
+declare Color3: {
+	fromRGB: ((red: number?, green: number?, blue: number?) -> Color3),
+	fromHSV: ((hue: number, saturation: number, value: number) -> Color3),
+	toHSV: ((color: Color3) -> (number, number, number)),
+	new: ((red: number?, green: number?, blue: number?) -> Color3),
+	fromHex: ((hex: string) -> Color3),
+}
+
+declare UDim: {
+	new: ((Scale: number?, Offset: number?) -> UDim),
+}
+
+declare PhysicalProperties: {
+	new: ((material: EnumMaterial) -> PhysicalProperties) & ((density: number, friction: number, elasticy: number, frictionWeight: number?, elasticyWeight: number?) -> PhysicalProperties),
+}
+
+declare Axes: {
+	new: ((axes: any) -> Axes),
+}
+
+declare Region3: {
+	new: ((min: Vector3, max: Vector3) -> Region3),
+}
+
+declare Region3int16: {
+	new: ((min: Vector3int16, max: Vector3int16) -> Region3int16),
+}
+
+declare UDim2: {
+	fromScale: ((xScale: number, yScale: number) -> UDim2),
+	fromOffset: ((xOffset: number, yOffset: number) -> UDim2),
+	new: ((x: UDim, y: UDim) -> UDim2) & ((xScale: number?, xOffset: number?, yScale: number?, yOffset: number?) -> UDim2),
+}
+
+declare CFrame: {
+	identity: CFrame,
+	Rotation: CFrame,
+	fromEulerAnglesYXZ: ((rx: number, ry: number, rz: number) -> CFrame),
+	Angles: ((rx: number, ry: number, rz: number) -> CFrame),
+	fromMatrix: ((pos: Vector3, vX: Vector3, vY: Vector3, vZ: Vector3) -> CFrame),
+	fromAxisAngle: ((v: Vector3, r: number) -> CFrame),
+	fromOrientation: ((rx: number, ry: number, rz: number) -> CFrame),
+	fromEulerAnglesXYZ: ((rx: number, ry: number, rz: number) -> CFrame),
+	lookAt: ((at: Vector3, target: Vector3, up: Vector3?) -> CFrame),
+	new: (() -> CFrame) & ((pos: Vector3) -> CFrame) & ((pos: Vector3, lookAt: Vector3) -> CFrame) & ((x: number, y: number, z: number) -> CFrame) & ((x: number, y: number, z: number, qX: number, qY: number, qZ: number, qW: number) -> CFrame) & ((x: number, y: number, z: number, R00: number, R01: number, R02: number, R10: number, R11: number, R12: number, R20: number, R21: number, R22: number) -> CFrame),
+}
+
+declare Faces: {
+	new: ((normalIds: any) -> Faces),
+}
+
+declare Rect: {
+	new: ((min: Vector2, max: Vector2) -> Rect) & ((minX: number, minY: number, maxX: number, maxY: number) -> Rect),
+}
+
+declare Vector3: {
+	zero: Vector3,
+	one: Vector3,
+	xAxis: Vector3,
+	yAxis: Vector3,
+	zAxis: Vector3,
+	fromNormalId: ((normal: EnumNormalId) -> Vector3),
+	fromAxis: ((axis: EnumAxis) -> Vector3),
+	FromNormalId: ((normal: EnumNormalId) -> Vector3),
+	FromAxis: ((axis: EnumAxis) -> Vector3),
+	new: ((x: number?, y: number?, z: number?) -> Vector3),
+}
+
+declare Vector3int16: {
+	new: ((x: number?, y: number?, z: number?) -> Vector3int16),
+}
+
+declare Random: {
+	new: ((seed: number?) -> Random),
+}
+
+declare TweenInfo: {
+	new: ((time: number?, easingStyle: EnumEasingStyle?, easingDirection: EnumEasingDirection?, repeatCount: number?, reverses: boolean?, delayTime: number?) -> TweenInfo),
+}
+
+declare DateTime: {
+	now: (() -> DateTime),
+	fromUnixTimestamp: ((unixTimestamp: number) -> DateTime),
+	fromUnixTimestampMillis: ((unixTimestampMillis: number) -> DateTime),
+	fromUniversalTime: ((year: number?, month: number?, day: number?, hour: number?, minute: number?, second: number?, millisecond: number?) -> DateTime),
+	fromLocalTime: ((year: number?, month: number?, day: number?, hour: number?, minute: number?, second: number?, millisecond: number?) -> DateTime),
+	fromIsoDate: ((isoDate: string) -> DateTime),
+}
+
+declare NumberSequence: {
+	new: ((n: number) -> NumberSequence) & ((n0: number, n1: number) -> NumberSequence) & ((keypoints: { any }) -> NumberSequence),
+}
+
+declare ColorSequence: {
+	new: ((c: Color3) -> ColorSequence) & ((c0: Color3, c1: Color3) -> ColorSequence) & ((keypoints: { any }) -> ColorSequence),
+}
+
+declare NumberSequenceKeypoint: {
+	new: ((time: number, value: number, envelop: number?) -> NumberSequenceKeypoint),
+}
+
+declare ColorSequenceKeypoint: {
+	new: ((time: number, color: Color3) -> ColorSequenceKeypoint),
+}
+
+declare RaycastParams: {
+	new: (() -> RaycastParams),
+}
+
+declare OverlapParams: {
+	new: (() -> OverlapParams),
+}
+
+declare DockWidgetPluginGuiInfo: {
+	new: ((initDockState: EnumInitialDockState?, initEnabled: boolean?, overrideEnabledRestore: boolean?, floatXSize: number?, floatYSize: number?, minWidth: number?, minHeight: number?) -> DockWidgetPluginGuiInfo),
+}
+
+declare CatalogSearchParams: {
+	new: (() -> CatalogSearchParams),
+}
 
 
 declare game: DataModel
