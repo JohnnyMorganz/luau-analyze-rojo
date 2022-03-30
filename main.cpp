@@ -130,7 +130,7 @@ bool isManagedModule(const Luau::ModuleName& name)
 struct CliFileResolver : Luau::FileResolver
 {
     RojoResolver* rojoResolver;
-    SourceNode sourceMapRoot;
+    ResolvedSourceMap sourceMap;
     std::optional<std::string> stdinFilepath;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
@@ -155,7 +155,7 @@ struct CliFileResolver : Luau::FileResolver
         {
             if (rojoResolver)
             {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMapRoot);
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMap.root);
                 if (realFilePath)
                 {
 
@@ -201,14 +201,22 @@ struct CliFileResolver : Luau::FileResolver
                 }
                 else if (rojoResolver)
                 {
-                    // TODO: context->name is a file path which we need to translate to a Rojo path
+                    // context->name is a file path which we need to translate to a Rojo path
+                    std::string filePath = context->name;
                     if (context->name == "-")
                     {
-                        // TODO: get stdin path?
+                        if (stdinFilepath)
+                        {
+                            filePath = stdinFilepath.value();
+                        }
+                        else
+                        {
+                            return std::nullopt;
+                        }
                     }
-                    else
-                    {
-                    }
+
+                    if (sourceMap.realPathToVirtualMap.find(filePath) != sourceMap.realPathToVirtualMap.end())
+                        return Luau::ModuleInfo{sourceMap.realPathToVirtualMap.at(filePath)};
                 }
             }
         }
@@ -251,7 +259,7 @@ struct CliFileResolver : Luau::FileResolver
         {
             if (rojoResolver)
             {
-                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMapRoot);
+                std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMap.root);
                 if (realFilePath)
                     return realFilePath.value() + "[" + name + "]";
             }
@@ -369,12 +377,12 @@ int main(int argc, char** argv)
     fileResolver.rojoResolver = &requireResolver;
     if (projectPath)
     {
-        auto sourceNode = requireResolver.parseSourceMap(*projectPath);
-        if (sourceNode)
+        auto sourceMap = requireResolver.parseSourceMap(*projectPath);
+        if (sourceMap)
         {
-            fileResolver.sourceMapRoot = sourceNode.value();
+            fileResolver.sourceMap = sourceMap.value();
             if (dumpMap)
-                dumpSourceMap(fileResolver.sourceMapRoot, 0);
+                dumpSourceMap(fileResolver.sourceMap.root, 0);
         }
     }
 

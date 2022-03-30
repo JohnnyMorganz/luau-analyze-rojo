@@ -15,11 +15,15 @@ struct SourceNode
     std::unordered_map<std::string, std::shared_ptr<SourceNode>> children;
 };
 
+struct ResolvedSourceMap
+{
+    SourceNode root;                                                   // The resolved root
+    std::unordered_map<std::string, std::string> realPathToVirtualMap; // Map between real file paths and virtual Rojo paths
+};
+
 struct RojoResolver
 {
-    std::unordered_map<std::string, SourceNode> roots;
-
-    std::optional<SourceNode> parseSourceMap(const std::string& sourceMapPath);
+    std::optional<ResolvedSourceMap> parseSourceMap(const std::string& sourceMapPath);
     std::optional<std::string> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
     Luau::SourceCode::Type sourceCodeTypeFromPath(const std::string& path);
 };

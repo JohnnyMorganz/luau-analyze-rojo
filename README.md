@@ -11,8 +11,9 @@ It also adds in support to registering global types from an API dump.
 luau-analyze --project=default.project.json --defs=globalTypes.d.lua fileToAnalyse.luau
 ```
 
-- `--project=PATH` is a path to the Rojo project file
-- `--defs=PATH` is a path to a definition file containing all global types to load into the type checker.
+- `--project=PATH`: path to the Rojo project file which will be used to resolve the source map
+- `--defs=PATH`: path to a definition file containing all global types to load into the type checker.
+- `--stdin-filepath=PATH`: the path representation of the code parsed in to stdin. Used to resolve requires
 
 Further options:
 

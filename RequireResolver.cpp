@@ -150,7 +150,20 @@ void writeParents(SourceNode& parent)
     }
 }
 
-std::optional<SourceNode> RojoResolver::parseSourceMap(const std::string& sourceMapPath)
+void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std::string, std::string>& map)
+{
+    if (node.path)
+    {
+        map[node.path.value()] = base;
+    }
+
+    for (auto& ch : node.children)
+    {
+        writePathsToMap(*ch.second, base + "/" + ch.first, map);
+    }
+}
+
+std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string& sourceMapPath)
 {
     std::optional<std::string> projectSource = readFile(sourceMapPath);
     if (projectSource)
@@ -158,6 +171,7 @@ std::optional<SourceNode> RojoResolver::parseSourceMap(const std::string& source
         auto j = json::parse(*projectSource);
         auto project = j.get<ns::Project>();
 
+        // Create root node
         SourceNode rootNode;
         rootNode.parent = nullptr;
         for (auto& child : project.tree.children)
@@ -165,7 +179,17 @@ std::optional<SourceNode> RojoResolver::parseSourceMap(const std::string& source
             populateChildren(rootNode, child.first, *child.second.get(), "");
         }
         writeParents(rootNode); // TODO: can we write this as we go along?
-        return rootNode;        // TODO: handle if root is not a datamodel
+
+        // Create map between real file paths to virtual
+        std::unordered_map<std::string, std::string> pathToVirtualMap;
+        std::string base = "game";
+        if (project.tree.class_name && project.tree.class_name.value() != "DataModel")
+        {
+            base = "ProjectRoot";
+        }
+        writePathsToMap(rootNode, base, pathToVirtualMap);
+
+        return ResolvedSourceMap{rootNode, pathToVirtualMap};
     }
 
     return std::nullopt;
