@@ -211,7 +211,18 @@ struct CliFileResolver : Luau::FileResolver
         else if (Luau::AstExprIndexName* i = node->as<Luau::AstExprIndexName>())
         {
             if (context)
+            {
+                if (strcmp(i->index.value, "Parent") == 0)
+                {
+                    // Pop the name instead
+                    // HACK: we use getParentPath which is meant to be for real files... but it works so
+                    auto parentPath = getParentPath(context->name);
+                    if (parentPath.has_value())
+                        return Luau::ModuleInfo{parentPath.value(), context->optional};
+                }
+
                 return Luau::ModuleInfo{context->name + '/' + i->index.value, context->optional};
+            }
         }
         else if (Luau::AstExprIndexExpr* i = node->as<Luau::AstExprIndexExpr>())
         {

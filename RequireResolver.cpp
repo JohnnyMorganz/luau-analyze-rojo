@@ -87,7 +87,6 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
                     else
                     {
                         SourceNode childNode;
-                        childNode.parent = nullptr;
                         handleNodePath(childNode, name, ""); // Don't need to basePath here since name is the full path
                         node.children.insert(std::pair(fileName, std::make_shared<SourceNode>(childNode)));
                     }
@@ -103,7 +102,6 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
 void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath)
 {
     SourceNode childNode;
-    childNode.parent = nullptr;
     if (node.path)
     {
 
@@ -140,16 +138,6 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
     }
 }
 
-void writeParents(SourceNode& parent)
-{
-    for (auto& ch : parent.children)
-    {
-        auto child_ptr = ch.second;
-        (*child_ptr).parent = &parent;
-        writeParents(*child_ptr);
-    }
-}
-
 void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std::string, std::string>& map)
 {
     if (node.path)
@@ -173,7 +161,6 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
 
         // Create root node
         SourceNode rootNode;
-        rootNode.parent = nullptr;
         if (project.tree.path)
         {
 
@@ -183,7 +170,6 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
         {
             populateChildren(rootNode, child.first, *child.second.get(), "");
         }
-        writeParents(rootNode); // TODO: can we write this as we go along?
 
         // Create map between real file paths to virtual
         std::unordered_map<std::string, std::string> pathToVirtualMap;
@@ -216,27 +202,13 @@ std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::str
     {
         auto part = *it;
 
-        if (part == "Parent")
+        if (currentNode.children.find(std::string(part)) != currentNode.children.end())
         {
-            if (currentNode.parent == nullptr)
-            {
-                return std::nullopt;
-            }
-            else
-            {
-                currentNode = *currentNode.parent;
-            }
+            currentNode = *currentNode.children.at(std::string(part));
         }
         else
         {
-            if (currentNode.children.find(std::string(part)) != currentNode.children.end())
-            {
-                currentNode = *currentNode.children.at(std::string(part));
-            }
-            else
-            {
-                return std::nullopt;
-            }
+            return std::nullopt;
         }
 
 
