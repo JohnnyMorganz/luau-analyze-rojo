@@ -17,8 +17,37 @@ TYPE_INDEX = {
     'Objects': "{ Instance }",
     'Dictionary': "{ [any]: any }", 'Map': "{ [any]: any }",
     'Array': "{ any }", 'table': "{ any }",
+    'CoordinateFrame': 'CFrame',
     'RBXScriptSignal': "RBXScriptSignal",
 }
+
+START_BASE = """
+type Content = string
+type ProtectedString = string
+type BinaryString = string
+type QDir = string
+type QFont = string
+type Function = (any) -> any
+type FloatCurveKey = any
+type RotationCurveKey = any
+type CoordinateFrame = CFrame
+type Font = any
+
+declare class Enum
+	function GetEnumItems(self): { any }
+end
+
+declare class EnumItem
+	Name: string
+	Value: number
+	EnumType: Enum
+end
+"""
+
+END_BASE = """
+declare game: DataModel
+declare workspace: Workspace
+"""
 
 def escapeName(name: str):
     if name == "function":
@@ -32,7 +61,7 @@ def resolveType(type):
         return resolveType({ 'Name': name[:-1], 'Category': category }) + "?"
     
     if category == "Enum":
-        return "Enum." + name
+        return "Enum" + name
     elif category == "DataType":
         return name
     else:
@@ -67,38 +96,100 @@ def declareClass(klass: Dict[str, Any]):
 
     return out
 
-def printDump(dump):
+def printEnums(dump):
+    enums = defaultdict(list)
+    for enum in dump['Enums']:
+        for item in enum['Items']:
+            enums[enum['Name']].append(item['Name'])
+        
+    # Declare each enum individually
+    out = ""
+    for enum, items in enums.items():
+        out += "type Enum" + enum + " = {\n"
+        for item in items:
+            out += f"\t{item}: EnumItem,\n"
+        out += "}\n"
+    print(out)
+    print()
+
+    # Declare enums as a whole
+    out = "declare Enum: {\n"
+    for enum in enums:
+        out += f"\t{enum}: Enum{enum},\n"
+    out += "}"
+    print(out)
+    print()
+
+def printClasses(dump):
+    # Forward declare all the types
+    for klass in dump['Classes']:
+        print(f"type {klass['Name']} = any")
+    
+    print("type Objects = { Instance }")
+
     for klass in dump['Classes']:
         print(declareClass(klass))
         print()
-
-
+    
 def printDataTypes(types):
-    dataType = defaultdict(list)
-
-    for klass in types['Constructors']:
-        dataType[klass['Name']].extend(klass['Members'])
+    # Forward declare all the types
     for klass in types['DataTypes']:
-        dataType[klass['Name']].extend(klass['Members'])
+        print(f"type {klass['Name']} = any")
 
-    for name, members in dataType.items():
+    for klass in types['DataTypes']:
+        name = klass['Name']
+        members = klass['Members']
+
+        out = "declare class " + name + "\n"
+        for member in members:
+            if member['MemberType'] == "Property":
+                out += f"\t{escapeName(member['Name'])}: {resolveType(member['ValueType'])}\n"
+            elif member['MemberType'] == "Function":
+                out += f"\tfunction {escapeName(member['Name'])}(self{', ' if len(member['Parameters']) > 0 else ''}{resolveParameterList(member['Parameters'])}): {resolveReturnType(member)}\n"
+            elif member['MemberType'] == "Event":
+                out += f"\t{escapeName(member['Name'])}: RBXScriptSignal\n" # TODO: type this
+            elif member['MemberType'] == "Callback":
+                out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"         
+
+        out += "end"
+        print(out)
+        print()
+
+def printDataTypeConstructors(types):
+    for klass in types['Constructors']:
+        name = klass['Name']
+        members = klass['Members']
+
+        # Handle overloadable functions
+        functions = defaultdict(list)
+        for member in members:
+            if member['MemberType'] == 'Function':
+                functions[member['Name']].append(member)
+
         out = "declare " + name + ": {\n"
         for member in members:
             if member['MemberType'] == "Property":
                 out += f"\t{escapeName(member['Name'])}: {resolveType(member['ValueType'])},\n"
             elif member['MemberType'] == "Function":
-                out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)},\n"
+                pass
             elif member['MemberType'] == "Event":
-                out += f"\t{escapeName(member['Name'])}: RBXScriptSignal,\n" # TODO: type this                
+                out += f"\t{escapeName(member['Name'])}: RBXScriptSignal,\n" # TODO: type this
+
+        for function, overloads in functions.items():
+            overloads = map(lambda member: f"(({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)})", overloads)
+            out += f"\t{escapeName(function)}: {' & '.join(overloads)},\n"              
 
         out += "}"
         print(out)
         print()
 
 # Print global types
-response = requests.get(DATA_TYPES_URL).text
-printDataTypes(json.loads(response))
+dataTypes = json.loads(requests.get(DATA_TYPES_URL).text)
+dump = json.loads(requests.get(API_DUMP_URL).text)
 
-# Print dump
-response = requests.get(API_DUMP_URL).text
-printDump(json.loads(response))
+print(START_BASE)
+printEnums(dump)
+printDataTypes(dataTypes)
+printDataTypeConstructors(dataTypes)
+printClasses(dump)
+print(END_BASE)
