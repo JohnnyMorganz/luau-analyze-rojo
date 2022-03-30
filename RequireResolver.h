@@ -10,6 +10,7 @@
 
 struct SourceNode
 {
+    SourceNode* parent;
     std::optional<std::string> path;
     std::unordered_map<std::string, std::shared_ptr<SourceNode>> children;
 };
