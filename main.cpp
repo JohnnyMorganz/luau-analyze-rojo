@@ -118,6 +118,11 @@ static int assertionHandler(const char* expr, const char* file, int line, const 
     return 1;
 }
 
+bool isManagedModule(const Luau::ModuleName& name)
+{
+    return Luau::startsWith(name, "game/") || Luau::startsWith(name, "ProjectRoot/");
+}
+
 struct CliFileResolver : Luau::FileResolver
 {
     RojoResolver* rojoResolver;
@@ -134,7 +139,7 @@ struct CliFileResolver : Luau::FileResolver
             source = readStdin();
             sourceType = Luau::SourceCode::Script;
         }
-        else if (name.rfind("game/", 0) == 0)
+        else if (isManagedModule(name))
         {
             if (rojoResolver)
             {
@@ -165,6 +170,20 @@ struct CliFileResolver : Luau::FileResolver
         {
             if (g->name == "game")
                 return Luau::ModuleInfo{"game"};
+
+            if (g->name == "script")
+            {
+                // Resolve the current path at context.name
+                if (isManagedModule(context->name))
+                {
+                    // We can just use this as the starting point
+                    return Luau::ModuleInfo{context->name};
+                }
+                else
+                {
+                    // TODO: context->name is a file path which we need to translate to a Rojo path
+                }
+            }
         }
         else if (Luau::AstExprIndexName* i = node->as<Luau::AstExprIndexName>())
         {
@@ -201,7 +220,7 @@ struct CliFileResolver : Luau::FileResolver
         if (name == "-")
             return "stdin";
 
-        if (name.rfind("game/", 0) == 0)
+        if (isManagedModule(name))
         {
             if (rojoResolver)
             {
