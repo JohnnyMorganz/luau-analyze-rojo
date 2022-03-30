@@ -174,6 +174,11 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
         // Create root node
         SourceNode rootNode;
         rootNode.parent = nullptr;
+        if (project.tree.path)
+        {
+
+            handleNodePath(rootNode, project.tree.path.value(), "");
+        }
         for (auto& child : project.tree.children)
         {
             populateChildren(rootNode, child.first, *child.second.get(), "");
@@ -183,7 +188,7 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
         // Create map between real file paths to virtual
         std::unordered_map<std::string, std::string> pathToVirtualMap;
         std::string base = "game";
-        if (project.tree.class_name && project.tree.class_name.value() != "DataModel")
+        if (!project.tree.class_name.has_value() || project.tree.class_name.value() != "DataModel")
         {
             base = "ProjectRoot";
         }
