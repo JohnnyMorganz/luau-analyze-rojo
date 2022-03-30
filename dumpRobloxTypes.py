@@ -1,6 +1,5 @@
 # Script to pull in API Dump and export it into a definition file
 # Based off https://gist.github.com/HawDevelopment/97f2411149e24d8e7a712016114d55ff
-from tkinter import E
 from typing import Any, Dict
 from collections import defaultdict
 import requests
@@ -19,6 +18,53 @@ TYPE_INDEX = {
     'Array': "{ any }", 'table': "{ any }",
     'CoordinateFrame': 'CFrame',
     'RBXScriptSignal': "RBXScriptSignal",
+}
+
+METAMETHODS = {
+    "Vector3": [
+        'function __add(self, other: Vector3): Vector3',
+        'function __sub(self, other: Vector3): Vector3',
+        'function __mul(self, other: Vector3 | number): Vector3',
+        'function __div(self, other: Vector3 | number): Vector3',
+        'function __unm(self): Vector3',
+    ],
+    "Vector2": [
+        'function __add(self, other: Vector2): Vector2',
+        'function __sub(self, other: Vector2): Vector2',
+        'function __mul(self, other: Vector2 | number): Vector2',
+        'function __div(self, other: Vector2 | number): Vector2',
+        'function __unm(self): Vector2',
+    ],
+    "Vector3int16": [
+        'function __add(self, other: Vector3int16): Vector3int16',
+        'function __sub(self, other: Vector3int16): Vector3int16',
+        'function __mul(self, other: Vector3int16 | number): Vector3int16',
+        'function __div(self, other: Vector3int16 | number): Vector3int16',
+        'function __unm(self): Vector3int16',
+    ],
+    "Vector2int16": [
+        'function __add(self, other: Vector2int16): Vector2int16',
+        'function __sub(self, other: Vector2int16): Vector2int16',
+        'function __mul(self, other: Vector2int16 | number): Vector2int16',
+        'function __div(self, other: Vector2int16 | number): Vector2int16',
+        'function __unm(self): Vector2int16',
+    ],
+    "UDim2": [
+        'function __add(self, other: UDim2): UDim2',
+        'function __sub(self, other: UDim2): UDim2',
+        'function __unm(self): UDim2',
+    ],
+    "UDim": [
+        'function __add(self, other: UDim): UDim',
+        'function __sub(self, other: UDim): UDim',
+        'function __unm(self): UDim',
+    ],
+    "CFrame": [
+        'function __add(self, other: Vector3): CFrame',
+        'function __sub(self, other: Vector3): CFrame',
+        'function __mul(self, other: CFrame): CFrame',
+        'function __mul(self, other: Vector3): Vector3',
+    ],
 }
 
 START_BASE = """
@@ -185,6 +231,10 @@ def printDataTypes(types):
                 out += f"\t{escapeName(member['Name'])}: RBXScriptSignal\n" # TODO: type this
             elif member['MemberType'] == "Callback":
                 out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"         
+
+        if name in METAMETHODS:
+            for method in METAMETHODS[name]:
+                out += f"\t{method}\n"
 
         out += "end"
         print(out)

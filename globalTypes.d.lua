@@ -2889,6 +2889,11 @@ declare class Vector2
 	unit: Vector2
 	magnitude: number
 	function lerp(self, v: Vector2, alpha: number): Vector2
+	function __add(self, other: Vector2): Vector2
+	function __sub(self, other: Vector2): Vector2
+	function __mul(self, other: Vector2 | number): Vector2
+	function __div(self, other: Vector2 | number): Vector2
+	function __unm(self): Vector2
 end
 
 declare class Color3
@@ -2906,6 +2911,9 @@ end
 declare class UDim
 	Scale: number
 	Offset: number
+	function __add(self, other: UDim): UDim
+	function __sub(self, other: UDim): UDim
+	function __unm(self): UDim
 end
 
 declare class PhysicalProperties
@@ -2940,6 +2948,9 @@ declare class UDim2
 	Height: UDim
 	X: UDim
 	Width: UDim
+	function __add(self, other: UDim2): UDim2
+	function __sub(self, other: UDim2): UDim2
+	function __unm(self): UDim2
 end
 
 declare class CFrame
@@ -2985,6 +2996,10 @@ declare class CFrame
 	function toObjectSpace(self, cf: CFrame): CFrame
 	function toEulerAnglesXYZ(self): (number, number, number)
 	function components(self): (number, number, number, number, number, number, number, number, number, number, number, number)
+	function __add(self, other: Vector3): CFrame
+	function __sub(self, other: Vector3): CFrame
+	function __mul(self, other: CFrame): CFrame
+	function __mul(self, other: Vector3): Vector3
 end
 
 declare class Faces
@@ -3034,6 +3049,11 @@ declare class Vector3
 	x: number
 	unit: Vector3
 	magnitude: number
+	function __add(self, other: Vector3): Vector3
+	function __sub(self, other: Vector3): Vector3
+	function __mul(self, other: Vector3 | number): Vector3
+	function __div(self, other: Vector3 | number): Vector3
+	function __unm(self): Vector3
 end
 
 declare class Random
@@ -3130,12 +3150,22 @@ end
 declare class Vector2int16
 	X: number
 	Y: number
+	function __add(self, other: Vector2int16): Vector2int16
+	function __sub(self, other: Vector2int16): Vector2int16
+	function __mul(self, other: Vector2int16 | number): Vector2int16
+	function __div(self, other: Vector2int16 | number): Vector2int16
+	function __unm(self): Vector2int16
 end
 
 declare class Vector3int16
 	X: number
 	Y: number
 	Z: number
+	function __add(self, other: Vector3int16): Vector3int16
+	function __sub(self, other: Vector3int16): Vector3int16
+	function __mul(self, other: Vector3int16 | number): Vector3int16
+	function __div(self, other: Vector3int16 | number): Vector3int16
+	function __unm(self): Vector3int16
 end
 
 declare class Region3int16
