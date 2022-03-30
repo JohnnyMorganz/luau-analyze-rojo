@@ -202,9 +202,9 @@ struct CliFileResolver : Luau::FileResolver
                             return std::nullopt;
                         }
                     }
-
-                    if (sourceMap.realPathToVirtualMap.find(filePath) != sourceMap.realPathToVirtualMap.end())
-                        return Luau::ModuleInfo{sourceMap.realPathToVirtualMap.at(filePath)};
+                    auto virtualPath = RojoResolver::resolveRealPathToVirtual(sourceMap, filePath);
+                    if (virtualPath)
+                        return Luau::ModuleInfo{virtualPath.value()};
                 }
             }
         }

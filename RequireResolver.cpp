@@ -242,6 +242,15 @@ std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::str
     return currentNode.path;
 }
 
+std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::string& filePath)
+{
+    if (sourceMap.realPathToVirtualMap.find(filePath) != sourceMap.realPathToVirtualMap.end())
+    {
+        return sourceMap.realPathToVirtualMap.at(filePath);
+    }
+
+    return std::nullopt;
+}
 
 static bool endsWith(std::string str, std::string suffix)
 {
