@@ -34,9 +34,11 @@ python dumpRobloxTypes.py > globalTypes.d.lua
 ## Supported Features:
 
 - Full place project file resolution, including nested model project files
+- Root model project file resolution
 - Fully qualified requires (e.g. `game.ReplicatedStorage.Module`) when using a place project file
 - Relative requires (e.g. `script.Child` or `script.Parent.Module`) in either project file mode
-- Supported indexing types: `game:GetService("Service")` / `instance.Name` / `instance:FindFirstChild("Name")` / `instance:WaitForChild("Name")`
+- Supported indexing types: `game:GetService("Service")` / `instance.Name` / `instance["Name"]` / `instance:FindFirstChild("Name")` / `instance:WaitForChild("Name")`
+- Full type definitions through API dumps
 
 **Note: in non-strict mode, some unknown requires are silently ignored. If it seems a require hasn't resolved correctly, use strict mode (`--!strict`) to warn about unknown requires (i.e., ones which were not able to resolve to a virtual path)**
 
