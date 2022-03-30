@@ -20,6 +20,37 @@ declare class EnumItem
 	EnumType: Enum
 end
 
+declare debug: {
+    info: (<R...>(thread, number, string) -> R...) & (<R...>(number, string) -> R...) & (<A..., R1..., R2...>((A...) -> R1..., string) -> R2...),
+    traceback: ((string?, number?) -> string) & ((thread, string?, number?) -> string),
+    profilebegin: (label: string) -> (),
+    profileend: () -> (),
+    setmemorycategory: (tag: string) -> (),
+    resetmemorycategory: () -> (),
+}
+
+declare task: {
+    defer: <A..., R...>(f: thread | ((A...) -> R...), A...) -> (),
+    spawn: <A..., R...>(f: thread | ((A...) -> R...), A...) -> (),
+    delay: <A..., R...>(sec: number?, f: thread | ((A...) -> R...), A...) -> (),
+    wait: (sec: number?) -> number,
+    synchronize: () -> (),
+    desynchronize: () -> (),
+}
+
+declare shared: any
+
+declare function collectgarbage(mode: "count"): number
+declare function warn<T...>(...: T...)
+declare function tick(): number
+declare function time(): number
+declare function elapsedTime(): number
+declare function wait(seconds: number?): (number, number)
+declare function delay<T...>(delayTime: number?, callback: (T...) -> ())
+declare function spawn<T...>(callback: (T...) -> ())
+declare function version(): string
+declare function printidentity(prefix: string?)
+
 type EnumABTestLoadingStatus = {
 	None: EnumItem,
 	Pending: EnumItem,
@@ -9624,4 +9655,8 @@ end
 
 declare game: DataModel
 declare workspace: Workspace
+declare plugin: Plugin
+declare script: LuaSourceContainer
+declare function settings(): GlobalSettings
+declare function UserSettings(): UserSettings
 
