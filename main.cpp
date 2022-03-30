@@ -110,6 +110,9 @@ static void displayHelp(const char* argv0)
     printf("  --formatter=plain: report analysis errors in Luacheck-compatible format\n");
     printf("  --formatter=gnu: report analysis errors in GNU-compatible format\n");
     printf("  --timetrace: record compiler time tracing information into trace.json\n");
+    printf("  --project=PATH: path to Rojo .project.json for resolving\n");
+    printf("  --defs=PATH: path to definition file for global types\n");
+    printf("  --dump-source-map: dump the currently resolved source map\n");
 }
 
 static int assertionHandler(const char* expr, const char* file, int line, const char* function)
@@ -226,14 +229,10 @@ struct CliFileResolver : Luau::FileResolver
             {
                 std::optional<std::string> realFilePath = (*rojoResolver).resolveRequireToRealPath(name, sourceMapRoot);
                 if (realFilePath)
-                    return name + " (" + *realFilePath + ")";
-                else
-                    return name + " (failed to resolve Rojo file path)";
+                    return realFilePath.value() + "[" + name + "]";
             }
-            else
-            {
-                return name + " (no Rojo resolver available)";
-            }
+
+            return "<UNKNOWN>[" + name + "]";
         }
         else
         {
