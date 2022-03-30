@@ -1,0 +1,126 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        required: true
+        type: string
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+
+      - name: Build Tool
+        run: |
+          mkdir build && cd build
+          cmake ..
+          cmake --build . --target luau-analyze-rojo
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: luau-analyze-win64
+          path: build/luau-analyze-rojo.exe
+
+  macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+
+      - name: Build Tool
+        run: |
+          mkdir build && cd build
+          cmake ..
+          cmake --build . --target luau-analyze-rojo
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: luau-analyze-macos
+          path: build/luau-analyze-rojo
+
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+
+      - name: Build Tool
+        run: |
+          mkdir build && cd build
+          cmake ..
+          cmake --build . --target luau-analyze-rojo
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: luau-analyze-linux
+          path: build/luau-analyze-rojo
+
+  release:
+    runs-on: ubuntu-latest
+    needs: ["windows", "macos", "linux"]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+      - run: |
+          zip -rj luau-analyze-win64.zip ./artifacts/luau-analyze-win64/*
+          zip -rj luau-analyze-macos.zip ./artifacts/luau-analyze-macos/*
+          zip -rj luau-analyze-linux.zip ./artifacts/luau-analyze-linux/*
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: ${{ inputs.version }}
+          draft: true
+
+      - name: Upload windows build
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./luau-analyze-win64.zip
+          asset_name: luau-analyze-win64.zip
+          asset_content_type: application/zip
+
+      - name: Upload macos build
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./luau-analyze-macos.zip
+          asset_name: luau-analyze-macos.zip
+          asset_content_type: application/zip
+
+      - name: Upload linux build
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./luau-analyze-linux.zip
+          asset_name: luau-analyze-linux.zip
+          asset_content_type: application/zip
