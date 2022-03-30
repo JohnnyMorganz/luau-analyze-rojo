@@ -39,6 +39,7 @@ python dumpRobloxTypes.py > globalTypes.d.lua
 - Relative requires (e.g. `script.Child` or `script.Parent.Module`) in either project file mode
 - Supported indexing types: `game:GetService("Service")` / `instance.Name` / `instance["Name"]` / `instance:FindFirstChild("Name")` / `instance:WaitForChild("Name")`
 - Full type definitions through API dumps
+- Proper resolution of `Instance.new("Class")` and `game:GetService("Service")` to their associated types
 
 **Note: in non-strict mode, some unknown requires are silently ignored. If it seems a require hasn't resolved correctly, use strict mode (`--!strict`) to warn about unknown requires (i.e., ones which were not able to resolve to a virtual path)**
 
