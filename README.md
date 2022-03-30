@@ -20,7 +20,7 @@ luau-analyze = { source = "JohnnyMorganz/luau-analyze-rojo", version = "*" }
 ```sh
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --target luau-analyze-cli
+cmake --build . --target luau-analyze-rojo --config Release
 ```
 
 ## Usage
