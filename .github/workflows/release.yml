@@ -8,9 +8,6 @@ on:
         required: true
         type: string
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   windows:
     runs-on: windows-latest
@@ -24,14 +21,14 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          cmake --build . --target luau-analyze-rojo --config $BUILD_TYPE
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          cmake --build . --config Release --target luau-analyze-rojo
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
           name: luau-analyze-win64
-          path: build/$BUILD_TYPE/luau-analyze-rojo.exe
+          path: build/Release/luau-analyze-rojo.exe
 
   macos:
     runs-on: macos-latest
@@ -45,8 +42,8 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-          cmake --build . --target luau-analyze-rojo --config $BUILD_TYPE
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --target luau-analyze-rojo --config=Release
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
@@ -66,8 +63,8 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-          cmake --build . --target luau-analyze-rojo --config $BUILD_TYPE
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --target luau-analyze-rojo --config=Release
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
