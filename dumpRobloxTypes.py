@@ -1,6 +1,7 @@
 # Script to pull in API Dump and export it into a definition file
 # Based off https://gist.github.com/HawDevelopment/97f2411149e24d8e7a712016114d55ff
-from typing import Any, Dict
+from typing import List, Literal, Optional, Union
+from typing_extensions import Never, TypedDict
 from collections import defaultdict
 import requests
 import json
@@ -30,7 +31,7 @@ TYPE_INDEX = {
     "RBXScriptSignal": "RBXScriptSignal",
 }
 
-IGNORED_INSTANCES = []
+IGNORED_INSTANCES: List[str] = []
 
 # Metamethods to add in to classes
 METAMETHODS = {
@@ -148,8 +149,167 @@ declare function UserSettings(): UserSettings
 """
 
 CLASSES = {}  # All loaded classes from the API Dump, including corrections
-SERVICES = []  # All available services name
-CREATABLE = []  # All creatable instances
+SERVICES: List[str] = []  # All available services name
+CREATABLE: List[str] = []  # All creatable instances
+
+# Type Hints
+
+CorrectionsValueType = TypedDict(
+    "CorrectionsValueType",
+    {
+        "Name": str,
+        "Category": Never,
+        "Default": Optional[str],
+    },
+)
+
+CorrectionsParameter = TypedDict(
+    "CorrectionsParameter",
+    {
+        "Name": str,
+        "Type": CorrectionsValueType,
+    },
+)
+
+CorrectionsMember = TypedDict(
+    "CorrectionsMember",
+    {
+        "Name": str,
+        "ValueType": Optional[CorrectionsValueType],
+        "Parameters": Optional[List[CorrectionsParameter]],
+        "ReturnType": Optional[
+            CorrectionsValueType
+        ],  # TODO: it can also be { "Generic": "X" }, which I think signifies an array or smth?
+        "TupleReturns": Optional[List[CorrectionsValueType]],
+    },
+)
+
+CorrectionsClass = TypedDict(
+    "CorrectionsClass", {"Name": str, "Members": List[CorrectionsMember]}
+)
+
+CorrectionsDump = TypedDict("CorrectionsDump", {"Classes": List[CorrectionsClass]})
+
+ApiValueType = TypedDict(
+    "ApiValueType",
+    {
+        "Name": str,
+        "Category": Union[
+            Literal["Primitive"],
+            Literal["Class"],
+            Literal["DataType"],
+            Literal["Enum"],
+            Literal["Group"],  # Name = "Tuple"
+        ],
+    },
+)
+
+ApiParameter = TypedDict(
+    "ApiParameter",
+    {
+        "Name": str,
+        "Type": ApiValueType,
+        "Default": Optional[str],
+    },
+)
+
+ApiProperty = TypedDict(
+    "ApiProperty",
+    {
+        "Name": str,
+        "MemberType": Literal["Property"],
+        "Description": Optional[str],
+        "Tags": Optional[List[str]],  # TODO: stricter type?
+        "Category": str,  # TODO: stricter type?
+        "ValueType": ApiValueType,
+    },
+)
+
+ApiFunction = TypedDict(
+    "ApiFunction",
+    {
+        "Name": str,
+        "MemberType": Literal["Function"],
+        "Description": Optional[str],
+        "Parameters": List[ApiParameter],
+        "ReturnType": ApiValueType,
+        "TupleReturns": Optional[CorrectionsValueType],
+    },
+)
+
+ApiEvent = TypedDict(
+    "ApiEvent",
+    {
+        "Name": str,
+        "MemberType": Literal["Event"],
+        "Description": Optional[str],
+        "Parameters": List[ApiParameter],
+    },
+)
+
+ApiCallback = TypedDict(
+    "ApiCallback",
+    {
+        "Name": str,
+        "MemberType": Literal["Callback"],
+        "Description": Optional[str],
+        "Parameters": List[ApiParameter],
+        "ReturnType": ApiValueType,
+        "TupleReturns": Optional[CorrectionsValueType],
+    },
+)
+
+ApiMember = Union[ApiProperty, ApiFunction, ApiEvent, ApiCallback]
+
+ApiClass = TypedDict(
+    "ApiClass",
+    {
+        "Name": str,
+        "Description": Optional[str],
+        "MemoryCategory": str,  # TODO: stricter type?
+        "Superclass": str,
+        "Members": List[ApiMember],
+        "Tags": Optional[List[str]],  # TODO: stricter type?
+    },
+)
+
+ApiEnumItem = TypedDict(
+    "ApiEnumItem",
+    {
+        "Name": str,
+        "Value": int,
+        "Description": Optional[str],
+    },
+)
+
+ApiEnum = TypedDict(
+    "ApiEnum",
+    {
+        "Name": str,
+        "Description": Optional[str],
+        "Items": List[ApiEnumItem],
+    },
+)
+
+ApiDump = TypedDict(
+    "ApiDump",
+    {
+        "Version": int,
+        "Classes": List[ApiClass],
+        "Enums": List[ApiEnum],
+    },
+)
+
+DataType = TypedDict("DataType", {"Name": str, "Members": List[ApiMember]})
+
+DataTypesConstructor = TypedDict(
+    "DataTypesConstructor", {"Name": str, "Members": List[ApiMember]}
+)
+
+DataTypesDump = TypedDict(
+    "DataTypesDump",
+    {"DataTypes": List[DataType], "Constructors": List[DataTypesConstructor]},
+)
 
 
 def escapeName(name: str):
@@ -166,7 +326,7 @@ def escapeName(name: str):
     )
 
 
-def resolveType(type):
+def resolveType(type: Union[ApiValueType, CorrectionsValueType]) -> str:
     name, category = (
         type["Name"],
         type["Category"] if "Category" in type else "Primitive",
@@ -179,27 +339,29 @@ def resolveType(type):
         return "Enum" + name
     elif category == "DataType":
         return name
+    elif category == "Group":
+        return "any..."
     else:
         return TYPE_INDEX[name] if name in TYPE_INDEX else name
 
 
-def resolveParameter(param):
+def resolveParameter(param: ApiParameter):
     return f"{escapeName(param['Name'])}: {resolveType(param['Type'])}{'?' if 'Default' in param else ''}"
 
 
-def resolveParameterList(params):
+def resolveParameterList(params: List[ApiParameter]):
     return ", ".join(map(resolveParameter, params))
 
 
-def resolveReturnType(member):
+def resolveReturnType(member: Union[ApiFunction, ApiCallback]):
     return (
-        resolveType(member["ReturnType"])
-        if "ReturnType" in member
-        else "(" + ", ".join(map(resolveType, member["TupleReturns"])) + ")"
+        "(" + ", ".join(map(resolveType, member["TupleReturns"])) + ")"
+        if "TupleReturns" in member
+        else resolveType(member["ReturnType"])
     )
 
 
-def declareClass(klass: Dict[str, Any]):
+def declareClass(klass: ApiClass):
     out = "declare class " + klass["Name"]
     if "Superclass" in klass and klass["Superclass"] != "<<<ROOT>>>":
         out += " extends " + klass["Superclass"]
@@ -234,8 +396,8 @@ def declareClass(klass: Dict[str, Any]):
     return out
 
 
-def printEnums(dump):
-    enums = defaultdict(list)
+def printEnums(dump: ApiDump):
+    enums: defaultdict[str, List[str]] = defaultdict(list)
     for enum in dump["Enums"]:
         for item in enum["Items"]:
             enums[enum["Name"]].append(item["Name"])
@@ -259,7 +421,7 @@ def printEnums(dump):
     print()
 
 
-def printClasses(dump):
+def printClasses(dump: ApiDump):
     # Forward declare all the types
     for klass in dump["Classes"]:
         print(f"type {klass['Name']} = any")
@@ -271,7 +433,7 @@ def printClasses(dump):
         print()
 
 
-def printDataTypes(types):
+def printDataTypes(types: DataTypesDump):
     # Forward declare all the types
     for klass in types["DataTypes"]:
         print(f"type {klass['Name']} = any")
@@ -300,7 +462,7 @@ def printDataTypes(types):
         print()
 
 
-def printDataTypeConstructors(types):
+def printDataTypeConstructors(types: DataTypesDump):
     for klass in types["Constructors"]:
         name = klass["Name"]
         members = klass["Members"]
@@ -308,7 +470,7 @@ def printDataTypeConstructors(types):
         isInstanceNew = False
 
         # Handle overloadable functions
-        functions = defaultdict(list)
+        functions: defaultdict[str, List[ApiFunction]] = defaultdict(list)
         for member in members:
             if member["MemberType"] == "Function":
                 if name == "Instance" and member["Name"] == "new":
@@ -357,7 +519,7 @@ def printDataTypeConstructors(types):
         print()
 
 
-def applyCorrections(dump, corrections):
+def applyCorrections(dump: ApiDump, corrections: CorrectionsDump):
     for klass in corrections["Classes"]:
         for otherClass in dump["Classes"]:
             if otherClass["Name"] == klass["Name"]:
@@ -409,7 +571,7 @@ def applyCorrections(dump, corrections):
                 break
 
 
-def loadClassesIntoStructures():
+def loadClassesIntoStructures(dump: ApiDump):
     for klass in dump["Classes"]:
         isCreatable = True
         if "Tags" in klass:
@@ -424,14 +586,14 @@ def loadClassesIntoStructures():
 
 
 # Print global types
-dataTypes = json.loads(requests.get(DATA_TYPES_URL).text)
-dump = json.loads(requests.get(API_DUMP_URL).text)
+dataTypes: DataTypesDump = json.loads(requests.get(DATA_TYPES_URL).text)
+dump: ApiDump = json.loads(requests.get(API_DUMP_URL).text)
 
 # Load services and creatable instances
-loadClassesIntoStructures()
+loadClassesIntoStructures(dump)
 
 # Apply any corrections on the dump
-corrections = json.loads(requests.get(API_DUMP_URL).text)
+corrections: CorrectionsDump = json.loads(requests.get(API_DUMP_URL).text)
 # applyCorrections(dump, corrections)
 
 print(START_BASE)
