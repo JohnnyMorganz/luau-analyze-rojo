@@ -61,12 +61,28 @@ std::string removeRojoExtension(std::string& nameWithExtension)
     return nameWithExtension;
 }
 
+void readProjectFile(SourceNode& node, ns::Project& project, const std::filesystem::path& basePath)
+{
+    node.className = project.tree.class_name;
+    if (project.tree.path)
+    {
+
+        handleNodePath(node, project.tree.path.value(), basePath);
+    }
+    for (auto& child : project.tree.children)
+    {
+        populateChildren(node, child.first, *child.second.get(), basePath);
+    }
+}
+
 void handleNodePath(SourceNode& node, const std::filesystem::path& path, const std::filesystem::path& basePath)
 {
     auto fullPath = basePath / path;
 
     if (std::filesystem::is_directory(fullPath))
     {
+        node.className = "Folder";
+
         // Check if default.project.json exists
         std::optional<std::string> nestedProjectSource = readFile(fullPath / "default.project.json");
         if (nestedProjectSource)
@@ -74,16 +90,7 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
 
             auto j = json::parse(*nestedProjectSource);
             auto project = j.get<ns::Project>();
-
-            if (project.tree.path)
-            {
-                handleNodePath(node, *project.tree.path, fullPath);
-            }
-
-            for (auto& child : project.tree.children)
-            {
-                populateChildren(node, child.first, *child.second.get(), fullPath);
-            }
+            readProjectFile(node, project, fullPath);
         }
         else
         {
@@ -94,6 +101,19 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
                 auto fileName = removeRojoExtension(fullFileName);
                 if (fileName == "init")
                 {
+                    auto sourceType = RojoResolver::sourceCodeTypeFromPath(path);
+                    if (sourceType == Luau::SourceCode::Script)
+                    {
+                        node.className = "Script";
+                    }
+                    else if (sourceType == Luau::SourceCode::Local)
+                    {
+                        node.className = "LocalScript";
+                    }
+                    else
+                    {
+                        node.className = "ModuleScript";
+                    }
                     node.path = path;
                 }
                 else
@@ -108,6 +128,34 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
     else
     {
         node.path = path;
+        auto sourceType = RojoResolver::sourceCodeTypeFromPath(path);
+        if (sourceType == Luau::SourceCode::Script)
+        {
+            node.className = "Script";
+        }
+        else if (sourceType == Luau::SourceCode::Local)
+        {
+            node.className = "LocalScript";
+        }
+
+        if (path.has_extension())
+        {
+            auto ext = path.extension();
+            if ((ext == ".lua" || ext == ".luau") && !node.className.has_value())
+            {
+                node.className = "ModuleScript";
+            }
+            else if (ext == "txt")
+            {
+                node.className = "StringValue";
+            }
+            else if (ext == "csv")
+            {
+                node.className = "LocalizationTable";
+            }
+            // TODO: Handle .json, .model.json, .project.json
+            // TODO: Handle .meta.json
+        }
     }
 }
 
@@ -176,16 +224,7 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesys
 
         // Create root node
         SourceNode rootNode;
-        rootNode.className = project.tree.class_name;
-        if (project.tree.path)
-        {
-
-            handleNodePath(rootNode, project.tree.path.value(), "");
-        }
-        for (auto& child : project.tree.children)
-        {
-            populateChildren(rootNode, child.first, *child.second.get(), "");
-        }
+        readProjectFile(rootNode, project, "");
 
         // Create map between real file paths to virtual
         std::unordered_map<std::string, std::string> pathToVirtualMap;
