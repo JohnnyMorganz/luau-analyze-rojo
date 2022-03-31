@@ -3785,7 +3785,7 @@ declare class Instance
 	function GetAttributes(self): { [any]: any }
 	function GetChildren(self): Objects
 	function GetDebugId(self, scopeLength: number?): string
-	function GetDescendants(self): { any }
+	function GetDescendants(self): { Instance }
 	function GetFullName(self): string
 	function GetPropertyChangedSignal(self, property: string): RBXScriptSignal
 	function IsA(self, className: string): boolean
@@ -3793,7 +3793,7 @@ declare class Instance
 	function IsDescendantOf(self, ancestor: Instance): boolean
 	function Remove(self): nil
 	function SetAttribute(self, attribute: string, value: any): nil
-	function WaitForChild(self, childName: string, timeOut: number): Instance
+	function WaitForChild(self, childName: string, timeOut: number?): Instance
 	function children(self): Objects
 	function clone(self): Instance
 	function destroy(self): nil
@@ -3872,9 +3872,9 @@ end
 
 declare class KeyframeSequence extends AnimationClip
 	AuthoredHipHeight: number
-	function AddKeyframe(self, keyframe: Instance): nil
+	function AddKeyframe(self, keyframe: Keyframe): nil
 	function GetKeyframes(self): Objects
-	function RemoveKeyframe(self, keyframe: Instance): nil
+	function RemoveKeyframe(self, keyframe: Keyframe): nil
 end
 
 declare class AnimationClipProvider extends Instance
@@ -4001,7 +4001,7 @@ end
 declare class AssetService extends Instance
 	function GetBundleDetailsSync(self, bundleId: number): { [any]: any }
 	function CreatePlaceAsync(self, placeName: string, templatePlaceID: number, description: string?): number
-	function CreatePlaceInPlayerInventoryAsync(self, player: Instance, placeName: string, templatePlaceID: number, description: string?): number
+	function CreatePlaceInPlayerInventoryAsync(self, player: Player, placeName: string, templatePlaceID: number, description: string?): number
 	function GetAssetIdsForPackage(self, packageAssetId: number): { any }
 	function GetAssetThumbnailAsync(self, assetId: number, thumbnailSize: Vector2, assetType: number?): any
 	function GetBundleDetailsAsync(self, bundleId: number): { [any]: any }
@@ -4431,8 +4431,8 @@ declare class Camera extends Instance
 	function SetRoll(self, rollAngle: number): nil
 	function TiltUnits(self, units: number): boolean
 	function ViewportPointToRay(self, x: number, y: number, depth: number?): Ray
-	function WorldToScreenPoint(self, worldPoint: Vector3): any
-	function WorldToViewportPoint(self, worldPoint: Vector3): any
+	function WorldToScreenPoint(self, worldPoint: Vector3): (number, number, number, boolean)
+	function WorldToViewportPoint(self, worldPoint: Vector3): (number, number, number, boolean)
 	function Zoom(self, distance: number): boolean
 	FirstPersonTransition: RBXScriptSignal<boolean>
 	InterpolationFinished: RBXScriptSignal<>
@@ -4511,7 +4511,7 @@ declare class Chat extends Instance
 	function FilterStringForBroadcast(self, stringToFilter: string, playerFrom: Player): string
 	function FilterStringForPlayerAsync(self, stringToFilter: string, playerToFilterFor: Player): string
 	BubbleChatSettingsChanged: RBXScriptSignal<any>
-	Chatted: RBXScriptSignal<Instance, string, EnumChatColor>
+	Chatted: RBXScriptSignal<BasePart, string, EnumChatColor>
 end
 
 declare class ClickDetector extends Instance
@@ -4819,13 +4819,13 @@ declare class ContextActionService extends Instance
 	function UnbindActivate(self, userInputTypeForActivation: EnumUserInputType, keyCodeForActivation: EnumKeyCode?): nil
 	function UnbindAllActions(self): nil
 	function UnbindCoreAction(self, actionName: string): nil
-	function GetButton(self, actionName: string): Instance
+	function GetButton(self, actionName: string): ImageButton
 	BoundActionAdded: RBXScriptSignal<string, boolean, { [any]: any }, boolean>
 	BoundActionChanged: RBXScriptSignal<string, string, { [any]: any }>
 	BoundActionRemoved: RBXScriptSignal<string, { [any]: any }, boolean>
 	GetActionButtonEvent: RBXScriptSignal<string>
-	LocalToolEquipped: RBXScriptSignal<Instance>
-	LocalToolUnequipped: RBXScriptSignal<Instance>
+	LocalToolEquipped: RBXScriptSignal<Tool>
+	LocalToolUnequipped: RBXScriptSignal<Tool>
 end
 
 declare class Controller extends Instance
@@ -4960,7 +4960,7 @@ end
 declare class DataStoreService extends Instance
 	AutomaticRetry: boolean
 	LegacyNamingScheme: boolean
-	function GetDataStore(self, name: string, scope: string?, options: Instance?): GlobalDataStore
+	function GetDataStore(self, name: string, scope: string?, options: Instance?): DataStore
 	function GetGlobalDataStore(self): GlobalDataStore
 	function GetOrderedDataStore(self, name: string, scope: string?): OrderedDataStore
 	function GetRequestBudgetForRequestType(self, requestType: EnumDataStoreRequestType): number
@@ -5108,7 +5108,7 @@ declare class Dialog extends Instance
 	function GetCurrentPlayers(self): Objects
 	function SetPlayerIsUsing(self, player: Instance, isUsing: boolean): nil
 	function SignalDialogChoiceSelected(self, player: Instance, dialogChoice: Instance): nil
-	DialogChoiceSelected: RBXScriptSignal<Instance, Instance>
+	DialogChoiceSelected: RBXScriptSignal<Player, DialogChoice>
 end
 
 declare class DialogChoice extends Instance
@@ -5377,7 +5377,7 @@ declare class DataStore extends GlobalDataStore
 end
 
 declare class OrderedDataStore extends GlobalDataStore
-	function GetSortedAsync(self, ascending: boolean, pagesize: number, minValue: any, maxValue: any): Instance
+	function GetSortedAsync(self, ascending: boolean, pagesize: number, minValue: any, maxValue: any): DataStorePages
 end
 
 declare class GoogleAnalyticsConfiguration extends Instance
@@ -5904,13 +5904,13 @@ declare class GuiService extends Instance
 	function GetErrorMessage(self): string
 	function GetErrorType(self): EnumConnectionError
 	function GetGameplayPausedNotificationEnabled(self): boolean
-	function GetGuiInset(self): any
+	function GetGuiInset(self): (Vector2, Vector2)
 	function GetInspectMenuEnabled(self): boolean
 	function GetNotificationTypeList(self): { [any]: any }
 	function GetResolutionScale(self): number
 	function GetSafeZoneOffsets(self): { [any]: any }
 	function GetUiMessage(self): string
-	function InspectPlayerFromHumanoidDescription(self, humanoidDescription: Instance, name: string): nil
+	function InspectPlayerFromHumanoidDescription(self, humanoidDescription: HumanoidDescription, name: string): nil
 	function InspectPlayerFromUserId(self, userId: number): nil
 	function InspectPlayerFromUserIdWithCtx(self, userId: number, ctx: string): nil
 	function IsMemoryTrackerEnabled(self): boolean
@@ -6057,19 +6057,19 @@ declare class Humanoid extends Instance
 	WalkToPart: BasePart
 	WalkToPoint: Vector3
 	maxHealth: number
-	function AddAccessory(self, accessory: Instance): nil
+	function AddAccessory(self, accessory: Accessory): nil
 	function AddCustomStatus(self, status: string): boolean
 	function AddStatus(self, status: EnumStatus?): boolean
 	function ApplyDescriptionBlocking(self, humanoidDescription: HumanoidDescription): nil
 	function BuildRigFromAttachments(self): nil
 	function CacheDefaults(self): nil
 	function ChangeState(self, state: EnumHumanoidStateType?): nil
-	function EquipTool(self, tool: Instance): nil
+	function EquipTool(self, tool: Tool): nil
 	function GetAccessories(self): { any }
 	function GetAccessoryHandleScale(self, instance: Instance, partType: EnumBodyPartR15): Vector3
 	function GetAppliedDescription(self): HumanoidDescription
-	function GetBodyPartR15(self, part: Instance): EnumBodyPartR15
-	function GetLimb(self, part: Instance): EnumLimb
+	function GetBodyPartR15(self, part: BasePart): EnumBodyPartR15
+	function GetLimb(self, part: BasePart): EnumLimb
 	function GetPlayingAnimationTracks(self): { any }
 	function GetState(self): EnumHumanoidStateType
 	function GetStateEnabled(self, state: EnumHumanoidStateType): boolean
@@ -6078,7 +6078,7 @@ declare class Humanoid extends Instance
 	function HasStatus(self, status: EnumStatus?): boolean
 	function LoadAnimation(self, animation: Animation): AnimationTrack
 	function Move(self, moveDirection: Vector3, relativeToCamera: boolean?): nil
-	function MoveTo(self, location: Vector3, part: Instance?): nil
+	function MoveTo(self, location: Vector3, part: BasePart?): nil
 	function RemoveAccessories(self): nil
 	function RemoveCustomStatus(self, status: string): boolean
 	function RemoveStatus(self, status: EnumStatus?): boolean
@@ -6108,7 +6108,7 @@ declare class Humanoid extends Instance
 	PlatformStanding: RBXScriptSignal<boolean>
 	Ragdoll: RBXScriptSignal<boolean>
 	Running: RBXScriptSignal<number>
-	Seated: RBXScriptSignal<boolean, BasePart>
+	Seated: RBXScriptSignal<boolean, Seat>
 	StateChanged: RBXScriptSignal<EnumHumanoidStateType, EnumHumanoidStateType>
 	StateEnabledChanged: RBXScriptSignal<EnumHumanoidStateType, boolean>
 	StatusAdded: RBXScriptSignal<EnumStatus>
@@ -6356,12 +6356,12 @@ end
 
 declare class Keyframe extends Instance
 	Time: number
-	function AddMarker(self, marker: Instance): nil
-	function AddPose(self, pose: Instance): nil
+	function AddMarker(self, marker: KeyframeMarker): nil
+	function AddPose(self, pose: Pose): nil
 	function GetMarkers(self): Objects
 	function GetPoses(self): Objects
 	function RemoveMarker(self, marker: Instance): nil
-	function RemovePose(self, pose: Instance): nil
+	function RemovePose(self, pose: Pose): nil
 end
 
 declare class KeyframeMarker extends Instance
@@ -6464,13 +6464,13 @@ declare class LocalizationService extends Instance
 	SystemLocaleId: string
 	function GetCorescriptLocalizations(self): Objects
 	function GetTableEntries(self, instance: Instance?): { any }
-	function GetTranslatorForPlayer(self, player: Instance): Instance
+	function GetTranslatorForPlayer(self, player: Player): Translator
 	function SetRobloxLocaleId(self, locale: string): nil
 	function StartTextScraper(self): nil
 	function StopTextScraper(self): nil
-	function GetCountryRegionForPlayerAsync(self, player: Instance): string
-	function GetTranslatorForLocaleAsync(self, locale: string): Instance
-	function GetTranslatorForPlayerAsync(self, player: Instance): Instance
+	function GetCountryRegionForPlayerAsync(self, player: Player): string
+	function GetTranslatorForLocaleAsync(self, locale: string): Translator
+	function GetTranslatorForPlayerAsync(self, player: Player): Translator
 	function PromptDownloadGameTableToCSV(self, table: Instance): nil
 	function PromptExportToCSVs(self): nil
 	function PromptImportFromCSVs(self): nil
@@ -6485,7 +6485,7 @@ declare class LocalizationTable extends Instance
 	function GetContents(self): string
 	function GetEntries(self): { any }
 	function GetString(self, targetLocaleId: string, key: string): string
-	function GetTranslator(self, localeId: string): Instance
+	function GetTranslator(self, localeId: string): Translator
 	function RemoveEntry(self, key: string, source: string, context: string): nil
 	function RemoveEntryValue(self, key: string, source: string, context: string, localeId: string): nil
 	function RemoveKey(self, key: string): nil
@@ -6573,15 +6573,15 @@ end
 
 declare class MarketplaceService extends Instance
 	function PlayerCanMakePurchases(self, player: Instance): boolean
-	function PromptBundlePurchase(self, player: Instance, bundleId: number): nil
-	function PromptGamePassPurchase(self, player: Instance, gamePassId: number): nil
+	function PromptBundlePurchase(self, player: Player, bundleId: number): nil
+	function PromptGamePassPurchase(self, player: Player, gamePassId: number): nil
 	function PromptNativePurchase(self, player: Instance, productId: string): nil
-	function PromptPremiumPurchase(self, player: Instance): nil
-	function PromptProductPurchase(self, player: Instance, productId: number, equipIfPurchased: boolean?, currencyType: EnumCurrencyType?): nil
-	function PromptPurchase(self, player: Instance, assetId: number, equipIfPurchased: boolean?, currencyType: EnumCurrencyType?): nil
+	function PromptPremiumPurchase(self, player: Player): nil
+	function PromptProductPurchase(self, player: Player, productId: number, equipIfPurchased: boolean?, currencyType: EnumCurrencyType?): nil
+	function PromptPurchase(self, player: Player, assetId: number, equipIfPurchased: boolean?, currencyType: EnumCurrencyType?): nil
 	function PromptRobloxPurchase(self, assetId: number, equipIfPurchased: boolean): nil
-	function PromptSubscriptionCancellation(self, player: Instance, subscriptionId: number): nil
-	function PromptSubscriptionPurchase(self, player: Instance, subscriptionId: number): nil
+	function PromptSubscriptionCancellation(self, player: Player, subscriptionId: number): nil
+	function PromptSubscriptionPurchase(self, player: Player, subscriptionId: number): nil
 	function PromptThirdPartyPurchase(self, player: Instance, productId: string): nil
 	function ReportAssetSale(self, assetId: string, robuxAmount: number): nil
 	function ReportRobuxUpsellStarted(self): nil
@@ -6596,31 +6596,31 @@ declare class MarketplaceService extends Instance
 	function SignalPromptSubscriptionCancellationFinished(self, player: Instance, subscriptionId: number, wasCanceled: boolean): nil
 	function SignalPromptSubscriptionPurchaseFinished(self, player: Instance, subscriptionId: number, wasPurchased: boolean): nil
 	function SignalServerLuaDialogClosed(self, value: boolean): nil
-	function GetDeveloperProductsAsync(self): Instance
+	function GetDeveloperProductsAsync(self): Pages
 	function GetProductInfo(self, assetId: number, infoType: EnumInfoType?): { [any]: any }
 	function GetRobuxBalance(self): number
-	function IsPlayerSubscribed(self, player: Instance, subscriptionId: number): boolean
+	function IsPlayerSubscribed(self, player: Player, subscriptionId: number): boolean
 	function PerformPurchase(self, infoType: EnumInfoType, productId: number, expectedPrice: number, requestId: string, isRobloxPurchase: boolean): { [any]: any }
-	function PlayerOwnsAsset(self, player: Instance, assetId: number): boolean
+	function PlayerOwnsAsset(self, player: Player, assetId: number): boolean
 	function UserOwnsGamePassAsync(self, userId: number, gamePassId: number): boolean
 	ClientLuaDialogRequested: RBXScriptSignal<any>
 	ClientPurchaseSuccess: RBXScriptSignal<string, number, number>
-	NativePurchaseFinished: RBXScriptSignal<Instance, string, boolean>
+	NativePurchaseFinished: RBXScriptSignal<Player, string, boolean>
 	PromptBundlePurchaseFinished: RBXScriptSignal<Instance, number, boolean>
 	PromptBundlePurchaseRequested: RBXScriptSignal<Instance, number>
-	PromptGamePassPurchaseFinished: RBXScriptSignal<Instance, number, boolean>
-	PromptGamePassPurchaseRequested: RBXScriptSignal<Instance, number>
+	PromptGamePassPurchaseFinished: RBXScriptSignal<Player, number, boolean>
+	PromptGamePassPurchaseRequested: RBXScriptSignal<Player, number>
 	PromptPremiumPurchaseFinished: RBXScriptSignal<>
 	PromptPremiumPurchaseRequested: RBXScriptSignal<Instance>
 	PromptProductPurchaseFinished: RBXScriptSignal<number, number, boolean>
-	PromptProductPurchaseRequested: RBXScriptSignal<Instance, number, boolean, EnumCurrencyType>
-	PromptPurchaseFinished: RBXScriptSignal<Instance, number, boolean>
-	PromptPurchaseRequested: RBXScriptSignal<Instance, number, boolean, EnumCurrencyType>
+	PromptProductPurchaseRequested: RBXScriptSignal<Player, number, boolean, EnumCurrencyType>
+	PromptPurchaseFinished: RBXScriptSignal<Player, number, boolean>
+	PromptPurchaseRequested: RBXScriptSignal<Player, number, boolean, EnumCurrencyType>
 	PromptRobloxPurchaseRequested: RBXScriptSignal<number, boolean>
-	PromptSubscriptionCancellationFinished: RBXScriptSignal<Instance, number, boolean>
+	PromptSubscriptionCancellationFinished: RBXScriptSignal<Player, number, boolean>
 	PromptSubscriptionCancellationRequested: RBXScriptSignal<Instance, number>
-	PromptSubscriptionPurchaseFinished: RBXScriptSignal<Instance, number, boolean>
-	PromptSubscriptionPurchaseRequested: RBXScriptSignal<Instance, number>
+	PromptSubscriptionPurchaseFinished: RBXScriptSignal<Player, number, boolean>
+	PromptSubscriptionPurchaseRequested: RBXScriptSignal<Player, number>
 	ServerPurchaseVerification: RBXScriptSignal<{ [any]: any }>
 	ThirdPartyPurchaseFinished: RBXScriptSignal<Instance, string, string, boolean>
 	ProcessReceipt: (receiptInfo: { [any]: any }) -> EnumProductPurchaseDecision
@@ -6993,14 +6993,14 @@ declare class BasePart extends PVInstance
 	function ApplyImpulseAtPosition(self, impulse: Vector3, position: Vector3): nil
 	function BreakJoints(self): nil
 	function CanCollideWith(self, part: BasePart): boolean
-	function CanSetNetworkOwnership(self): any
+	function CanSetNetworkOwnership(self): (boolean, string)
 	function GetConnectedParts(self, recursive: boolean?): Objects
 	function GetJoints(self): Objects
 	function GetMass(self): number
-	function GetNetworkOwner(self): Instance
+	function GetNetworkOwner(self): Player
 	function GetNetworkOwnershipAuto(self): boolean
 	function GetRenderCFrame(self): CFrame
-	function GetRootPart(self): Instance
+	function GetRootPart(self): BasePart
 	function GetTouchingParts(self): Objects
 	function GetVelocityAtPosition(self, position: Vector3): Vector3
 	function IsGrounded(self): boolean
@@ -7012,8 +7012,8 @@ declare class BasePart extends PVInstance
 	function getMass(self): number
 	function makeJoints(self): nil
 	function resize(self, normalId: EnumNormalId, deltaAmount: number): boolean
-	function SubtractAsync(self, parts: Objects, collisionfidelity: EnumCollisionFidelity?, renderFidelity: EnumRenderFidelity?): Instance
-	function UnionAsync(self, parts: Objects, collisionfidelity: EnumCollisionFidelity?, renderFidelity: EnumRenderFidelity?): Instance
+	function SubtractAsync(self, parts: Objects, collisionfidelity: EnumCollisionFidelity?, renderFidelity: EnumRenderFidelity?): UnionOperation
+	function UnionAsync(self, parts: Objects, collisionfidelity: EnumCollisionFidelity?, renderFidelity: EnumRenderFidelity?): UnionOperation
 	LocalSimulationTouched: RBXScriptSignal<BasePart>
 	OutfitChanged: RBXScriptSignal<>
 	StoppedTouching: RBXScriptSignal<BasePart>
@@ -7044,7 +7044,7 @@ end
 declare class Seat extends Part
 	Disabled: boolean
 	Occupant: Humanoid
-	function Sit(self, humanoid: Instance): nil
+	function Sit(self, humanoid: Humanoid): nil
 end
 
 declare class SkateboardPlatform extends Part
@@ -7126,7 +7126,7 @@ declare class MeshPart extends TriangleMeshPart
 	MeshSize: Vector3
 	RenderFidelity: EnumRenderFidelity
 	TextureID: Content
-	function ApplyMesh(self, meshPart: Instance): nil
+	function ApplyMesh(self, meshPart: MeshPart): nil
 end
 
 declare class PartOperation extends TriangleMeshPart
@@ -7158,7 +7158,7 @@ declare class VehicleSeat extends BasePart
 	ThrottleFloat: number
 	Torque: number
 	TurnSpeed: number
-	function Sit(self, humanoid: Instance): nil
+	function Sit(self, humanoid: Humanoid): nil
 end
 
 declare class Model extends PVInstance
@@ -7168,7 +7168,7 @@ declare class Model extends PVInstance
 	World_Pivot_Position: Vector3
 	WorldPivot: CFrame
 	function BreakJoints(self): nil
-	function GetBoundingBox(self): any
+	function GetBoundingBox(self): (CFrame, Vector3)
 	function GetExtentsSize(self): Vector3
 	function GetModelCFrame(self): CFrame
 	function GetModelSize(self): Vector3
@@ -7194,8 +7194,8 @@ end
 declare class WorldRoot extends Model
 	function ArePartsTouchingOthers(self, partList: Objects, overlapIgnored: number?): boolean
 	function BulkMoveTo(self, partList: Objects, cframeList: { any }, eventMode: EnumBulkMoveMode?): nil
-	function FindPartOnRay(self, ray: Ray, ignoreDescendantsInstance: Instance?, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): any
-	function FindPartOnRayWithIgnoreList(self, ray: Ray, ignoreDescendantsTable: Objects, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): any
+	function FindPartOnRay(self, ray: Ray, ignoreDescendantsInstance: Instance?, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): (BasePart, Vector3, Vector3, EnumMaterial)
+	function FindPartOnRayWithIgnoreList(self, ray: Ray, ignoreDescendantsTable: Objects, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): (BasePart, Vector3, Vector3, EnumMaterial)
 	function FindPartOnRayWithWhitelist(self, ray: Ray, whitelistDescendantsTable: Objects, ignoreWater: boolean?): any
 	function FindPartsInRegion3(self, region: Region3, ignoreDescendantsInstance: Instance?, maxParts: number?): Objects
 	function FindPartsInRegion3WithIgnoreList(self, region: Region3, ignoreDescendantsTable: Objects, maxParts: number?): Objects
@@ -7208,7 +7208,7 @@ declare class WorldRoot extends Model
 	function IsRegion3EmptyWithIgnoreList(self, region: Region3, ignoreDescendentsTable: Objects): boolean
 	function Raycast(self, origin: Vector3, direction: Vector3, raycastParams: RaycastParams?): RaycastResult
 	function SetInsertPoint(self, point: Vector3, ignoreGrid: boolean?): nil
-	function findPartOnRay(self, ray: Ray, ignoreDescendantsInstance: Instance?, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): any
+	function findPartOnRay(self, ray: Ray, ignoreDescendantsInstance: Instance?, terrainCellsAreCubes: boolean?, ignoreWater: boolean?): (BasePart, Vector3, Vector3, EnumMaterial)
 	function findPartsInRegion3(self, region: Region3, ignoreDescendantsInstance: Instance?, maxParts: number?): Objects
 end
 
@@ -7378,10 +7378,10 @@ end
 
 declare class PathfindingService extends Instance
 	EmptyCutoff: number
-	function CreatePath(self, agentParameters: { [any]: any }?): Instance
+	function CreatePath(self, agentParameters: { [any]: any }?): Path
 	function ComputeRawPathAsync(self, start: Vector3, finish: Vector3, maxDistance: number): Instance
 	function ComputeSmoothPathAsync(self, start: Vector3, finish: Vector3, maxDistance: number): Instance
-	function FindPathAsync(self, start: Vector3, finish: Vector3): Instance
+	function FindPathAsync(self, start: Vector3, finish: Vector3): Path
 end
 
 declare class PausedState extends Instance
@@ -7623,7 +7623,7 @@ declare class Players extends Instance
 	function GetHumanoidDescriptionFromUserId(self, userId: number): HumanoidDescription
 	function GetNameFromUserIdAsync(self, userId: number): string
 	function GetUserIdFromNameAsync(self, userName: string): number
-	function GetUserThumbnailAsync(self, userId: number, thumbnailType: EnumThumbnailType, thumbnailSize: EnumThumbnailSize): any
+	function GetUserThumbnailAsync(self, userId: number, thumbnailType: EnumThumbnailType, thumbnailSize: EnumThumbnailSize): (string, boolean)
 	FriendRequestEvent: RBXScriptSignal<Player, Player, EnumFriendRequestEvent>
 	GameAnnounce: RBXScriptSignal<string>
 	PlayerAdded: RBXScriptSignal<Player>
@@ -7659,7 +7659,7 @@ declare class Plugin extends Instance
 	function Negate(self, objects: Objects): Objects
 	function OnInvoke(self, key: string, callback: Function): Instance
 	function OnSetItem(self, key: string, callback: Function): Instance
-	function OpenScript(self, script: LuaSourceContainer, lineNumber: number?): nil
+	function OpenScript(self, script: BaseScript, lineNumber: number?): nil
 	function OpenWikiPage(self, url: string): nil
 	function PauseSound(self, sound: Instance): nil
 	function PlaySound(self, sound: Instance, normalizedTimePosition: number?): nil
@@ -7673,7 +7673,7 @@ declare class Plugin extends Instance
 	function StartDecalDrag(self, decal: Instance): nil
 	function StartDrag(self, dragData: { [any]: any }): nil
 	function StopAllSounds(self): nil
-	function Union(self, objects: Objects): Instance
+	function Union(self, objects: Objects): UnionOperation
 	function CreateDockWidgetPluginGui(self, pluginGuiId: string, dockWidgetPluginGuiInfo: DockWidgetPluginGuiInfo): DockWidgetPluginGui
 	function CreateQWidgetPluginGui(self, pluginGuiId: string, pluginGuiOptions: { [any]: any }): QWidgetPluginGui
 	function ImportFbxAnimation(self, rigModel: Instance, isR15: boolean?): Instance
@@ -7724,12 +7724,12 @@ end
 declare class PluginMenu extends Instance
 	Icon: string
 	Title: string
-	function AddAction(self, action: Instance): nil
-	function AddMenu(self, menu: Instance): nil
-	function AddNewAction(self, actionId: string, text: string, icon: string?): Instance
+	function AddAction(self, action: PluginAction): nil
+	function AddMenu(self, menu: PluginMenu): nil
+	function AddNewAction(self, actionId: string, text: string, icon: string?): PluginAction
 	function AddSeparator(self): nil
 	function Clear(self): nil
-	function ShowAsync(self): Instance
+	function ShowAsync(self): PluginAction
 end
 
 declare class PluginPolicyService extends Instance
@@ -7737,7 +7737,7 @@ declare class PluginPolicyService extends Instance
 end
 
 declare class PluginToolbar extends Instance
-	function CreateButton(self, buttonId: string, tooltip: string, iconname: string, text: string?): Instance
+	function CreateButton(self, buttonId: string, tooltip: string, iconname: string, text: string?): PluginToolbarButton
 end
 
 declare class PluginToolbarButton extends Instance
@@ -7759,7 +7759,7 @@ end
 declare class PolicyService extends Instance
 	IsLuobuServer: EnumTriStateBoolean
 	LuobuWhitelisted: EnumTriStateBoolean
-	function GetPolicyInfoForPlayerAsync(self, player: Instance): { [any]: any }
+	function GetPolicyInfoForPlayerAsync(self, player: Player): { [any]: any }
 	function GetPolicyInfoForServerRobloxOnlyAsync(self): { [any]: any }
 end
 
@@ -7776,9 +7776,9 @@ end
 declare class Pose extends PoseBase
 	CFrame: CFrame
 	MaskWeight: number
-	function AddSubPose(self, pose: Instance): nil
+	function AddSubPose(self, pose: Pose): nil
 	function GetSubPoses(self): Objects
-	function RemoveSubPose(self, pose: Instance): nil
+	function RemoveSubPose(self, pose: Pose): nil
 end
 
 declare class PostEffect extends Instance
@@ -7952,7 +7952,7 @@ declare class RemoteFunction extends Instance
 	function InvokeClient(self, player: Player, arguments: any): any
 	function InvokeServer(self, arguments: any): any
 	OnClientInvoke: (arguments: any) -> any
-	OnServerInvoke: (player: Instance, arguments: any) -> any
+	OnServerInvoke: (player: Player, arguments: any) -> any
 end
 
 declare class RenderSettings extends Instance
@@ -8422,8 +8422,8 @@ end
 
 declare class SocialService extends Instance
 	function InvokeGameInvitePromptClosed(self, player: Instance, recipientIds: { any }): nil
-	function PromptGameInvite(self, player: Instance): nil
-	function CanSendGameInviteAsync(self, player: Instance): boolean
+	function PromptGameInvite(self, player: Player): nil
+	function CanSendGameInviteAsync(self, player: Player): boolean
 	GameInvitePromptClosed: RBXScriptSignal<Instance, { any }>
 	PromptInviteRequested: RBXScriptSignal<Instance>
 end
@@ -8547,11 +8547,11 @@ declare class SoundService extends Instance
 	RespectFilteringEnabled: boolean
 	RolloffScale: number
 	function BeginRecording(self): boolean
-	function GetListener(self): any
+	function GetListener(self): (EnumListenerType, any)
 	function GetOutputDevice(self): any
 	function GetOutputDevices(self): any
 	function GetSoundMemoryData(self): { [any]: any }
-	function PlayLocalSound(self, sound: Instance): nil
+	function PlayLocalSound(self, sound: Sound): nil
 	function SetListener(self, listenerType: EnumListenerType, listener: any): nil
 	function SetOutputDevice(self, name: string, guid: string): nil
 	function SetRecordingDevice(self, deviceIndex: number): boolean
@@ -8977,20 +8977,20 @@ end
 
 declare class TeleportService extends Instance
 	CustomizedTeleportUI: boolean
-	function GetArrivingTeleportGui(self): Instance
+	function GetArrivingTeleportGui(self): ScreenGui
 	function GetLocalPlayerTeleportData(self): any
 	function GetTeleportSetting(self, setting: string): any
-	function SetTeleportGui(self, gui: Instance): nil
+	function SetTeleportGui(self, gui: GuiObject): nil
 	function SetTeleportSetting(self, setting: string, value: any): nil
-	function Teleport(self, placeId: number, player: Instance?, teleportData: any, customLoadingScreen: Instance?): nil
+	function Teleport(self, placeId: number, player: Player?, teleportData: any, customLoadingScreen: GuiObject?): nil
 	function TeleportCancel(self): nil
-	function TeleportToPlaceInstance(self, placeId: number, instanceId: string, player: Instance?, spawnName: string?, teleportData: any, customLoadingScreen: Instance?): nil
-	function TeleportToPrivateServer(self, placeId: number, reservedServerAccessCode: string, players: Objects, spawnName: string?, teleportData: any, customLoadingScreen: Instance?): nil
-	function TeleportToSpawnByName(self, placeId: number, spawnName: string, player: Instance?, teleportData: any, customLoadingScreen: Instance?): nil
-	function GetPlayerPlaceInstanceAsync(self, userId: number): any
+	function TeleportToPlaceInstance(self, placeId: number, instanceId: string, player: Player?, spawnName: string?, teleportData: any, customLoadingScreen: GuiObject?): nil
+	function TeleportToPrivateServer(self, placeId: number, reservedServerAccessCode: string, players: Objects, spawnName: string?, teleportData: any, customLoadingScreen: GuiObject?): nil
+	function TeleportToSpawnByName(self, placeId: number, spawnName: string, player: Player?, teleportData: any, customLoadingScreen: GuiObject?): nil
+	function GetPlayerPlaceInstanceAsync(self, userId: number): (boolean, number, string)
 	function ReserveServer(self, placeId: number): any
-	function TeleportAsync(self, placeId: number, players: Objects, teleportOptions: Instance?): Instance
-	function TeleportPartyAsync(self, placeId: number, players: Objects, teleportData: any, customLoadingScreen: Instance?): string
+	function TeleportAsync(self, placeId: number, players: Objects, teleportOptions: Instance?): TeleportAsyncResult
+	function TeleportPartyAsync(self, placeId: number, players: Objects, teleportData: any, customLoadingScreen: GuiObject?): string
 	LocalPlayerArrivedFromTeleport: RBXScriptSignal<Instance, any>
 	TeleportInitFailed: RBXScriptSignal<Instance, EnumTeleportResult, string, number, Instance>
 end
@@ -9417,7 +9417,7 @@ declare class UserInputService extends Instance
 	function GetConnectedGamepads(self): { any }
 	function GetDeviceAcceleration(self): InputObject
 	function GetDeviceGravity(self): InputObject
-	function GetDeviceRotation(self): any
+	function GetDeviceRotation(self): (number, CFrame)
 	function GetDeviceType(self): EnumDeviceType
 	function GetFocusedTextBox(self): TextBox
 	function GetGamepadConnected(self, gamepadNum: EnumUserInputType): boolean

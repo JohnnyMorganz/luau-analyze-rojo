@@ -611,8 +611,8 @@ dump: ApiDump = json.loads(requests.get(API_DUMP_URL).text)
 loadClassesIntoStructures(dump)
 
 # Apply any corrections on the dump
-corrections: CorrectionsDump = json.loads(requests.get(API_DUMP_URL).text)
-# applyCorrections(dump, corrections)
+corrections: CorrectionsDump = json.loads(requests.get(CORRECTIONS_URL).text)
+applyCorrections(dump, corrections)
 
 print(START_BASE)
 printEnums(dump)
