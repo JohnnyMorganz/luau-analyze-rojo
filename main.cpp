@@ -129,6 +129,36 @@ bool isManagedModule(const Luau::ModuleName& name)
     return Luau::startsWith(name, "game/") || Luau::startsWith(name, "ProjectRoot/");
 }
 
+std::optional<std::string> getCurrentModuleVirtualPath(
+    const Luau::ModuleName& name, ResolvedSourceMap sourceMap, std::optional<std::filesystem::path> stdinFilepath)
+{
+    if (isManagedModule(name))
+    {
+        return name;
+    }
+    else
+    {
+        // name is a file path which we need to translate to a Rojo path
+        std::filesystem::path filePath = name;
+        if (name == "-")
+        {
+            if (stdinFilepath)
+            {
+                filePath = stdinFilepath.value();
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        }
+        auto virtualPath = RojoResolver::resolveRealPathToVirtual(sourceMap, filePath);
+        if (virtualPath)
+            return virtualPath.value();
+    }
+
+    return std::nullopt;
+}
+
 struct CliFileResolver : Luau::FileResolver
 {
     ResolvedSourceMap sourceMap;
@@ -183,30 +213,9 @@ struct CliFileResolver : Luau::FileResolver
 
             if (g->name == "script")
             {
-                // Resolve the current path at context.name
-                if (isManagedModule(context->name))
+                if (auto virtualPath = getCurrentModuleVirtualPath(context->name, sourceMap, stdinFilepath))
                 {
-                    // We can just use this as the starting point
-                    return Luau::ModuleInfo{context->name};
-                }
-                else
-                {
-                    // context->name is a file path which we need to translate to a Rojo path
-                    std::filesystem::path filePath = context->name;
-                    if (context->name == "-")
-                    {
-                        if (stdinFilepath)
-                        {
-                            filePath = stdinFilepath.value();
-                        }
-                        else
-                        {
-                            return std::nullopt;
-                        }
-                    }
-                    auto virtualPath = RojoResolver::resolveRealPathToVirtual(sourceMap, filePath);
-                    if (virtualPath)
-                        return Luau::ModuleInfo{virtualPath.value()};
+                    return Luau::ModuleInfo{virtualPath.value()};
                 }
             }
         }
@@ -320,26 +329,16 @@ struct CliConfigResolver : Luau::ConfigResolver
     }
 };
 
-std::optional<Luau::TypeFun> findExportedType(Luau::TypeChecker& typeChecker, const std::string& name)
-{
-
-    if (typeChecker.globalScope->exportedTypeBindings.find(name) != typeChecker.globalScope->exportedTypeBindings.end())
-    {
-        return typeChecker.globalScope->exportedTypeBindings.at(name);
-    }
-    return std::nullopt;
-}
-
-Luau::TypeId makeInstanceType(Luau::TypeChecker& typeChecker, const SourceNode& node)
+Luau::TypeId makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, SourceNode& node)
 {
     std::optional<Luau::TypeFun> baseType;
     if (node.className.has_value())
     {
-        baseType = findExportedType(typeChecker, node.className.value());
+        baseType = globalScope->lookupType(node.className.value());
     }
     if (!baseType.has_value())
     {
-        baseType = findExportedType(typeChecker, "Instance");
+        baseType = globalScope->lookupType("Instance");
     }
     LUAU_ASSERT(baseType); // TODO: is this ensured??
     auto typeId = baseType.value().type;
@@ -347,14 +346,14 @@ Luau::TypeId makeInstanceType(Luau::TypeChecker& typeChecker, const SourceNode& 
     if (node.children.size() > 0)
     {
         // Add the children
-        Luau::TableTypeVar children{Luau::TableState::Sealed, typeChecker.globalScope->level};
+        Luau::TableTypeVar children{Luau::TableState::Sealed, globalScope->level};
         for (const auto& child : node.children)
         {
-            auto childProperty = Luau::makeProperty(makeInstanceType(typeChecker, *child.second), "@luau/instance");
+            auto childProperty = Luau::makeProperty(makeInstanceType(typeArena, globalScope, *child.second), "@luau/instance");
             children.props[child.first] = childProperty;
         }
-        Luau::TypeId childId = typeChecker.globalTypes.addType(children);
-        typeId = Luau::makeIntersection(typeChecker.globalTypes, {typeId, childId});
+        Luau::TypeId childId = typeArena.addType(children);
+        typeId = Luau::makeIntersection(typeArena, {typeId, childId});
     }
     return typeId;
 }
@@ -433,7 +432,6 @@ int main(int argc, char** argv)
 
     CliConfigResolver configResolver;
     Luau::Frontend frontend(&fileResolver, &configResolver, frontendOptions);
-
     Luau::registerBuiltinTypes(frontend.typeChecker);
 
     // If global definitions have been provided, then also register them
@@ -465,7 +463,7 @@ int main(int argc, char** argv)
                 {
                     for (const auto& services : root.children)
                     {
-                        auto serviceType = findExportedType(frontend.typeChecker, services.first);
+                        auto serviceType = frontend.typeChecker.globalScope->lookupType(services.first);
                         if (serviceType.has_value())
                         {
                             if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
@@ -473,8 +471,9 @@ int main(int argc, char** argv)
                                 // Extend the props to include the children
                                 for (const auto& child : (*services.second).children)
                                 {
-                                    ctv->props[child.first] =
-                                        makeProperty(makeInstanceType(frontend.typeChecker, *(child.second)), "@luau/serviceChild");
+                                    ctv->props[child.first] = makeProperty(
+                                        makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second)),
+                                        "@luau/serviceChild");
                                 }
                             }
                         }
@@ -483,6 +482,29 @@ int main(int argc, char** argv)
             }
         }
     }
+
+    auto moduleResolver = frontend.moduleResolver;
+
+    frontend.typeChecker.prepareModuleScope = [&moduleResolver, fileResolver, stdinFilepath](
+                                                  const Luau::ModuleName& name, const Luau::ScopePtr& scope)
+    {
+        auto virtualPath = getCurrentModuleVirtualPath(name, fileResolver.sourceMap, stdinFilepath);
+        if (!virtualPath.has_value())
+            return;
+
+        auto node = RojoResolver::resolveRequireToSourceNode(virtualPath.value(), fileResolver.sourceMap.root);
+        if (!node.has_value())
+            return;
+
+        // HACK: we need a way to get the typeArena for the module, but I don't know how
+        // we can see that moduleScope->returnType is assigned before prepareModuleScope is called in TypeInfer, so we could try it this way...
+        LUAU_ASSERT(scope->returnType);
+        auto typeArena = scope->returnType->owningArena;
+        LUAU_ASSERT(typeArena);
+        auto ty = makeInstanceType(*typeArena, scope, node.value());
+
+        scope->bindings[Luau::AstName("script")] = Luau::Binding{ty, Luau::Location{}, {}, {}, std::nullopt};
+    };
 
     Luau::freeze(frontend.typeChecker.globalTypes);
 

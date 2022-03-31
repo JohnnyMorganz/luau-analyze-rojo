@@ -26,6 +26,7 @@ struct ResolvedSourceMap
 namespace RojoResolver
 {
 std::optional<ResolvedSourceMap> parseSourceMap(const std::filesystem::path& sourceMapPath);
+std::optional<SourceNode> resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root);
 std::optional<std::filesystem::path> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
 Luau::SourceCode::Type sourceCodeTypeFromPath(const std::filesystem::path& path);
 std::optional<std::string> resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath);

@@ -241,15 +241,9 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesys
     return std::nullopt;
 }
 
-std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
+std::optional<SourceNode> RojoResolver::resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root)
 {
     auto pathParts = Luau::split(requirePath, '/');
-    // auto root = pathParts.front();
-
-    // if (roots.find(std::string(root)) == roots.end())
-    //     return std::nullopt;
-
-    // SourceNode currentNode = roots.at(std::string(root));
     SourceNode currentNode = root;
 
     auto it = ++pathParts.begin(); // Skip first element
@@ -266,12 +260,19 @@ std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(cons
             return std::nullopt;
         }
 
-
-
         it++;
     }
 
-    return currentNode.path;
+    return currentNode;
+}
+
+std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
+{
+    if (auto node = RojoResolver::resolveRequireToSourceNode(requirePath, root))
+    {
+        return node.value().path;
+    }
+    return std::nullopt;
 }
 
 std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath)
