@@ -1,7 +1,7 @@
 # Script to pull in API Dump and export it into a definition file
 # Based off https://gist.github.com/HawDevelopment/97f2411149e24d8e7a712016114d55ff
 from typing import List, Literal, Optional, Union
-from typing_extensions import Never, TypedDict
+from typing_extensions import TypedDict
 from collections import defaultdict
 import requests
 import json
@@ -31,7 +31,9 @@ TYPE_INDEX = {
     "RBXScriptSignal": "RBXScriptSignal",
 }
 
-IGNORED_INSTANCES: List[str] = []
+IGNORED_INSTANCES: List[str] = [
+    "RBXScriptSignal",  # Redefined using generics
+]
 
 # Metamethods to add in to classes
 METAMETHODS = {
@@ -135,6 +137,12 @@ declare function delay<T...>(delayTime: number?, callback: (T...) -> ())
 declare function spawn<T...>(callback: (T...) -> ())
 declare function version(): string
 declare function printidentity(prefix: string?)
+
+export type RBXScriptSignal<T... = ...any> = {
+    Wait: (self: RBXScriptSignal<T...>) -> T...,
+    Connect: (self: RBXScriptSignal<T...>, callback: (T...) -> ()) -> RBXScriptConnection,
+    ConnectParallel: (self: RBXScriptSignal<T...>, callback: (T...) -> ()) -> RBXScriptConnection,
+}
 """
 
 # More hardcoded types, but go at the end of the file
@@ -158,7 +166,7 @@ CorrectionsValueType = TypedDict(
     "CorrectionsValueType",
     {
         "Name": str,
-        "Category": Never,
+        "Category": None,
         "Default": Optional[str],
     },
 )
@@ -339,8 +347,6 @@ def resolveType(type: Union[ApiValueType, CorrectionsValueType]) -> str:
         return "Enum" + name
     elif category == "DataType":
         return name
-    elif category == "Group":
-        return "any..."
     else:
         return TYPE_INDEX[name] if name in TYPE_INDEX else name
 
@@ -362,6 +368,9 @@ def resolveReturnType(member: Union[ApiFunction, ApiCallback]):
 
 
 def declareClass(klass: ApiClass):
+    if klass["Name"] in IGNORED_INSTANCES:
+        return ""
+
     out = "declare class " + klass["Name"]
     if "Superclass" in klass and klass["Superclass"] != "<<<ROOT>>>":
         out += " extends " + klass["Superclass"]
@@ -380,9 +389,10 @@ def declareClass(klass: ApiClass):
                 continue
             out += f"\tfunction {escapeName(member['Name'])}(self{', ' if len(member['Parameters']) > 0 else ''}{resolveParameterList(member['Parameters'])}): {resolveReturnType(member)}\n"
         elif member["MemberType"] == "Event":
-            out += (
-                f"\t{escapeName(member['Name'])}: RBXScriptSignal\n"  # TODO: type this
+            parameters = ", ".join(
+                map(lambda x: resolveType(x["Type"]), member["Parameters"])
             )
+            out += f"\t{escapeName(member['Name'])}: RBXScriptSignal<{parameters}>\n"
         elif member["MemberType"] == "Callback":
             out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"
 
@@ -424,6 +434,8 @@ def printEnums(dump: ApiDump):
 def printClasses(dump: ApiDump):
     # Forward declare all the types
     for klass in dump["Classes"]:
+        if klass["Name"] in IGNORED_INSTANCES:
+            continue
         print(f"type {klass['Name']} = any")
 
     print("type Objects = { Instance }")
@@ -436,9 +448,13 @@ def printClasses(dump: ApiDump):
 def printDataTypes(types: DataTypesDump):
     # Forward declare all the types
     for klass in types["DataTypes"]:
+        if klass["Name"] in IGNORED_INSTANCES:
+            continue
         print(f"type {klass['Name']} = any")
 
     for klass in types["DataTypes"]:
+        if klass["Name"] in IGNORED_INSTANCES:
+            continue
         name = klass["Name"]
         members = klass["Members"]
 
@@ -464,6 +480,8 @@ def printDataTypes(types: DataTypesDump):
 
 def printDataTypeConstructors(types: DataTypesDump):
     for klass in types["Constructors"]:
+        if klass["Name"] in IGNORED_INSTANCES:
+            continue
         name = klass["Name"]
         members = klass["Members"]
 
