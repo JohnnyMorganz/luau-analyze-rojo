@@ -474,12 +474,12 @@ int main(int argc, char** argv)
 
     Luau::freeze(frontend.typeChecker.globalTypes);
 
-    std::vector<std::string> files = getSourceFiles(argc, argv);
+    std::vector<std::filesystem::path> files = getSourceFiles(argc, argv);
 
     int failed = 0;
 
-    for (const std::string& path : files)
-        failed += !analyzeFile(frontend, path.c_str(), format, annotate);
+    for (const std::filesystem::path& path : files)
+        failed += !analyzeFile(frontend, path.relative_path().generic_string().c_str(), format, annotate);
 
     if (!configResolver.configErrors.empty())
     {
