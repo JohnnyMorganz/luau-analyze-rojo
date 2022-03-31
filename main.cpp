@@ -115,6 +115,7 @@ static void displayHelp(const char* argv0)
     printf("  --defs=PATH: path to definition file for global types\n");
     printf("  --stdin-filepath=PATH: path to file being sent through stdin. Used for require resolution\n");
     printf("  --dump-source-map: dump the currently resolved source map\n");
+    printf("  --exclude-virtual-path: don't include virtual path name in output\n");
 }
 
 static int assertionHandler(const char* expr, const char* file, int line, const char* function)
@@ -132,6 +133,7 @@ struct CliFileResolver : Luau::FileResolver
 {
     ResolvedSourceMap sourceMap;
     std::optional<std::filesystem::path> stdinFilepath;
+    bool excludeVirtualPath = false;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
@@ -258,9 +260,15 @@ struct CliFileResolver : Luau::FileResolver
         {
             std::optional<std::filesystem::path> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
             if (realFilePath.has_value())
-                return realFilePath.value().relative_path().generic_string() + "[" + name + "]";
+            {
+                if (excludeVirtualPath)
+                {
 
-            return "<UNKNOWN>[" + name + "]";
+                    return realFilePath.value().relative_path().generic_string();
+                }
+                return realFilePath.value().relative_path().generic_string() + "[" + name + "]";
+            }
+            return name;
         }
         else
         {
@@ -368,6 +376,7 @@ int main(int argc, char** argv)
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
     bool dumpMap = false;
+    bool excludeVirtualPath = false;
     std::optional<std::filesystem::path> projectPath = std::nullopt;
     std::optional<std::filesystem::path> globalDefsPath = std::nullopt;
     std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
@@ -387,6 +396,8 @@ int main(int argc, char** argv)
             FFlag::DebugLuauTimeTracing.value = true;
         else if (strcmp(argv[i], "--dump-source-map") == 0)
             dumpMap = true;
+        else if (strcmp(argv[i], "--exclude-virtual-path") == 0)
+            excludeVirtualPath = true;
         else if (strncmp(argv[i], "--project=", 10) == 0)
             projectPath = std::string(argv[i] + 10);
         else if (strncmp(argv[i], "--defs=", 7) == 0)
@@ -407,6 +418,7 @@ int main(int argc, char** argv)
     frontendOptions.retainFullTypeGraphs = annotate;
 
     CliFileResolver fileResolver;
+    fileResolver.excludeVirtualPath = excludeVirtualPath;
     fileResolver.stdinFilepath = stdinFilepath;
     if (projectPath)
     {

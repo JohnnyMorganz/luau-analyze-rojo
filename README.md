@@ -29,6 +29,8 @@ cmake --build . --target luau-analyze-rojo --config Release
 luau-analyze --project=default.project.json --defs=globalTypes.d.lua fileToAnalyse.luau
 ```
 
+The tool supports all options available in the original `luau-analyze` tool, with these further additions:
+
 - `--project=PATH`: path to the Rojo project file which will be used to resolve the source map
 - `--defs=PATH`: path to a definition file containing all global types to load into the type checker.
 - `--stdin-filepath=PATH`: the path representation of the code parsed in to stdin. Used to resolve requires
@@ -36,6 +38,7 @@ luau-analyze --project=default.project.json --defs=globalTypes.d.lua fileToAnaly
 Further options:
 
 - `--dump-source-map`: dumps a map of registered files that the tool has picked up. Useful for debugging
+- `--exclude-virtual-path`: don't include the virtual path in the output. Useful when a machine needs to read the output
 
 ## Registering global types
 
