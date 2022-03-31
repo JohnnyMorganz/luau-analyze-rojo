@@ -90,7 +90,8 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
             for (std::filesystem::directory_iterator next(fullPath), end; next != end; ++next)
             {
                 auto path = next->path();
-                auto fileName = removeRojoExtension(path.filename().generic_string());
+                auto fullFileName = path.filename().generic_string();
+                auto fileName = removeRojoExtension(fullFileName);
                 if (fileName == "init")
                 {
                     node.path = path;
