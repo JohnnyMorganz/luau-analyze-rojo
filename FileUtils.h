@@ -5,8 +5,10 @@
 #include <string>
 #include <functional>
 #include <vector>
+#include <filesystem>
 
 std::optional<std::string> readFile(const std::string& name);
+std::optional<std::string> readFile(const std::filesystem::path& name);
 std::optional<std::string> readStdin();
 
 bool isDirectory(const std::string& path);

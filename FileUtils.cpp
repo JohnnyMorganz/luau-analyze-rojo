@@ -19,6 +19,10 @@
 #endif
 
 #include <string.h>
+#include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <sstream>
 
 #ifdef _WIN32
 static std::wstring fromUtf8(const std::string& path)
@@ -92,6 +96,26 @@ std::optional<std::string> readStdin()
         return std::nullopt;
 
     return result;
+}
+
+std::optional<std::string> readFile(const std::filesystem::path& filePath)
+{
+    std::ifstream fileContents;
+    fileContents.open(filePath);
+
+    std::string output;
+    std::stringstream buffer;
+
+    if (fileContents)
+    {
+        buffer << fileContents.rdbuf();
+        output = buffer.str();
+        return output;
+    }
+    else
+    {
+        return std::nullopt;
+    }
 }
 
 template<typename Ch>

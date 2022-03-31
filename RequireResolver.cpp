@@ -12,7 +12,7 @@ namespace ns
 struct ProjectNode
 {
     std::optional<std::string> class_name;
-    std::optional<std::string> path;
+    std::optional<std::filesystem::path> path;
     std::unordered_map<std::string, std::shared_ptr<ProjectNode>> children;
 };
 
@@ -46,17 +46,29 @@ void from_json(const json& j, Project& p)
 }; // namespace ns
 
 
-void handleNodePath(SourceNode& node, const std::string& path, const std::string& basePath);
-void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath);
+void handleNodePath(SourceNode& node, const std::filesystem::path& path, const std::filesystem::path& basePath);
+void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::filesystem::path& basePath);
 
-void handleNodePath(SourceNode& node, const std::string& path, const std::string& basePath)
+std::string removeRojoExtension(std::string& nameWithExtension)
 {
-    const std::string& fullPath = joinPaths(basePath, path);
+    // Remove specific extensions
+    for (auto& ext : {".server.lua", ".server.luau", ".client.lua", ".client.luau", ".lua", ".luau"})
+    {
+        std::string::size_type extension = nameWithExtension.find(ext);
+        if (extension != std::string::npos)
+            return nameWithExtension.erase(extension, strlen(ext));
+    }
+    return nameWithExtension;
+}
 
-    if (isDirectory(fullPath))
+void handleNodePath(SourceNode& node, const std::filesystem::path& path, const std::filesystem::path& basePath)
+{
+    auto fullPath = basePath / path;
+
+    if (std::filesystem::is_directory(fullPath))
     {
         // Check if default.project.json exists
-        std::optional<std::string> nestedProjectSource = readFile(joinPaths(fullPath, "default.project.json"));
+        std::optional<std::string> nestedProjectSource = readFile(fullPath / "default.project.json");
         if (nestedProjectSource)
         {
 
@@ -75,22 +87,21 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
         }
         else
         {
-            traverseDirectory(fullPath, false,
-                [&](const std::string& name)
+            for (std::filesystem::directory_iterator next(fullPath), end; next != end; ++next)
+            {
+                auto path = next->path();
+                auto fileName = removeRojoExtension(path.filename().generic_string());
+                if (fileName == "init")
                 {
-                    auto fileName = getFileName(name);
-
-                    if (fileName == "init")
-                    {
-                        node.path = name;
-                    }
-                    else
-                    {
-                        SourceNode childNode;
-                        handleNodePath(childNode, name, ""); // Don't need to basePath here since name is the full path
-                        node.children.insert(std::pair(fileName, std::make_shared<SourceNode>(childNode)));
-                    }
-                });
+                    node.path = path;
+                }
+                else
+                {
+                    SourceNode childNode;
+                    handleNodePath(childNode, path, ""); // Don't need to basePath here since name is the full path
+                    node.children.insert(std::pair(fileName, std::make_shared<SourceNode>(childNode)));
+                }
+            }
         }
     }
     else
@@ -99,7 +110,7 @@ void handleNodePath(SourceNode& node, const std::string& path, const std::string
     }
 }
 
-void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::string& basePath)
+void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::filesystem::path& basePath)
 {
     SourceNode childNode;
     childNode.className = node.class_name;
@@ -118,10 +129,9 @@ void populateChildren(SourceNode& parent, const std::string& name, const ns::Pro
 
 void dumpSourceMap(const SourceNode& root, int level = 0)
 {
-    if (root.path)
+    if (root.path.has_value())
     {
-
-        printf("%*sPath: %s\n", level, "", (*root.path).c_str());
+        printf("%*sPath: %ls\n", level, "", std::filesystem::canonical(root.path.value()).c_str());
     }
     else
     {
@@ -146,7 +156,7 @@ void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std:
 {
     if (node.path)
     {
-        map[node.path.value()] = base;
+        map[std::filesystem::canonical(node.path.value()).generic_string()] = base;
     }
 
     for (auto& ch : node.children)
@@ -155,12 +165,12 @@ void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std:
     }
 }
 
-std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string& sourceMapPath)
+std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesystem::path& sourceMapPath)
 {
     std::optional<std::string> projectSource = readFile(sourceMapPath);
     if (projectSource)
     {
-        auto j = json::parse(*projectSource);
+        auto j = json::parse(projectSource.value());
         auto project = j.get<ns::Project>();
 
         // Create root node
@@ -191,7 +201,7 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::string&
     return std::nullopt;
 }
 
-std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
+std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
 {
     auto pathParts = Luau::split(requirePath, '/');
     // auto root = pathParts.front();
@@ -224,11 +234,12 @@ std::optional<std::string> RojoResolver::resolveRequireToRealPath(const std::str
     return currentNode.path;
 }
 
-std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::string& filePath)
+std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath)
 {
-    if (sourceMap.realPathToVirtualMap.find(filePath) != sourceMap.realPathToVirtualMap.end())
+    auto canonical = std::filesystem::canonical(filePath).generic_string();
+    if (sourceMap.realPathToVirtualMap.find(canonical) != sourceMap.realPathToVirtualMap.end())
     {
-        return sourceMap.realPathToVirtualMap.at(filePath);
+        return sourceMap.realPathToVirtualMap.at(canonical);
     }
 
     return std::nullopt;
@@ -239,13 +250,14 @@ static bool endsWith(std::string str, std::string suffix)
     return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
 }
 
-Luau::SourceCode::Type RojoResolver::sourceCodeTypeFromPath(const std::string& requirePath)
+Luau::SourceCode::Type RojoResolver::sourceCodeTypeFromPath(const std::filesystem::path& requirePath)
 {
-    if (endsWith(requirePath, ".server.lua") || endsWith(requirePath, ".server.luau"))
+    auto filename = requirePath.filename().generic_string();
+    if (endsWith(filename, ".server.lua") || endsWith(filename, ".server.luau"))
     {
         return Luau::SourceCode::Type::Script;
     }
-    else if (endsWith(requirePath, ".client.lua") || endsWith(requirePath, ".client.luau"))
+    else if (endsWith(filename, ".client.lua") || endsWith(filename, ".client.luau"))
     {
         return Luau::SourceCode::Type::Local;
     }

@@ -5,6 +5,7 @@
 #include "Luau/Frontend.h"
 #include "Luau/TypeAttach.h"
 #include "Luau/Transpiler.h"
+#include <filesystem>
 
 #include "FileUtils.h"
 #include "RequireResolver.h"
@@ -130,7 +131,7 @@ bool isManagedModule(const Luau::ModuleName& name)
 struct CliFileResolver : Luau::FileResolver
 {
     ResolvedSourceMap sourceMap;
-    std::optional<std::string> stdinFilepath;
+    std::optional<std::filesystem::path> stdinFilepath;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
@@ -152,12 +153,11 @@ struct CliFileResolver : Luau::FileResolver
         }
         else if (isManagedModule(name))
         {
-            std::optional<std::string> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
-            if (realFilePath)
+            std::optional<std::filesystem::path> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
+            if (realFilePath.has_value())
             {
-
-                source = readFile(*realFilePath);
-                sourceType = RojoResolver::sourceCodeTypeFromPath(*realFilePath);
+                source = readFile(realFilePath.value());
+                sourceType = RojoResolver::sourceCodeTypeFromPath(realFilePath.value());
             }
         }
         else
@@ -190,7 +190,7 @@ struct CliFileResolver : Luau::FileResolver
                 else
                 {
                     // context->name is a file path which we need to translate to a Rojo path
-                    std::string filePath = context->name;
+                    std::filesystem::path filePath = context->name;
                     if (context->name == "-")
                     {
                         if (stdinFilepath)
@@ -256,9 +256,9 @@ struct CliFileResolver : Luau::FileResolver
 
         if (isManagedModule(name))
         {
-            std::optional<std::string> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
-            if (realFilePath)
-                return realFilePath.value() + "[" + name + "]";
+            std::optional<std::filesystem::path> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
+            if (realFilePath.has_value())
+                return realFilePath.value().relative_path().generic_string() + "[" + name + "]";
 
             return "<UNKNOWN>[" + name + "]";
         }
@@ -368,9 +368,9 @@ int main(int argc, char** argv)
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
     bool dumpMap = false;
-    std::optional<std::string> projectPath = std::nullopt;
-    std::optional<std::string> globalDefsPath = std::nullopt;
-    std::optional<std::string> stdinFilepath = std::nullopt;
+    std::optional<std::filesystem::path> projectPath = std::nullopt;
+    std::optional<std::filesystem::path> globalDefsPath = std::nullopt;
+    std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -410,7 +410,7 @@ int main(int argc, char** argv)
     fileResolver.stdinFilepath = stdinFilepath;
     if (projectPath)
     {
-        auto sourceMap = RojoResolver::parseSourceMap(*projectPath);
+        auto sourceMap = RojoResolver::parseSourceMap(projectPath.value());
         if (sourceMap)
         {
             fileResolver.sourceMap = sourceMap.value();
@@ -435,12 +435,15 @@ int main(int argc, char** argv)
             {
                 fprintf(stderr, "Failed to load definitions\n");
                 for (const auto& error : loadResult.parseResult.errors)
-                    report(format, (*globalDefsPath).c_str(), error.getLocation(), "SyntaxError", error.getMessage().c_str());
+                    report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.getLocation(), "SyntaxError",
+                        error.getMessage().c_str());
                 for (const auto& error : loadResult.module->errors)
                     if (const Luau::SyntaxError* syntaxError = Luau::get_if<Luau::SyntaxError>(&error.data))
-                        report(format, (*globalDefsPath).c_str(), error.location, "SyntaxError", syntaxError->message.c_str());
+                        report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.location, "SyntaxError",
+                            syntaxError->message.c_str());
                     else
-                        report(format, (*globalDefsPath).c_str(), error.location, "TypeError", Luau::toString(error).c_str());
+                        report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.location, "TypeError",
+                            Luau::toString(error).c_str());
             }
             else
             {
