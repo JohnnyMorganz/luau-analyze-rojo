@@ -21,14 +21,14 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          cmake --build . --config Release --target luau-analyze-rojo
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          cmake --build . --config RelWithDebInfo --target luau-analyze-rojo
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
           name: luau-analyze-win64
-          path: build/Release/luau-analyze-rojo.exe
+          path: build/RelWithDebInfo/luau-analyze-rojo.exe
 
   macos:
     runs-on: macos-latest
@@ -42,8 +42,8 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --target luau-analyze-rojo --config=Release
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build . --target luau-analyze-rojo --config=RelWithDebInfo
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
@@ -63,8 +63,8 @@ jobs:
       - name: Build Tool
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --target luau-analyze-rojo --config=Release
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build . --target luau-analyze-rojo --config=RelWithDebInfo
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
