@@ -1,7 +1,6 @@
 # Script to pull in API Dump and export it into a definition file
 # Based off https://gist.github.com/HawDevelopment/97f2411149e24d8e7a712016114d55ff
-from typing import List, Literal, Optional, Union
-from typing_extensions import TypedDict
+from typing import List, Literal, Optional, Union, TypedDict
 from collections import defaultdict
 import requests
 import json
