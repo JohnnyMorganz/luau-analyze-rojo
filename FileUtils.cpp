@@ -179,6 +179,13 @@ std::vector<std::filesystem::path> getSourceFiles(int argc, char** argv)
             continue;
 
         auto path = std::filesystem::path(argv[i]);
+        if (!std::filesystem::exists(path))
+        {
+            std::cerr << "Cannot get " << path << ": path does not exist\n";
+            continue;
+        }
+
+
         if (std::filesystem::is_directory(path))
         {
             for (std::filesystem::recursive_directory_iterator next(path), end; next != end; ++next)

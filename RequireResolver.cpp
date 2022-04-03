@@ -4,6 +4,7 @@
 #include "Luau/Config.h"
 #include "Luau/StringUtils.h"
 #include "extern/json.hpp"
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -180,7 +181,15 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
 {
     if (root.path.has_value())
     {
-        printf("%*sPath: %ls\n", level, "", std::filesystem::canonical(root.path.value()).c_str());
+        try
+        {
+            auto canonicalPath = std::filesystem::canonical(root.path.value());
+            printf("%*sPath: %ls\n", level, "", canonicalPath.c_str());
+        }
+        catch (const std::exception& ex)
+        {
+            printf("%*sPath: FAILED TO GENERATE: %s\n", level, "", ex.what());
+        }
     }
     else
     {
@@ -205,7 +214,16 @@ void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std:
 {
     if (node.path)
     {
-        map[std::filesystem::canonical(node.path.value()).generic_string()] = base;
+
+        try
+        {
+            auto canonicalPath = std::filesystem::canonical(node.path.value());
+            map[canonicalPath.generic_string()] = base;
+        }
+        catch (const std::exception& ex)
+        {
+            std::cout << "Failed to generate canonical path for " << node.path.value() << ":\n" << ex.what() << '\n';
+        }
     }
 
     for (auto& ch : node.children)
@@ -277,10 +295,17 @@ std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(cons
 
 std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath)
 {
-    auto canonical = std::filesystem::canonical(filePath).generic_string();
-    if (sourceMap.realPathToVirtualMap.find(canonical) != sourceMap.realPathToVirtualMap.end())
+    try
     {
-        return sourceMap.realPathToVirtualMap.at(canonical);
+        auto canonical = std::filesystem::canonical(filePath).generic_string();
+        if (sourceMap.realPathToVirtualMap.find(canonical) != sourceMap.realPathToVirtualMap.end())
+        {
+            return sourceMap.realPathToVirtualMap.at(canonical);
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        std::cerr << "Failed to resolve provided file path " << filePath << ":\n" << ex.what() << '\n';
     }
 
     return std::nullopt;
