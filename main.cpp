@@ -329,7 +329,7 @@ struct CliConfigResolver : Luau::ConfigResolver
     }
 };
 
-Luau::TypeId makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, SourceNode& node)
+std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, SourceNode& node)
 {
     std::optional<Luau::TypeFun> baseType;
     if (node.className.has_value())
@@ -340,7 +340,13 @@ Luau::TypeId makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& 
     {
         baseType = globalScope->lookupType("Instance");
     }
-    LUAU_ASSERT(baseType); // TODO: is this ensured??
+    // If we reach this stage, we couldn't find the class name nor the "Instance" type
+    // This most likely means a valid definitions file was not provided
+    if (!baseType.has_value())
+    {
+        return std::nullopt;
+    }
+
     auto typeId = baseType.value().type;
 
     if (node.children.size() > 0)
@@ -349,8 +355,12 @@ Luau::TypeId makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& 
         Luau::TableTypeVar children{Luau::TableState::Sealed, globalScope->level};
         for (const auto& child : node.children)
         {
-            auto childProperty = Luau::makeProperty(makeInstanceType(typeArena, globalScope, *child.second), "@luau/instance");
-            children.props[child.first] = childProperty;
+            auto childType = makeInstanceType(typeArena, globalScope, *child.second);
+            if (childType.has_value())
+            {
+                auto childProperty = Luau::makeProperty(childType.value(), "@luau/instance");
+                children.props[child.first] = childProperty;
+            }
         }
         Luau::TypeId childId = typeArena.addType(children);
         typeId = Luau::makeIntersection(typeArena, {typeId, childId});
@@ -471,9 +481,13 @@ int main(int argc, char** argv)
                                 // Extend the props to include the children
                                 for (const auto& child : (*services.second).children)
                                 {
-                                    ctv->props[child.first] = makeProperty(
-                                        makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second)),
-                                        "@luau/serviceChild");
+                                    auto childType =
+                                        makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second));
+                                    if (childType.has_value())
+                                    {
+
+                                        ctv->props[child.first] = makeProperty(childType.value(), "@luau/serviceChild");
+                                    }
                                 }
                             }
                         }
@@ -502,8 +516,10 @@ int main(int argc, char** argv)
         auto typeArena = scope->returnType->owningArena;
         LUAU_ASSERT(typeArena);
         auto ty = makeInstanceType(*typeArena, scope, node.value());
+        if (!ty.has_value())
+            return;
 
-        scope->bindings[Luau::AstName("script")] = Luau::Binding{ty, Luau::Location{}, {}, {}, std::nullopt};
+        scope->bindings[Luau::AstName("script")] = Luau::Binding{ty.value(), Luau::Location{}, {}, {}, std::nullopt};
     };
 
     Luau::freeze(frontend.typeChecker.globalTypes);
