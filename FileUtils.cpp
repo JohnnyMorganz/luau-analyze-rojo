@@ -179,7 +179,7 @@ std::vector<std::filesystem::path> getSourceFiles(int argc, char** argv)
             continue;
 
         auto path = std::filesystem::path(argv[i]);
-        if (!std::filesystem::exists(path))
+        if (path != "-" && !std::filesystem::exists(path))
         {
             std::cerr << "Cannot get " << path << ": path does not exist\n";
             continue;
