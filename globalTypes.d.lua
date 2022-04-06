@@ -554,6 +554,7 @@ type EnumConnectionError = {
 	DisconnectClientFailure: EnumItem,
 	DisconnectClientRequest: EnumItem,
 	DisconnectOutOfMemory: EnumItem,
+	DisconnectModeratedGame: EnumItem,
 	PlacelaunchErrors: EnumItem,
 	PlacelaunchDisabled: EnumItem,
 	PlacelaunchError: EnumItem,
@@ -2519,6 +2520,11 @@ type EnumWrapLayerDebugMode = {
 	Reference: EnumItem,
 	Rbf: EnumItem,
 	OuterCage: EnumItem,
+	ReferenceMeshAfterMorph: EnumItem,
+	HSROuterDetail: EnumItem,
+	HSROuter: EnumItem,
+	HSRInner: EnumItem,
+	HSRInnerReverse: EnumItem,
 }
 type EnumWrapTargetDebugMode = {
 	None: EnumItem,
@@ -2529,6 +2535,7 @@ type EnumWrapTargetDebugMode = {
 	TargetLayerCageCompressed: EnumItem,
 	TargetLayerInterface: EnumItem,
 	Rbf: EnumItem,
+	OuterCageDetail: EnumItem,
 }
 type EnumZIndexBehavior = {
 	Global: EnumItem,
@@ -6704,6 +6711,7 @@ declare class MaterialService extends Instance
 	function ClearOverridePartMaterial(self, material: EnumMaterial): nil
 	function ClearOverrideTerrainMaterial(self, material: EnumMaterial): nil
 	function GetBaseMaterialOverride(self, material: EnumMaterial): string
+	function GetMaterialVariant(self, material: EnumMaterial, name: string): MaterialVariant
 	function GetOverridePartMaterial(self, material: EnumMaterial): MaterialVariant
 	function GetOverrideTerrainMaterial(self, material: EnumMaterial): MaterialVariant
 	function SetBaseMaterialOverride(self, material: EnumMaterial, name: string): nil
@@ -8880,7 +8888,6 @@ declare class StudioService extends Instance
 	UseLocalSpace: boolean
 	function AnimationIdSelected(self, id: number): nil
 	function CopyToClipboard(self, stringToCopy: string): nil
-	function DEPRECATED_SetTurnOnTeamCreateOnPublish(self, turnOn: boolean): nil
 	function EmitPlacePublishedSignal(self): nil
 	function GetBadgeConfigureUrl(self, badgeId: number): string
 	function GetBadgeUploadUrl(self): string
