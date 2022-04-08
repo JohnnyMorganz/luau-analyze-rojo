@@ -6,6 +6,7 @@
 #include "Luau/TypeAttach.h"
 #include "Luau/Transpiler.h"
 #include <filesystem>
+#include <vector>
 
 #include "FileUtils.h"
 #include "RequireResolver.h"
@@ -387,7 +388,7 @@ int main(int argc, char** argv)
     bool dumpMap = false;
     bool excludeVirtualPath = false;
     std::optional<std::filesystem::path> projectPath = std::nullopt;
-    std::optional<std::filesystem::path> globalDefsPath = std::nullopt;
+    std::vector<std::filesystem::path> globalDefsPaths;
     std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
 
     for (int i = 1; i < argc; ++i)
@@ -410,7 +411,7 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--project=", 10) == 0)
             projectPath = std::string(argv[i] + 10);
         else if (strncmp(argv[i], "--defs=", 7) == 0)
-            globalDefsPath = std::string(argv[i] + 7);
+            globalDefsPaths.push_back(std::string(argv[i] + 7));
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
     }
@@ -445,49 +446,60 @@ int main(int argc, char** argv)
     Luau::registerBuiltinTypes(frontend.typeChecker);
 
     // If global definitions have been provided, then also register them
-    if (globalDefsPath)
+    if (!globalDefsPaths.empty())
     {
-        std::optional<std::string> defs = readFile(*globalDefsPath);
-        if (defs)
+        bool success = true;
+
+        for (auto path : globalDefsPaths)
         {
-            auto loadResult = Luau::loadDefinitionFile(frontend.typeChecker, frontend.typeChecker.globalScope, *defs, "@luau");
-            if (!loadResult.success)
+            std::optional<std::string> defs = readFile(path);
+
+            if (defs.has_value())
             {
-                fprintf(stderr, "Failed to load definitions\n");
-                for (const auto& error : loadResult.parseResult.errors)
-                    report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.getLocation(), "SyntaxError",
-                        error.getMessage().c_str());
-                for (const auto& error : loadResult.module->errors)
-                    if (const Luau::SyntaxError* syntaxError = Luau::get_if<Luau::SyntaxError>(&error.data))
-                        report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.location, "SyntaxError",
-                            syntaxError->message.c_str());
-                    else
-                        report(format, globalDefsPath.value().relative_path().generic_string().c_str(), error.location, "TypeError",
-                            Luau::toString(error).c_str());
+                auto loadResult = Luau::loadDefinitionFile(frontend.typeChecker, frontend.typeChecker.globalScope, defs.value(), "@luau");
+                if (!loadResult.success)
+                {
+                    success = false;
+                    fprintf(stderr, "Failed to load definitions\n");
+                    for (const auto& error : loadResult.parseResult.errors)
+                        report(format, path.relative_path().generic_string().c_str(), error.getLocation(), "SyntaxError", error.getMessage().c_str());
+                    for (const auto& error : loadResult.module->errors)
+                        if (const Luau::SyntaxError* syntaxError = Luau::get_if<Luau::SyntaxError>(&error.data))
+                            report(
+                                format, path.relative_path().generic_string().c_str(), error.location, "SyntaxError", syntaxError->message.c_str());
+                        else
+                            report(format, path.relative_path().generic_string().c_str(), error.location, "TypeError", Luau::toString(error).c_str());
+                }
             }
             else
             {
-                // Try to extend the globally registered types with the project format
-                auto root = fileResolver.sourceMap.root;
-                if (root.className.has_value() && root.className.value() == "DataModel")
-                {
-                    for (const auto& services : root.children)
-                    {
-                        auto serviceType = frontend.typeChecker.globalScope->lookupType(services.first);
-                        if (serviceType.has_value())
-                        {
-                            if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
-                            {
-                                // Extend the props to include the children
-                                for (const auto& child : (*services.second).children)
-                                {
-                                    auto childType =
-                                        makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second));
-                                    if (childType.has_value())
-                                    {
+                success = false;
+            }
+        }
 
-                                        ctv->props[child.first] = makeProperty(childType.value(), "@luau/serviceChild");
-                                    }
+        // Apply type overrides
+        if (success)
+        {
+            // Try to extend the globally registered types with the project format
+            auto root = fileResolver.sourceMap.root;
+            if (root.className.has_value() && root.className.value() == "DataModel")
+            {
+                for (const auto& services : root.children)
+                {
+                    auto serviceType = frontend.typeChecker.globalScope->lookupType(services.first);
+                    if (serviceType.has_value())
+                    {
+                        if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
+                        {
+                            // Extend the props to include the children
+                            for (const auto& child : (*services.second).children)
+                            {
+                                auto childType =
+                                    makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second));
+                                if (childType.has_value())
+                                {
+
+                                    ctv->props[child.first] = makeProperty(childType.value(), "@luau/serviceChild");
                                 }
                             }
                         }
