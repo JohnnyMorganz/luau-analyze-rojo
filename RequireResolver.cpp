@@ -128,8 +128,8 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
     }
     else
     {
-        node.path = path;
-        auto sourceType = RojoResolver::sourceCodeTypeFromPath(path);
+        node.path = fullPath;
+        auto sourceType = RojoResolver::sourceCodeTypeFromPath(fullPath);
         if (sourceType == Luau::SourceCode::Script)
         {
             node.className = "Script";
@@ -139,9 +139,9 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
             node.className = "LocalScript";
         }
 
-        if (path.has_extension())
+        if (fullPath.has_extension())
         {
-            auto ext = path.extension();
+            auto ext = fullPath.extension();
             if ((ext == ".lua" || ext == ".luau") && !node.className.has_value())
             {
                 node.className = "ModuleScript";
