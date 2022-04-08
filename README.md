@@ -40,6 +40,12 @@ Further options:
 - `--dump-source-map`: dumps a map of registered files that the tool has picked up. Useful for debugging
 - `--exclude-virtual-path`: don't include the virtual path in the output. Useful when a machine needs to read the output
 
+Note that `--defs` supports being listed multiple times, to handle multiple different definition files:
+
+```sh
+luau-analyze --defs=globalTypes.d.lua --defs=extraTypes.d.lua fileToAnalyse.luau
+```
+
 ## Registering global types
 
 You can create a definition file to register as global types.
