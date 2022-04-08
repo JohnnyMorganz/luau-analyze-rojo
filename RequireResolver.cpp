@@ -53,7 +53,7 @@ void populateChildren(SourceNode& parent, const std::string& name, const ns::Pro
 std::string removeRojoExtension(std::string& nameWithExtension)
 {
     // Remove specific extensions
-    for (auto& ext : {".server.lua", ".server.luau", ".client.lua", ".client.luau", ".lua", ".luau"})
+    for (auto& ext : {".server.lua", ".server.luau", ".client.lua", ".client.luau", ".lua", ".luau", ".txt", ".csv"})
     {
         std::string::size_type extension = nameWithExtension.find(ext);
         if (extension != std::string::npos)
@@ -146,11 +146,11 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
             {
                 node.className = "ModuleScript";
             }
-            else if (ext == "txt")
+            else if (ext == ".txt")
             {
                 node.className = "StringValue";
             }
-            else if (ext == "csv")
+            else if (ext == ".csv")
             {
                 node.className = "LocalizationTable";
             }
