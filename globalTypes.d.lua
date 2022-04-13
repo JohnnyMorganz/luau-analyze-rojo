@@ -1764,6 +1764,11 @@ type EnumProductPurchaseDecision = {
 	NotProcessedYet: EnumItem,
 	PurchaseGranted: EnumItem,
 }
+type EnumPropertyStatus = {
+	Ok: EnumItem,
+	Warning: EnumItem,
+	Error: EnumItem,
+}
 type EnumProximityPromptExclusivity = {
 	OnePerButton: EnumItem,
 	OneGlobally: EnumItem,
@@ -1952,6 +1957,10 @@ type EnumScrollingDirection = {
 	X: EnumItem,
 	Y: EnumItem,
 	XY: EnumItem,
+}
+type EnumSelectionBehavior = {
+	Escape: EnumItem,
+	Stop: EnumItem,
 }
 type EnumServerAudioBehavior = {
 	Enabled: EnumItem,
@@ -2733,6 +2742,7 @@ declare Enum: {
 	PrivilegeType: EnumPrivilegeType,
 	ProductLocationRestriction: EnumProductLocationRestriction,
 	ProductPurchaseDecision: EnumProductPurchaseDecision,
+	PropertyStatus: EnumPropertyStatus,
 	ProximityPromptExclusivity: EnumProximityPromptExclusivity,
 	ProximityPromptInputType: EnumProximityPromptInputType,
 	ProximityPromptStyle: EnumProximityPromptStyle,
@@ -2758,6 +2768,7 @@ declare Enum: {
 	ScreenOrientation: EnumScreenOrientation,
 	ScrollBarInset: EnumScrollBarInset,
 	ScrollingDirection: EnumScrollingDirection,
+	SelectionBehavior: EnumSelectionBehavior,
 	ServerAudioBehavior: EnumServerAudioBehavior,
 	SignalBehavior: EnumSignalBehavior,
 	SizeConstraint: EnumSizeConstraint,
@@ -3756,6 +3767,7 @@ type StringValue = any
 type Vector3Value = any
 type Vector3Curve = any
 type VersionControlService = any
+type VideoCaptureService = any
 type VirtualInputManager = any
 type VirtualUser = any
 type VisibilityService = any
@@ -3772,6 +3784,7 @@ declare class Instance
 	DataCost: number
 	Name: string
 	Parent: Instance
+	PropertyStatusStudio: EnumPropertyStatus
 	RobloxLocked: boolean
 	SourceAssetId: number
 	archivable: boolean
@@ -5410,6 +5423,11 @@ declare class GuiBase2d extends GuiBase
 	Localize: boolean
 	RawRect2D: Rect
 	RootLocalizationTable: LocalizationTable
+	SelectionBehaviorDown: EnumSelectionBehavior
+	SelectionBehaviorLeft: EnumSelectionBehavior
+	SelectionBehaviorRight: EnumSelectionBehavior
+	SelectionBehaviorUp: EnumSelectionBehavior
+	SelectionGroup: boolean
 	TotalGroupScale: number
 end
 
@@ -8311,6 +8329,7 @@ declare class ServiceProvider extends Instance
 	function GetService(self, service: "UserService"): UserService
 	function GetService(self, service: "VRService"): VRService
 	function GetService(self, service: "VersionControlService"): VersionControlService
+	function GetService(self, service: "VideoCaptureService"): VideoCaptureService
 	function GetService(self, service: "VirtualInputManager"): VirtualInputManager
 	function GetService(self, service: "VirtualUser"): VirtualUser
 	function GetService(self, service: "VisibilityService"): VisibilityService
@@ -9350,6 +9369,7 @@ declare class UserGameSettings extends Instance
 	ComputerCameraMovementMode: EnumComputerCameraMovementMode
 	ComputerMovementMode: EnumComputerMovementMode
 	ControlMode: EnumControlMode
+	DefaultCameraID: string
 	Fullscreen: boolean
 	GamepadCameraSensitivity: number
 	GraphicsQualityLevel: number
@@ -9592,6 +9612,12 @@ end
 
 declare class VersionControlService extends Instance
 	ScriptCollabEnabled: boolean
+end
+
+declare class VideoCaptureService extends Instance
+	Active: boolean
+	CameraID: string
+	function GetCameraDevices(self): { [any]: any }
 end
 
 declare class VirtualInputManager extends Instance
