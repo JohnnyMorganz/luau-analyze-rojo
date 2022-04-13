@@ -13,6 +13,15 @@
 
 LUAU_FASTFLAG(DebugLuauTimeTracing)
 
+LUAU_FASTINT(LuauTypeInferRecursionLimit)
+LUAU_FASTINT(LuauTypeInferTypePackLoopLimit)
+LUAU_FASTINT(LuauCheckRecursionLimit)
+LUAU_FASTINT(LuauTableTypeMaximumStringifierLength)
+LUAU_FASTINT(LuauTypeInferIterationLimit)
+LUAU_FASTINT(LuauTarjanChildLimit)
+LUAU_FASTFLAG(DebugLuauFreezeArena)
+
+
 enum class ReportFormat
 {
     Default,
@@ -414,6 +423,19 @@ int main(int argc, char** argv)
             globalDefsPaths.push_back(std::string(argv[i] + 7));
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
+
+        else if (strncmp(argv[i], "--limit-infer-recursion=", 24) == 0) // default: 100 (?)
+            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 24));
+        else if (strncmp(argv[i], "--limit-infer-iteration=", 24) == 0) // default: 2000 (?)
+            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 24));
+        else if (strncmp(argv[i], "--limit-infer-type-pack-loop=", 29) == 0) // default: 100 (?)
+            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 29));
+        else if (strncmp(argv[i], "--limit-check-recursion=", 24) == 0) // default: 100 (?)
+            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 24));
+        else if (strncmp(argv[i], "--limit-tarjan-child=", 21) == 0) // default: 1000 (?)
+            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 21));
+        else if (strncmp(argv[i], "--limit-max-table-str-len=", 26) == 0) // default: 100 (?)
+            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 26));
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
