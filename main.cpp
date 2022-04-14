@@ -446,13 +446,6 @@ int main(int argc, char** argv)
             FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 28));
         else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 45) == 0)
             FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 45));
-            
-        printf("  --flag:LuauTypeInferRecursionLimit=INT:            value %d\n", FInt::LuauTypeInferRecursionLimit.value);
-        printf("  --flag:LuauTypeInferIterationLimit=INT:            value %d\n", FInt::LuauTypeInferIterationLimit.value);
-        printf("  --flag:LuauTypeInferTypePackLoopLimit=INT:         value %d\n", FInt::LuauTypeInferTypePackLoopLimit.value);
-        printf("  --flag:LuauCheckRecursionLimit=INT:                value %d\n", FInt::LuauCheckRecursionLimit.value);
-        printf("  --flag:LuauTarjanChildLimit=INT:                   value %d\n", FInt::LuauTarjanChildLimit.value);
-        printf("  --flag:LuauTableTypeMaximumStringifierLength=INT:  value %d\n", FInt::LuauTableTypeMaximumStringifierLength.value);
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
