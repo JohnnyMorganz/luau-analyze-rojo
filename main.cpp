@@ -434,8 +434,8 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
 
-        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 31) == 0)
-            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 31));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 35) == 0)
+            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 35));
         else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 35) == 0)
             FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 35));
         else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 38) == 0)
@@ -446,6 +446,13 @@ int main(int argc, char** argv)
             FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 28));
         else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 45) == 0)
             FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 45));
+            
+        printf("  --flag:LuauTypeInferRecursionLimit=INT:            value %d\n", FInt::LuauTypeInferRecursionLimit.value);
+        printf("  --flag:LuauTypeInferIterationLimit=INT:            value %d\n", FInt::LuauTypeInferIterationLimit.value);
+        printf("  --flag:LuauTypeInferTypePackLoopLimit=INT:         value %d\n", FInt::LuauTypeInferTypePackLoopLimit.value);
+        printf("  --flag:LuauCheckRecursionLimit=INT:                value %d\n", FInt::LuauCheckRecursionLimit.value);
+        printf("  --flag:LuauTarjanChildLimit=INT:                   value %d\n", FInt::LuauTarjanChildLimit.value);
+        printf("  --flag:LuauTableTypeMaximumStringifierLength=INT:  value %d\n", FInt::LuauTableTypeMaximumStringifierLength.value);
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
