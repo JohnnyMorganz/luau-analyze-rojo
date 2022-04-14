@@ -128,7 +128,7 @@ static void displayHelp(const char* argv0)
     printf("  --exclude-virtual-path: don't include virtual path name in output\n");
     printf("\n");
     printf("Available limit flags:\n");
-    printf("  These options affect internal limits on the Luau typechecker.\n");
+    printf("  These options affect internal limits of the Luau typechecker.\n");
     printf("  Changing these may permit the typechecker to work on complex code at the cost of performance.\n");
     printf("  --flag:LuauTypeInferRecursionLimit=INT:            default %d\n", FInt::LuauTypeInferRecursionLimit.value);
     printf("  --flag:LuauTypeInferIterationLimit=INT:            default %d\n", FInt::LuauTypeInferIterationLimit.value);

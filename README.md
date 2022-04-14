@@ -48,7 +48,7 @@ luau-analyze --defs=globalTypes.d.lua --defs=extraTypes.d.lua fileToAnalyse.luau
 
 Limit flags:
 
-These options affect internal limits on the Luau typechecker.\
+These options affect internal limits of the Luau typechecker.\
 Changing these may permit the typechecker to work on complex code at the cost of performance.\
 We don't have good documentation on how these flags affect behavior.\
 Defaults may be listed by running `luau-analyze-rojo --help`
