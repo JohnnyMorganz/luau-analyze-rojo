@@ -126,6 +126,16 @@ static void displayHelp(const char* argv0)
     printf("  --stdin-filepath=PATH: path to file being sent through stdin. Used for require resolution\n");
     printf("  --dump-source-map: dump the currently resolved source map\n");
     printf("  --exclude-virtual-path: don't include virtual path name in output\n");
+    printf("\n");
+    printf("Available limit flags:\n");
+    printf("  These options affect internal limits on the Luau typechecker.\n");
+    printf("  Changing these may permit the typechecker to work on complex code at the cost of performance.\n");
+    printf("  --flag:LuauTypeInferRecursionLimit=INT:            default %d\n", FInt::LuauTypeInferRecursionLimit.value);
+    printf("  --flag:LuauTypeInferIterationLimit=INT:            default %d\n", FInt::LuauTypeInferIterationLimit.value);
+    printf("  --flag:LuauTypeInferTypePackLoopLimit=INT:         default %d\n", FInt::LuauTypeInferTypePackLoopLimit.value);
+    printf("  --flag:LuauCheckRecursionLimit=INT:                default %d\n", FInt::LuauCheckRecursionLimit.value);
+    printf("  --flag:LuauTarjanChildLimit=INT:                   default %d\n", FInt::LuauTarjanChildLimit.value);
+    printf("  --flag:LuauTableTypeMaximumStringifierLength=INT:  default %d\n", FInt::LuauTableTypeMaximumStringifierLength.value);
 }
 
 static int assertionHandler(const char* expr, const char* file, int line, const char* function)
@@ -424,18 +434,18 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
 
-        else if (strncmp(argv[i], "--limit-infer-recursion=", 24) == 0) // default: 100 (?)
-            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 24));
-        else if (strncmp(argv[i], "--limit-infer-iteration=", 24) == 0) // default: 2000 (?)
-            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 24));
-        else if (strncmp(argv[i], "--limit-infer-type-pack-loop=", 29) == 0) // default: 100 (?)
-            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 29));
-        else if (strncmp(argv[i], "--limit-check-recursion=", 24) == 0) // default: 100 (?)
-            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 24));
-        else if (strncmp(argv[i], "--limit-tarjan-child=", 21) == 0) // default: 1000 (?)
-            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 21));
-        else if (strncmp(argv[i], "--limit-max-table-str-len=", 26) == 0) // default: 100 (?)
-            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 26));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 36) == 0)
+            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 36));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 36) == 0)
+            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 36));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 39) == 0)
+            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 39));
+        else if (strncmp(argv[i], "--flag:LuauCheckRecursionLimit=", 32) == 0)
+            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 32));
+        else if (strncmp(argv[i], "--flag:LuauTarjanChildLimit=", 29) == 0)
+            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 29));
+        else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 46) == 0)
+            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 46));
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
