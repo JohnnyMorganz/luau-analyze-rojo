@@ -434,18 +434,18 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
 
-        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 36) == 0)
-            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 36));
-        else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 36) == 0)
-            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 36));
-        else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 39) == 0)
-            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 39));
-        else if (strncmp(argv[i], "--flag:LuauCheckRecursionLimit=", 32) == 0)
-            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 32));
-        else if (strncmp(argv[i], "--flag:LuauTarjanChildLimit=", 29) == 0)
-            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 29));
-        else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 46) == 0)
-            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 46));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 31) == 0)
+            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 31));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 35) == 0)
+            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 35));
+        else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 38) == 0)
+            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 38));
+        else if (strncmp(argv[i], "--flag:LuauCheckRecursionLimit=", 31) == 0)
+            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 31));
+        else if (strncmp(argv[i], "--flag:LuauTarjanChildLimit=", 28) == 0)
+            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 28));
+        else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 45) == 0)
+            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 45));
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
