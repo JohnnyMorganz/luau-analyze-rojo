@@ -3978,7 +3978,6 @@ declare class AssetImportService extends Instance
 	function Upload(self): nil
 	function ImportMeshWithPrompt(self): any
 	ProgressUpdate: RBXScriptSignal<number>
-	SettingsChanged: RBXScriptSignal<string>
 	UploadFinished: RBXScriptSignal<boolean, { [any]: any }>
 end
 
@@ -3997,6 +3996,7 @@ declare class AssetManagerService extends Instance
 	function InsertMeshesWithLocation(self, aliasNames: { any }): nil
 	function InsertModel(self, modelId: number): nil
 	function InsertPackage(self, packageId: number): nil
+	function InsertVideo(self, assetId: number, assetName: string): nil
 	function OpenLinkedSource(self, aliasName: string): nil
 	function OpenPlace(self, placeId: number): nil
 	function RefreshLinkedSource(self, aliasName: string): nil
@@ -6729,6 +6729,7 @@ declare class MaterialService extends Instance
 	function ClearOverridePartMaterial(self, material: EnumMaterial): nil
 	function ClearOverrideTerrainMaterial(self, material: EnumMaterial): nil
 	function GetBaseMaterialOverride(self, material: EnumMaterial): string
+	function GetMaterialOverrideChanged(self, material: EnumMaterial): RBXScriptSignal
 	function GetMaterialVariant(self, material: EnumMaterial, name: string): MaterialVariant
 	function GetOverridePartMaterial(self, material: EnumMaterial): MaterialVariant
 	function GetOverrideTerrainMaterial(self, material: EnumMaterial): MaterialVariant
@@ -9890,7 +9891,7 @@ declare CatalogSearchParams: {
 declare game: DataModel
 declare workspace: Workspace
 declare plugin: Plugin
-declare script: LuaSourceContainer
+declare script: any
 declare function settings(): GlobalSettings
 declare function UserSettings(): UserSettings
 
