@@ -2872,6 +2872,7 @@ type Vector2int16 = any
 type Vector3int16 = any
 type Region3int16 = any
 type CatalogSearchParams = any
+type Font = any
 declare class Ray
 	function ClosestPoint(self, point: Vector3): Vector3
 	Origin: Vector3
@@ -3196,6 +3197,13 @@ declare class CatalogSearchParams
 	CategoryFilter: EnumCatalogCategoryFilter
 	BundleType: { any }
 	AssetTypes: { any }
+end
+
+declare class Font
+	Family: string
+	Bold: boolean
+	Weight: EnumFontWeight
+	Style: EnumFontStyle
 end
 
 type Instance = any
@@ -9885,6 +9893,10 @@ declare DockWidgetPluginGuiInfo: {
 
 declare CatalogSearchParams: {
 	new: (() -> CatalogSearchParams),
+}
+
+declare Font: {
+	new: ((family: string, weight: EnumFontWeight?, style: EnumFontStyle?) -> Font),
 }
 
 
