@@ -84,6 +84,8 @@ type EnumAccessoryType = {
 	LeftShoe: EnumItem,
 	RightShoe: EnumItem,
 	DressSkirt: EnumItem,
+	Eyebrow: EnumItem,
+	Eyelash: EnumItem,
 }
 type EnumActionType = {
 	Nothing: EnumItem,
@@ -244,6 +246,8 @@ type EnumAssetType = {
 	LeftShoeAccessory: EnumItem,
 	RightShoeAccessory: EnumItem,
 	DressSkirtAccessory: EnumItem,
+	EyebrowAccessory: EnumItem,
+	EyelashAccessory: EnumItem,
 }
 type EnumAssetTypeVerification = {
 	Default: EnumItem,
@@ -298,6 +302,8 @@ type EnumAvatarAssetType = {
 	LeftShoeAccessory: EnumItem,
 	RightShoeAccessory: EnumItem,
 	DressSkirtAccessory: EnumItem,
+	EyebrowAccessory: EnumItem,
+	EyelashAccessory: EnumItem,
 }
 type EnumAvatarContextMenuOption = {
 	Friend: EnumItem,
@@ -376,6 +382,7 @@ type EnumBulkMoveMode = {
 type EnumBundleType = {
 	BodyParts: EnumItem,
 	Animations: EnumItem,
+	Shoes: EnumItem,
 }
 type EnumButton = {
 	Jump: EnumItem,
@@ -5461,6 +5468,7 @@ declare class GuiObject extends GuiBase2d
 	Rotation: number
 	Selectable: boolean
 	SelectionImageObject: GuiObject
+	SelectionOrder: number
 	Size: UDim2
 	SizeConstraint: EnumSizeConstraint
 	Transparency: number
@@ -6124,6 +6132,7 @@ declare class Humanoid extends Instance
 	function takeDamage(self, amount: number): nil
 	function ApplyDescription(self, humanoidDescription: HumanoidDescription, assetTypeVerification: EnumAssetTypeVerification?): nil
 	function ApplyDescriptionClientServer(self, humanoidDescription: HumanoidDescription): nil
+	function ApplyDescriptionReset(self, humanoidDescription: HumanoidDescription, assetTypeVerification: EnumAssetTypeVerification?): nil
 	function PlayEmote(self, emoteName: string): boolean
 	function PlayEmoteAndGetAnimTrackById(self, emoteId: number): any
 	AnimationPlayed: RBXScriptSignal<AnimationTrack>
@@ -6255,6 +6264,7 @@ declare class ImporterMeshSettings extends ImporterBaseSettings
 	Dimensions: Vector3
 	DoubleSided: boolean
 	IgnoreVertexColors: boolean
+	Manifold: boolean
 	PolygonCount: number
 end
 
@@ -6740,10 +6750,12 @@ declare class MaterialService extends Instance
 	function GetMaterialOverrideChanged(self, material: EnumMaterial): RBXScriptSignal
 	function GetMaterialVariant(self, material: EnumMaterial, name: string): MaterialVariant
 	function GetOverridePartMaterial(self, material: EnumMaterial): MaterialVariant
+	function GetOverrideStatus(self, material: EnumMaterial): EnumPropertyStatus
 	function GetOverrideTerrainMaterial(self, material: EnumMaterial): MaterialVariant
 	function SetBaseMaterialOverride(self, material: EnumMaterial, name: string): nil
 	function SetOverridePartMaterial(self, materialVariant: MaterialVariant): nil
 	function SetOverrideTerrainMaterial(self, materialVariant: MaterialVariant): nil
+	OverrideStatusChanged: RBXScriptSignal<EnumMaterial>
 end
 
 declare class MaterialVariant extends Instance
@@ -8935,7 +8947,6 @@ declare class StudioService extends Instance
 	function PublishAs(self, universeId: number, placeId: number, groupId: number): nil
 	function RefreshDocumentDisplayName(self): nil
 	function RequestClose(self, closeMode: EnumStudioCloseMode): nil
-	function SerializeInstances(self, instances: Objects): string
 	function SetPluginEnabled(self, assetId: number, state: boolean): nil
 	function SetUniverseDisplayName(self, newName: string): nil
 	function ShowPlaceVersionHistoryDialog(self, placeId: number): nil
