@@ -127,7 +127,7 @@ static void displayHelp(const char* argv0)
     printf("  --dump-source-map: dump the currently resolved source map\n");
     printf("  --exclude-virtual-path: don't include virtual path name in output\n");
     printf("  --flag:FlagName=value: sets an internal flag. Use --show-flags to list all internal flags and default values.\n");
-    printf("  --allow-unknown-flags: disable errors for unknown flags\n");
+    printf("  --allow-unknown-flags: disable errors for unknown internal flags\n");
     printf("\n");
     printf("Other commands:\n");
     printf("  %s --help: show this help message\n", argv0);
