@@ -454,7 +454,7 @@ int main(int argc, char** argv)
             globalDefsPaths.push_back(std::string(argv[i] + 7));
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
-        else if (strncmp(argv[i], "--allow-unknown-flags", 24) == 0)
+        else if (strcmp(argv[i], "--allow-unknown-flags") == 0)
             errorOnUnknownFlags = false;
         else if (strncmp(argv[i], "--flag:", 7) == 0)
         {
