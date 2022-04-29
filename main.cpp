@@ -456,6 +456,12 @@ int main(int argc, char** argv)
     }
 #endif
 
+    if (projectPath.has_value() && !std::filesystem::exists(projectPath.value()))
+    {
+        fprintf(stderr, "Cannot load project path %s: path does not exist\n", projectPath.value().generic_string().c_str());
+        return 1;
+    }
+
     Luau::FrontendOptions frontendOptions;
     frontendOptions.retainFullTypeGraphs = annotate;
 
