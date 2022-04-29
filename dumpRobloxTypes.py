@@ -94,7 +94,6 @@ type Function = (any) -> any
 type FloatCurveKey = any
 type RotationCurveKey = any
 type CoordinateFrame = CFrame
-type Font = any
 
 declare class Enum
 	function GetEnumItems(self): { any }
