@@ -138,7 +138,7 @@ static void displayHelp(const char* argv0)
     printf("  --flag:LuauTableTypeMaximumStringifierLength=INT:  default %d\n", FInt::LuauTableTypeMaximumStringifierLength.value);
 }
 
-static int assertionHandler(const char* expr, const char* file, int line, const char* function)
+static int assertionHandler(const char* expr, const char* file, int line, const char*)
 {
     printf("%s(%d): ASSERTION FAILED: %s\n", file, line, expr);
     return 1;
@@ -255,9 +255,9 @@ struct CliFileResolver : Luau::FileResolver
                 return Luau::ModuleInfo{context->name + '/' + i->index.value, context->optional};
             }
         }
-        else if (Luau::AstExprIndexExpr* i = node->as<Luau::AstExprIndexExpr>())
+        else if (Luau::AstExprIndexExpr* i_expr = node->as<Luau::AstExprIndexExpr>())
         {
-            if (Luau::AstExprConstantString* index = i->index->as<Luau::AstExprConstantString>())
+            if (Luau::AstExprConstantString* index = i_expr->index->as<Luau::AstExprConstantString>())
             {
                 if (context)
                     return Luau::ModuleInfo{context->name + '/' + std::string(index->value.data, index->value.size), context->optional};
@@ -437,11 +437,11 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 35) == 0)
             FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 35));
         else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 35) == 0)
-            FInt::LuauTypeInferIterationLimit.value =  std::stoi(std::string(argv[i] + 35));
+            FInt::LuauTypeInferIterationLimit.value = std::stoi(std::string(argv[i] + 35));
         else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 38) == 0)
-            FInt::LuauTypeInferTypePackLoopLimit.value =  std::stoi(std::string(argv[i] + 38));
+            FInt::LuauTypeInferTypePackLoopLimit.value = std::stoi(std::string(argv[i] + 38));
         else if (strncmp(argv[i], "--flag:LuauCheckRecursionLimit=", 31) == 0)
-            FInt::LuauCheckRecursionLimit.value =  std::stoi(std::string(argv[i] + 31));
+            FInt::LuauCheckRecursionLimit.value = std::stoi(std::string(argv[i] + 31));
         else if (strncmp(argv[i], "--flag:LuauTarjanChildLimit=", 28) == 0)
             FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 28));
         else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 45) == 0)

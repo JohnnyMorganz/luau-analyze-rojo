@@ -184,7 +184,7 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
         try
         {
             auto canonicalPath = std::filesystem::canonical(root.path.value());
-            printf("%*sPath: %ls\n", level, "", canonicalPath.c_str());
+            printf("%*sPath: %s\n", level, "", canonicalPath.generic_string().c_str());
         }
         catch (const std::exception& ex)
         {
