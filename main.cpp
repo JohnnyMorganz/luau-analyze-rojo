@@ -547,10 +547,7 @@ int main(int argc, char** argv)
         }
     }
 
-    auto moduleResolver = frontend.moduleResolver;
-
-    frontend.typeChecker.prepareModuleScope = [&moduleResolver, fileResolver, stdinFilepath](
-                                                  const Luau::ModuleName& name, const Luau::ScopePtr& scope)
+    frontend.typeChecker.prepareModuleScope = [fileResolver, stdinFilepath](const Luau::ModuleName& name, const Luau::ScopePtr& scope)
     {
         auto virtualPath = getCurrentModuleVirtualPath(name, fileResolver.sourceMap, stdinFilepath);
         if (!virtualPath.has_value())
