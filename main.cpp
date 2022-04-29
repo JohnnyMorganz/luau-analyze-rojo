@@ -459,18 +459,17 @@ int main(int argc, char** argv)
         else if (strncmp(argv[i], "--flag:", 7) == 0)
         {
             std::string flagSet = std::string(argv[i] + 7);
+
             int eqIndex = flagSet.find("=");
             if (eqIndex == std::string::npos)
             {
                 printf("Bad flag option, missing =: %s\n", flagSet.c_str());
                 return 1;
             }
-            else
-            {
-                std::string flagName = flagSet.substr(0, eqIndex);
-                std::string flagValue = flagSet.substr(eqIndex + 1, flagSet.length());
-                fastValues->insert_or_assign(flagName, flagValue);
-            }
+
+            std::string flagName = flagSet.substr(0, eqIndex);
+            std::string flagValue = flagSet.substr(eqIndex + 1, flagSet.length());
+            fastValues->insert_or_assign(flagName, flagValue);
         }
     }
     
@@ -489,6 +488,7 @@ int main(int argc, char** argv)
                 printf("Bad flag option, %s expects a boolean 'true' or 'false'\n", flag->name);
                 return 1;
             }
+            
             fastValues->erase(flag->name);
         }
     }
