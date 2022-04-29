@@ -16,7 +16,7 @@ target_link_libraries(luau-analyze-rojo PRIVATE Luau.Ast Luau.Analysis)
 if(MSVC)
   target_compile_options(luau-analyze-rojo PRIVATE /W3 /WX /D_CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(luau-analyze-rojo PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  target_compile_options(luau-analyze-rojo PRIVATE -Wall -Werror)
 endif()
 
 # set(CPACK_PROJECT_NAME ${PROJECT_NAME})
