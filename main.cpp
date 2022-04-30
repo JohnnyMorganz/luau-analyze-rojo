@@ -241,6 +241,7 @@ struct CliFileResolver : Luau::FileResolver
     ResolvedSourceMap sourceMap;
     std::optional<std::filesystem::path> stdinFilepath;
     bool excludeVirtualPath = false;
+    bool sourceMapRegistered = false;
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
@@ -707,6 +708,7 @@ int main(int argc, char** argv)
         if (sourceMap)
         {
             fileResolver.sourceMap = sourceMap.value();
+            fileResolver.sourceMapRegistered = true;
             if (dumpMap)
                 dumpSourceMap(*fileResolver.sourceMap.root, 0);
         }
@@ -717,6 +719,7 @@ int main(int argc, char** argv)
         if (sourceMap)
         {
             fileResolver.sourceMap = sourceMap.value();
+            fileResolver.sourceMapRegistered = true;
             if (dumpMap)
                 dumpSourceMap(*fileResolver.sourceMap.root, 0);
         }
@@ -762,28 +765,53 @@ int main(int argc, char** argv)
         if (success)
         {
             // Try to extend the globally registered types with the project format
-            auto rootPtr = fileResolver.sourceMap.root;
-            auto root = *rootPtr;
-            if (root.className.has_value() && root.className.value() == "DataModel")
+            if (fileResolver.sourceMapRegistered)
             {
-                for (const auto& service : root.children)
+                auto rootPtr = fileResolver.sourceMap.root;
+                auto root = *rootPtr;
+                if (root.className.has_value() && root.className.value() == "DataModel")
                 {
-                    auto serviceName = (*service).name; // TODO: change to className
-                    if (auto serviceType = frontend.typeChecker.globalScope->lookupType(serviceName))
+                    for (const auto& service : root.children)
                     {
-                        if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
+                        auto serviceName = (*service).name; // TODO: change to className
+                        if (auto serviceType = frontend.typeChecker.globalScope->lookupType(serviceName))
                         {
-                            // Extend the props to include the children
-                            for (const auto& child : (*service).children)
+                            if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
                             {
-                                auto childName = (*child).name;
-                                ctv->props[childName] =
-                                    Luau::makeProperty(makeLazyInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, child,
-                                        serviceType.value().type, rootPtr, "game/" + serviceName + "/" + childName));
+                                // Extend the props to include the children
+                                for (const auto& child : (*service).children)
+                                {
+                                    auto childName = (*child).name;
+                                    ctv->props[childName] =
+                                        Luau::makeProperty(makeLazyInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope,
+                                            child, serviceType.value().type, rootPtr, "game/" + serviceName + "/" + childName));
+                                }
                             }
                         }
                     }
                 }
+
+                frontend.typeChecker.prepareModuleScope = [fileResolver, stdinFilepath](const Luau::ModuleName& name, const Luau::ScopePtr& scope)
+                {
+                    auto virtualPath = getCurrentModuleVirtualPath(name, fileResolver.sourceMap, stdinFilepath);
+                    if (!virtualPath.has_value())
+                        return;
+
+                    auto node = RojoResolver::resolveRequireToSourceNode(virtualPath.value(), fileResolver.sourceMap.root);
+                    if (!node.has_value())
+                        return;
+
+                    // HACK: we need a way to get the typeArena for the module, but I don't know how
+                    // we can see that moduleScope->returnType is assigned before prepareModuleScope is called in TypeInfer, so we could try it this
+                    // way...
+                    LUAU_ASSERT(scope->returnType);
+                    auto typeArena = scope->returnType->owningArena;
+                    LUAU_ASSERT(typeArena);
+
+                    scope->bindings[Luau::AstName("script")] = Luau::Binding{
+                        makeLazyInstanceType(*typeArena, scope, node.value(), std::nullopt, fileResolver.sourceMap.root, virtualPath.value()),
+                        Luau::Location{}, {}, {}, std::nullopt};
+                };
             }
 
             // Register Instance:IsA("ClassName") type predicate
@@ -797,27 +825,6 @@ int main(int argc, char** argv)
             }
         }
     }
-
-    frontend.typeChecker.prepareModuleScope = [fileResolver, stdinFilepath](const Luau::ModuleName& name, const Luau::ScopePtr& scope)
-    {
-        auto virtualPath = getCurrentModuleVirtualPath(name, fileResolver.sourceMap, stdinFilepath);
-        if (!virtualPath.has_value())
-            return;
-
-        auto node = RojoResolver::resolveRequireToSourceNode(virtualPath.value(), fileResolver.sourceMap.root);
-        if (!node.has_value())
-            return;
-
-        // HACK: we need a way to get the typeArena for the module, but I don't know how
-        // we can see that moduleScope->returnType is assigned before prepareModuleScope is called in TypeInfer, so we could try it this way...
-        LUAU_ASSERT(scope->returnType);
-        auto typeArena = scope->returnType->owningArena;
-        LUAU_ASSERT(typeArena);
-
-        scope->bindings[Luau::AstName("script")] =
-            Luau::Binding{makeLazyInstanceType(*typeArena, scope, node.value(), std::nullopt, fileResolver.sourceMap.root, virtualPath.value()),
-                Luau::Location{}, {}, {}, std::nullopt};
-    };
 
     Luau::freeze(frontend.typeChecker.globalTypes);
 
