@@ -149,7 +149,7 @@ END_BASE = """
 declare game: DataModel
 declare workspace: Workspace
 declare plugin: Plugin
-declare script: any
+declare script: LuaSourceContainer
 declare function settings(): GlobalSettings
 declare function UserSettings(): UserSettings
 """
