@@ -31,7 +31,8 @@ luau-analyze --project=default.project.json --defs=globalTypes.d.lua fileToAnaly
 
 The tool supports all options available in the original `luau-analyze` tool, with these further additions:
 
-- `--project=PATH`: path to the Rojo project file which will be used to resolve the source map
+- `--sourcemap=PATH`: path to a Rojo-style [source map](https://github.com/rojo-rbx/rojo/pull/530)
+- `--project=PATH`: path to the Rojo project file which will be used to resolve the source map [**DEPRECATED: use `--sourcemap=PATH` instead**]
 - `--defs=PATH`: path to a definition file containing all global types to load into the type checker.
 - `--stdin-filepath=PATH`: the path representation of the code parsed in to stdin. Used to resolve requires
 

@@ -177,6 +177,22 @@ void populateChildren(SourceNode& parent, const std::string& name, const Project
 }
 }; // namespace project
 
+// Convert a Rojo-style sourcemap into a source node
+void from_json(const json& j, SourceNode& p)
+{
+    j.at("name").get_to(p.name);
+    j.at("className").get_to(p.className);
+
+    if (j.count("filePaths") != 0)
+        j.at("filePaths").get_to(p.filePaths);
+
+    if (j.count("children") != 0)
+        for (auto& el : j.at("children"))
+        {
+            p.children.emplace_back(std::make_shared<SourceNode>(el.get<SourceNode>()));
+        }
+};
+
 /**
  * @brief Returns the relevant file path from a SourceNode.
  * The file paths in a SourceNode can be multiple number of contributing sources (meta.json, project.json, etc.).
@@ -303,7 +319,32 @@ std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::files
 
 std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesystem::path& sourceMapPath)
 {
-    // TODO
+    std::optional<std::string> sourceMapSource = readFile(sourceMapPath);
+    if (sourceMapSource.has_value())
+    {
+        try
+        {
+
+            auto j = json::parse(sourceMapSource.value());
+            auto rootNode = j.get<SourceNode>();
+
+            // Create map between real file paths to virtual
+            std::unordered_map<std::string, std::string> pathToVirtualMap;
+            std::string base = "game";
+            if (rootNode.className != "DataModel")
+            {
+                base = "ProjectRoot";
+            }
+            writePathsToMap(rootNode, base, pathToVirtualMap);
+
+            return ResolvedSourceMap{rootNode, pathToVirtualMap};
+        }
+        catch (const std::exception& ex)
+        {
+            fprintf(stderr, "Failed to resolve source map file: %s\n", ex.what());
+        }
+    }
+
     return std::nullopt;
 }
 
