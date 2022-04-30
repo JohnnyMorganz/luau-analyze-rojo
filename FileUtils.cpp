@@ -35,17 +35,6 @@ static std::wstring fromUtf8(const std::string& path)
 
     return buf;
 }
-
-static std::string toUtf8(const std::wstring& path)
-{
-    size_t result = WideCharToMultiByte(CP_UTF8, 0, path.data(), int(path.size()), nullptr, 0, nullptr, nullptr);
-    LUAU_ASSERT(result);
-
-    std::string buf(result, '\0');
-    WideCharToMultiByte(CP_UTF8, 0, path.data(), int(path.size()), &buf[0], int(buf.size()), nullptr, nullptr);
-
-    return buf;
-}
 #endif
 
 std::optional<std::string> readFile(const std::string& name)

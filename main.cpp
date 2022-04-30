@@ -150,7 +150,7 @@ static void displayFlags()
     }
 }
 
-static int assertionHandler(const char* expr, const char* file, int line, const char* function)
+static int assertionHandler(const char* expr, const char* file, int line, const char*)
 {
     printf("%s(%d): ASSERTION FAILED: %s\n", file, line, expr);
     return 1;
@@ -267,9 +267,9 @@ struct CliFileResolver : Luau::FileResolver
                 return Luau::ModuleInfo{context->name + '/' + i->index.value, context->optional};
             }
         }
-        else if (Luau::AstExprIndexExpr* i = node->as<Luau::AstExprIndexExpr>())
+        else if (Luau::AstExprIndexExpr* i_expr = node->as<Luau::AstExprIndexExpr>())
         {
-            if (Luau::AstExprConstantString* index = i->index->as<Luau::AstExprConstantString>())
+            if (Luau::AstExprConstantString* index = i_expr->index->as<Luau::AstExprConstantString>())
             {
                 if (context)
                     return Luau::ModuleInfo{context->name + '/' + std::string(index->value.data, index->value.size), context->optional};
@@ -529,6 +529,12 @@ int main(int argc, char** argv)
     }
 #endif
 
+    if (projectPath.has_value() && !std::filesystem::exists(projectPath.value()))
+    {
+        fprintf(stderr, "Cannot load project path %s: path does not exist\n", projectPath.value().generic_string().c_str());
+        return 1;
+    }
+
     Luau::FrontendOptions frontendOptions;
     frontendOptions.retainFullTypeGraphs = annotate;
 
@@ -614,10 +620,7 @@ int main(int argc, char** argv)
         }
     }
 
-    auto moduleResolver = frontend.moduleResolver;
-
-    frontend.typeChecker.prepareModuleScope = [&moduleResolver, fileResolver, stdinFilepath](
-                                                  const Luau::ModuleName& name, const Luau::ScopePtr& scope)
+    frontend.typeChecker.prepareModuleScope = [fileResolver, stdinFilepath](const Luau::ModuleName& name, const Luau::ScopePtr& scope)
     {
         auto virtualPath = getCurrentModuleVirtualPath(name, fileResolver.sourceMap, stdinFilepath);
         if (!virtualPath.has_value())

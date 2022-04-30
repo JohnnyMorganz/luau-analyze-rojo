@@ -88,7 +88,6 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
         std::optional<std::string> nestedProjectSource = readFile(fullPath / "default.project.json");
         if (nestedProjectSource)
         {
-
             auto j = json::parse(*nestedProjectSource);
             auto project = j.get<ns::Project>();
             readProjectFile(node, project, fullPath);
@@ -184,7 +183,7 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
         try
         {
             auto canonicalPath = std::filesystem::canonical(root.path.value());
-            printf("%*sPath: %ls\n", level, "", canonicalPath.c_str());
+            printf("%*sPath: %s\n", level, "", canonicalPath.generic_string().c_str());
         }
         catch (const std::exception& ex)
         {
@@ -237,23 +236,31 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesys
     std::optional<std::string> projectSource = readFile(sourceMapPath);
     if (projectSource)
     {
-        auto j = json::parse(projectSource.value());
-        auto project = j.get<ns::Project>();
-
-        // Create root node
-        SourceNode rootNode;
-        readProjectFile(rootNode, project, "");
-
-        // Create map between real file paths to virtual
-        std::unordered_map<std::string, std::string> pathToVirtualMap;
-        std::string base = "game";
-        if (!project.tree.class_name.has_value() || project.tree.class_name.value() != "DataModel")
+        try
         {
-            base = "ProjectRoot";
-        }
-        writePathsToMap(rootNode, base, pathToVirtualMap);
 
-        return ResolvedSourceMap{rootNode, pathToVirtualMap};
+            auto j = json::parse(projectSource.value());
+            auto project = j.get<ns::Project>();
+
+            // Create root node
+            SourceNode rootNode;
+            readProjectFile(rootNode, project, "");
+
+            // Create map between real file paths to virtual
+            std::unordered_map<std::string, std::string> pathToVirtualMap;
+            std::string base = "game";
+            if (!project.tree.class_name.has_value() || project.tree.class_name.value() != "DataModel")
+            {
+                base = "ProjectRoot";
+            }
+            writePathsToMap(rootNode, base, pathToVirtualMap);
+
+            return ResolvedSourceMap{rootNode, pathToVirtualMap};
+        }
+        catch (const std::exception& ex)
+        {
+            fprintf(stderr, "Failed to resolve project file: %s\n", ex.what());
+        }
     }
 
     return std::nullopt;
