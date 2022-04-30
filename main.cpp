@@ -536,10 +536,27 @@ std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionInstanceIsA(
     if (!lvalue || !tfun)
         return std::nullopt;
 
-    unfreeze(typeChecker.globalTypes);
     Luau::TypePackId booleanPack = typeChecker.globalTypes.addTypePack({typeChecker.booleanType});
-    freeze(typeChecker.globalTypes);
     return Luau::ExprResult<Luau::TypePackId>{booleanPack, {Luau::IsAPredicate{std::move(*lvalue), expr.location, tfun->type}}};
+}
+
+// Magic function for `Instance:FindFirstChildWhichIsA("ClassName")` and friends
+std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionFindFirstXWhichIsA(
+    Luau::TypeChecker& typeChecker, const Luau::ScopePtr& scope, const Luau::AstExprCall& expr, Luau::ExprResult<Luau::TypePackId> exprResult)
+{
+    if (expr.args.size < 1)
+        return std::nullopt;
+
+    auto str = expr.args.data[0]->as<Luau::AstExprConstantString>();
+    if (!str)
+        return std::nullopt;
+
+    std::optional<Luau::TypeFun> tfun = scope->lookupType(std::string(str->value.data, str->value.size));
+    if (!tfun)
+        return std::nullopt;
+
+    Luau::TypeId nillableClass = Luau::makeOption(typeChecker, typeChecker.globalTypes, tfun->type);
+    return Luau::ExprResult<Luau::TypePackId>{typeChecker.globalTypes.addTypePack({nillableClass})};
 }
 
 int main(int argc, char** argv)
@@ -815,12 +832,17 @@ int main(int argc, char** argv)
             }
 
             // Register Instance:IsA("ClassName") type predicate
+            // Register FindFirstChildWhichIsA / FindFirstChildOfClassName / FindFirstAncestorWhichIsA / FindFirstAncestorOfClass magic functions
             auto instanceType = frontend.typeChecker.globalScope->lookupType("Instance");
             if (instanceType.has_value())
             {
                 if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(instanceType.value().type))
                 {
                     Luau::attachMagicFunction(ctv->props["IsA"].type, magicFunctionInstanceIsA);
+                    Luau::attachMagicFunction(ctv->props["FindFirstChildWhichIsA"].type, magicFunctionFindFirstXWhichIsA);
+                    Luau::attachMagicFunction(ctv->props["FindFirstChildOfClass"].type, magicFunctionFindFirstXWhichIsA);
+                    Luau::attachMagicFunction(ctv->props["FindFirstAncestorWhichIsA"].type, magicFunctionFindFirstXWhichIsA);
+                    Luau::attachMagicFunction(ctv->props["FindFirstAncestorOfClass"].type, magicFunctionFindFirstXWhichIsA);
                 }
             }
         }
