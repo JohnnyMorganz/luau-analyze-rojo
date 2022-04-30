@@ -231,7 +231,7 @@ void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std:
     }
 }
 
-std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesystem::path& sourceMapPath)
+std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::filesystem::path& sourceMapPath)
 {
     std::optional<std::string> projectSource = readFile(sourceMapPath);
     if (projectSource)

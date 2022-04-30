@@ -569,7 +569,7 @@ int main(int argc, char** argv)
     fileResolver.stdinFilepath = stdinFilepath;
     if (projectPath)
     {
-        auto sourceMap = RojoResolver::parseSourceMap(projectPath.value());
+        auto sourceMap = RojoResolver::parseProjectFile(projectPath.value());
         if (sourceMap)
         {
             fileResolver.sourceMap = sourceMap.value();
