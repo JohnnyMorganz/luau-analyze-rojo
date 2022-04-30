@@ -76,6 +76,7 @@ python dumpRobloxTypes.py > globalTypes.d.lua
 - Supported indexing types: `game:GetService("Service")` / `instance.Name` / `instance["Name"]` / `instance:FindFirstChild("Name")` / `instance:WaitForChild("Name")`
 - Full type definitions through API dumps
 - Proper resolution of `Instance.new("Class")` and `game:GetService("Service")` to their associated types
+- Fully typed DataModel tree, converting `instance.Parent` and `instance.Child` to types including their ancestors/descendants. Static type checking for unknown children and attempting to require non-script instances.
 - `Instance:IsA("ClassName")` type refinements
 - JSON Module requiring support
 
