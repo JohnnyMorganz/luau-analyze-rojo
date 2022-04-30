@@ -161,7 +161,7 @@ static int assertionHandler(const char* expr, const char* file, int line, const 
 
 bool isManagedModule(const Luau::ModuleName& name)
 {
-    return Luau::startsWith(name, "game/") || Luau::startsWith(name, "ProjectRoot/");
+    return Luau::startsWith(name, "game/") || Luau::startsWith(name, "ProjectRoot/") || name == "game" || name == "ProjectRoot";
 }
 
 std::string jsonValueToLuau(const json& val)
