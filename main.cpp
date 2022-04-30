@@ -126,16 +126,28 @@ static void displayHelp(const char* argv0)
     printf("  --stdin-filepath=PATH: path to file being sent through stdin. Used for require resolution\n");
     printf("  --dump-source-map: dump the currently resolved source map\n");
     printf("  --exclude-virtual-path: don't include virtual path name in output\n");
+    printf("  --flag:FlagName=value: sets an internal flag. Use --show-flags to list all internal flags and default values.\n");
+    printf("  --allow-unknown-flags: disable errors for unknown internal flags\n");
     printf("\n");
-    printf("Available limit flags:\n");
-    printf("  These options affect internal limits of the Luau typechecker.\n");
-    printf("  Changing these may permit the typechecker to work on complex code at the cost of performance.\n");
-    printf("  --flag:LuauTypeInferRecursionLimit=INT:            default %d\n", FInt::LuauTypeInferRecursionLimit.value);
-    printf("  --flag:LuauTypeInferIterationLimit=INT:            default %d\n", FInt::LuauTypeInferIterationLimit.value);
-    printf("  --flag:LuauTypeInferTypePackLoopLimit=INT:         default %d\n", FInt::LuauTypeInferTypePackLoopLimit.value);
-    printf("  --flag:LuauCheckRecursionLimit=INT:                default %d\n", FInt::LuauCheckRecursionLimit.value);
-    printf("  --flag:LuauTarjanChildLimit=INT:                   default %d\n", FInt::LuauTarjanChildLimit.value);
-    printf("  --flag:LuauTableTypeMaximumStringifierLength=INT:  default %d\n", FInt::LuauTableTypeMaximumStringifierLength.value);
+    printf("Other commands:\n");
+    printf("  %s --help: show this help message\n", argv0);
+    printf("  %s --show-flags: show all internal flags and their values\n", argv0);
+}
+
+
+static void displayFlags()
+{
+    printf("Available flags:\n");
+
+    for (Luau::FValue<bool>* flag = Luau::FValue<bool>::list; flag; flag = flag->next)
+    {
+        printf("  %s=%s\n", flag->name, flag->value ? "true" : "false");
+    }
+    
+    for (Luau::FValue<int>* flag = Luau::FValue<int>::list; flag; flag = flag->next)
+    {
+        printf("  %s=%d\n", flag->name, flag->value);
+    }
 }
 
 static int assertionHandler(const char* expr, const char* file, int line, const char*)
@@ -401,6 +413,12 @@ int main(int argc, char** argv)
         displayHelp(argv[0]);
         return 0;
     }
+    
+    if (argc >= 2 && strcmp(argv[1], "--show-flags") == 0)
+    {
+        displayFlags();
+        return 0;
+    }
 
     ReportFormat format = ReportFormat::Default;
     bool annotate = false;
@@ -409,6 +427,9 @@ int main(int argc, char** argv)
     std::optional<std::filesystem::path> projectPath = std::nullopt;
     std::vector<std::filesystem::path> globalDefsPaths;
     std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
+    
+    bool errorOnUnknownFlags = true;
+    std::unordered_map<std::string, std::string>* fastValues = new std::unordered_map<std::string, std::string>();
 
     for (int i = 1; i < argc; ++i)
     {
@@ -433,19 +454,71 @@ int main(int argc, char** argv)
             globalDefsPaths.push_back(std::string(argv[i] + 7));
         else if (strncmp(argv[i], "--stdin-filepath=", 17) == 0)
             stdinFilepath = std::string(argv[i] + 17);
+        else if (strcmp(argv[i], "--allow-unknown-flags") == 0)
+            errorOnUnknownFlags = false;
+        else if (strncmp(argv[i], "--flag:", 7) == 0)
+        {
+            std::string flagSet = std::string(argv[i] + 7);
 
-        else if (strncmp(argv[i], "--flag:LuauTypeInferRecursionLimit=", 35) == 0)
-            FInt::LuauTypeInferRecursionLimit.value = std::stoi(std::string(argv[i] + 35));
-        else if (strncmp(argv[i], "--flag:LuauTypeInferIterationLimit=", 35) == 0)
-            FInt::LuauTypeInferIterationLimit.value = std::stoi(std::string(argv[i] + 35));
-        else if (strncmp(argv[i], "--flag:LuauTypeInferTypePackLoopLimit=", 38) == 0)
-            FInt::LuauTypeInferTypePackLoopLimit.value = std::stoi(std::string(argv[i] + 38));
-        else if (strncmp(argv[i], "--flag:LuauCheckRecursionLimit=", 31) == 0)
-            FInt::LuauCheckRecursionLimit.value = std::stoi(std::string(argv[i] + 31));
-        else if (strncmp(argv[i], "--flag:LuauTarjanChildLimit=", 28) == 0)
-            FInt::LuauTarjanChildLimit.value = std::stoi(std::string(argv[i] + 28));
-        else if (strncmp(argv[i], "--flag:LuauTableTypeMaximumStringifierLength=", 45) == 0)
-            FInt::LuauTableTypeMaximumStringifierLength.value = std::stoi(std::string(argv[i] + 45));
+            size_t eqIndex = flagSet.find("=");
+            if (eqIndex == std::string::npos)
+            {
+                printf("Bad flag option, missing =: %s\n", flagSet.c_str());
+                return 1;
+            }
+
+            std::string flagName = flagSet.substr(0, eqIndex);
+            std::string flagValue = flagSet.substr(eqIndex + 1, flagSet.length());
+            fastValues->insert_or_assign(flagName, flagValue);
+        }
+    }
+    
+    for (Luau::FValue<bool>* flag = Luau::FValue<bool>::list; flag; flag = flag->next)
+    {
+        if (fastValues->find(flag->name) != fastValues->end())
+        {
+            std::string valueStr = fastValues->at(flag->name);
+
+            if (valueStr == "true")
+                flag->value = true;
+            else if (valueStr == "false")
+                flag->value = false;
+            else
+            {
+                printf("Bad flag option, %s expects a boolean 'true' or 'false'\n", flag->name);
+                return 1;
+            }
+            
+            fastValues->erase(flag->name);
+        }
+    }
+    
+    for (Luau::FValue<int>* flag = Luau::FValue<int>::list; flag; flag = flag->next)
+    {
+        if (fastValues->find(flag->name) != fastValues->end())
+        {
+            std::string valueStr = fastValues->at(flag->name);
+
+            int value = 0;
+            try {
+                value = std::stoi(valueStr);
+            }
+            catch(...)
+            {
+                printf("Bad flag option, %s expects an int\n", flag->name);
+                return 1;
+            }
+
+            flag->value = value;
+            fastValues->erase(flag->name);
+        }
+    }
+
+    if (errorOnUnknownFlags && fastValues->size() != 0) {
+        for (auto entry = fastValues->begin(); entry != fastValues->end(); entry++) {
+            printf("Unknown flag: %s\n", entry->first.c_str());
+        }
+        return 1;
     }
 
 #if !defined(LUAU_ENABLE_TIME_TRACE)
