@@ -216,7 +216,7 @@ std::optional<std::filesystem::path> RojoResolver::getRelevantFilePath(const Sou
     return std::nullopt;
 }
 
-std::optional<std::shared_ptr<SourceNode>> RojoResolver::findChildWithName(const SourceNode& node, const std::string_view& name)
+std::optional<SourceNodePtr> RojoResolver::findChildWithName(const SourceNode& node, const std::string_view& name)
 {
     for (const auto& child : node.children)
     {
@@ -310,7 +310,8 @@ std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::files
             }
             writePathsToMap(rootNode, base, pathToVirtualMap);
 
-            return ResolvedSourceMap{rootNode, pathToVirtualMap};
+            SourceNodePtr rootNodePtr = std::make_shared<SourceNode>(rootNode);
+            return ResolvedSourceMap{rootNodePtr, pathToVirtualMap};
         }
         catch (const std::exception& ex)
         {
@@ -341,7 +342,8 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesys
             }
             writePathsToMap(rootNode, base, pathToVirtualMap);
 
-            return ResolvedSourceMap{rootNode, pathToVirtualMap};
+            SourceNodePtr rootNodePtr = std::make_shared<SourceNode>(rootNode);
+            return ResolvedSourceMap{rootNodePtr, pathToVirtualMap};
         }
         catch (const std::exception& ex)
         {
@@ -358,22 +360,22 @@ std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesys
  * @param requirePath A fully-qualified path to an Instance. e.g. `game/ReplicatedStorage/Script`
  * @param root The root of the instance tree
  */
-std::optional<SourceNode> RojoResolver::resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root)
+std::optional<SourceNodePtr> RojoResolver::resolveRequireToSourceNode(const std::string& requirePath, const SourceNodePtr& root)
 {
     // TODO: this function is O(n*m) [n = depth of instance tree, m = width of instance tree]. Could we improve this?
 
     auto pathParts = Luau::split(requirePath, '/');
-    SourceNode currentNode = root;
+    SourceNodePtr currentNode = root;
 
     auto it = ++pathParts.begin(); // Skip first element
     while (it != pathParts.end())
     {
         auto part = *it;
-        auto child = findChildWithName(currentNode, part);
+        auto child = findChildWithName(*currentNode, part);
 
         if (child.has_value())
         {
-            currentNode = *child.value();
+            currentNode = child.value();
         }
         else
         {
@@ -386,11 +388,11 @@ std::optional<SourceNode> RojoResolver::resolveRequireToSourceNode(const std::st
     return currentNode;
 }
 
-std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root)
+std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(const std::string& requirePath, const SourceNodePtr& root)
 {
     if (auto node = RojoResolver::resolveRequireToSourceNode(requirePath, root))
     {
-        return getRelevantFilePath(node.value());
+        return getRelevantFilePath(*node.value());
     }
     return std::nullopt;
 }

@@ -262,11 +262,10 @@ struct CliFileResolver : Luau::FileResolver
         }
         else if (isManagedModule(name))
         {
-            std::optional<SourceNode> sourceNode = RojoResolver::resolveRequireToSourceNode(name, sourceMap.root);
-            if (sourceNode.has_value())
+            if (std::optional<SourceNodePtr> sourceNodePtr = RojoResolver::resolveRequireToSourceNode(name, sourceMap.root))
             {
-                auto path = RojoResolver::getRelevantFilePath(sourceNode.value());
-                if (path.has_value())
+                SourceNode sourceNode = *sourceNodePtr.value();
+                if (auto path = RojoResolver::getRelevantFilePath(sourceNode))
                 {
                     source = readFile(path.value());
 
@@ -285,10 +284,10 @@ struct CliFileResolver : Luau::FileResolver
                         }
                     }
 
-                    if (sourceNode.value().className.has_value())
+                    if (sourceNode.className.has_value())
                     {
 
-                        sourceType = RojoResolver::sourceCodeTypeFromClassName(sourceNode.value().className.value());
+                        sourceType = RojoResolver::sourceCodeTypeFromClassName(sourceNode.className.value());
                     }
                     else
                     {
@@ -435,43 +434,88 @@ struct CliConfigResolver : Luau::ConfigResolver
     }
 };
 
-std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, const SourceNode& node)
+std::optional<Luau::TypeId> getTypeIdForClass(const Luau::ScopePtr& globalScope, std::optional<std::string> className)
 {
     std::optional<Luau::TypeFun> baseType;
-    if (node.className.has_value())
+    if (className.has_value())
     {
-        baseType = globalScope->lookupType(node.className.value());
+        baseType = globalScope->lookupType(className.value());
     }
     if (!baseType.has_value())
     {
         baseType = globalScope->lookupType("Instance");
     }
-    // If we reach this stage, we couldn't find the class name nor the "Instance" type
-    // This most likely means a valid definitions file was not provided
-    if (!baseType.has_value())
+
+    if (baseType.has_value())
     {
+        return baseType.value().type;
+    }
+    else
+    {
+        // If we reach this stage, we couldn't find the class name nor the "Instance" type
+        // This most likely means a valid definitions file was not provided
         return std::nullopt;
     }
+}
 
-    auto typeId = baseType.value().type;
+Luau::TypeId makeLazyInstanceType(Luau::TypeArena& arena, const Luau::ScopePtr& globalScope, const SourceNodePtr& nodePtr,
+    std::optional<Luau::TypeId> parent, const SourceNodePtr& rootNode, const std::string& virtualPath)
+{
 
-    if (node.children.size() > 0)
+    Luau::LazyTypeVar ltv;
+    // TODO: capturing shared_ptr in a lambda is a memory leak, we should probably fix this
+    ltv.thunk = [&arena, globalScope, nodePtr, parent, virtualPath, rootNode]()
     {
-        // Add the children
-        Luau::TableTypeVar children{Luau::TableState::Sealed, globalScope->level};
-        for (const auto& child : node.children)
+        auto node = *nodePtr;
+
+        // TODO: we should cache created instance types and reuse them where possible
+
+        // Look up the base class instance
+        auto baseTypeId = getTypeIdForClass(globalScope, node.className);
+        if (!baseTypeId.has_value())
         {
-            auto childType = makeInstanceType(typeArena, globalScope, *child);
-            if (childType.has_value())
+            return Luau::getSingletonTypes().anyType;
+        }
+
+        // Create the ClassTypeVar representing the instance
+        Luau::ClassTypeVar ctv{node.name, {}, baseTypeId, std::nullopt, {}, {}, "InstanceModules"};
+        auto typeId = arena.addType(std::move(ctv));
+
+        // Attach Parent and Children info
+        // Get the mutable version of the type var
+        if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(typeId))
+        {
+            // Add the parent
+            if (parent.has_value())
             {
-                auto childProperty = Luau::makeProperty(childType.value(), "@luau/instance");
-                children.props[(*child).name] = childProperty;
+                ctv->props["Parent"] = Luau::makeProperty(parent.value());
+            }
+            else
+            {
+                // Search for the parent type
+                if (auto parentPath = getParentPath(virtualPath))
+                {
+                    // TODO: This is an O(n) search
+                    if (auto parentNode = RojoResolver::resolveRequireToSourceNode(parentPath.value(), rootNode))
+                    {
+                        ctv->props["Parent"] = Luau::makeProperty(
+                            makeLazyInstanceType(arena, globalScope, parentNode.value(), std::nullopt, rootNode, parentPath.value()));
+                    }
+                }
+            }
+
+            // Add the children
+            for (const auto& child : node.children)
+            {
+                auto childName = (*child).name;
+                auto childPath = virtualPath + "/" + childName;
+                ctv->props[childName] = Luau::makeProperty(makeLazyInstanceType(arena, globalScope, child, typeId, rootNode, childPath));
             }
         }
-        Luau::TypeId childId = typeArena.addType(children);
-        typeId = Luau::makeIntersection(typeArena, {typeId, childId});
-    }
-    return typeId;
+        return typeId;
+    };
+
+    return arena.addType(std::move(ltv));
 }
 
 // Magic function for `Instance:IsA("ClassName")` predicate
@@ -664,7 +708,7 @@ int main(int argc, char** argv)
         {
             fileResolver.sourceMap = sourceMap.value();
             if (dumpMap)
-                dumpSourceMap(fileResolver.sourceMap.root, 0);
+                dumpSourceMap(*fileResolver.sourceMap.root, 0);
         }
     }
     else if (projectPath.has_value())
@@ -674,7 +718,7 @@ int main(int argc, char** argv)
         {
             fileResolver.sourceMap = sourceMap.value();
             if (dumpMap)
-                dumpSourceMap(fileResolver.sourceMap.root, 0);
+                dumpSourceMap(*fileResolver.sourceMap.root, 0);
         }
     }
 
@@ -718,25 +762,24 @@ int main(int argc, char** argv)
         if (success)
         {
             // Try to extend the globally registered types with the project format
-            auto root = fileResolver.sourceMap.root;
+            auto rootPtr = fileResolver.sourceMap.root;
+            auto root = *rootPtr;
             if (root.className.has_value() && root.className.value() == "DataModel")
             {
-                for (const auto& services : root.children)
+                for (const auto& service : root.children)
                 {
-                    auto serviceType = frontend.typeChecker.globalScope->lookupType((*services).name); // TODO: change to className
-                    if (serviceType.has_value())
+                    auto serviceName = (*service).name; // TODO: change to className
+                    if (auto serviceType = frontend.typeChecker.globalScope->lookupType(serviceName))
                     {
                         if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
                         {
                             // Extend the props to include the children
-                            for (const auto& child : (*services).children)
+                            for (const auto& child : (*service).children)
                             {
-                                auto childType = makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *child);
-                                if (childType.has_value())
-                                {
-
-                                    ctv->props[(*child).name] = makeProperty(childType.value(), "@luau/serviceChild");
-                                }
+                                auto childName = (*child).name;
+                                ctv->props[childName] =
+                                    Luau::makeProperty(makeLazyInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, child,
+                                        serviceType.value().type, rootPtr, "game/" + serviceName + "/" + childName));
                             }
                         }
                     }
@@ -770,11 +813,10 @@ int main(int argc, char** argv)
         LUAU_ASSERT(scope->returnType);
         auto typeArena = scope->returnType->owningArena;
         LUAU_ASSERT(typeArena);
-        auto ty = makeInstanceType(*typeArena, scope, node.value());
-        if (!ty.has_value())
-            return;
 
-        scope->bindings[Luau::AstName("script")] = Luau::Binding{ty.value(), Luau::Location{}, {}, {}, std::nullopt};
+        scope->bindings[Luau::AstName("script")] =
+            Luau::Binding{makeLazyInstanceType(*typeArena, scope, node.value(), std::nullopt, fileResolver.sourceMap.root, virtualPath.value()),
+                Luau::Location{}, {}, {}, std::nullopt};
     };
 
     Luau::freeze(frontend.typeChecker.globalTypes);

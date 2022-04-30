@@ -10,17 +10,19 @@
 
 #include "Luau/FileResolver.h"
 
+using SourceNodePtr = std::shared_ptr<struct SourceNode>;
+
 struct SourceNode
 {
     std::string name;
     std::optional<std::string> className; // TODO: make no longer optional when removing project file parsing
     std::vector<std::filesystem::path> filePaths;
-    std::vector<std::shared_ptr<SourceNode>> children;
+    std::vector<SourceNodePtr> children;
 };
 
 struct ResolvedSourceMap
 {
-    SourceNode root;                                                   // The resolved root
+    SourceNodePtr root;                                                // The resolved root
     std::unordered_map<std::string, std::string> realPathToVirtualMap; // Map between real (canonical) file paths and virtual Rojo paths
 };
 
@@ -28,10 +30,10 @@ namespace RojoResolver
 {
 std::optional<ResolvedSourceMap> parseProjectFile(const std::filesystem::path& projectFilePath);
 std::optional<ResolvedSourceMap> parseSourceMap(const std::filesystem::path& projectFilePath);
-std::optional<SourceNode> resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root);
-std::optional<std::filesystem::path> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
+std::optional<SourceNodePtr> resolveRequireToSourceNode(const std::string& requirePath, const SourceNodePtr& root);
+std::optional<std::filesystem::path> resolveRequireToRealPath(const std::string& requirePath, const SourceNodePtr& root);
 std::optional<std::filesystem::path> getRelevantFilePath(const SourceNode& node);
-std::optional<std::shared_ptr<SourceNode>> findChildWithName(const SourceNode& node, const std::string_view& name);
+std::optional<SourceNodePtr> findChildWithName(const SourceNode& node, const std::string_view& name);
 Luau::SourceCode::Type sourceCodeTypeFromClassName(const std::string& className);
 Luau::SourceCode::Type sourceCodeTypeFromPath(const std::filesystem::path& path);
 std::optional<std::string> resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath);
