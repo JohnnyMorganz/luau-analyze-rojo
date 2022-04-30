@@ -77,6 +77,7 @@ python dumpRobloxTypes.py > globalTypes.d.lua
 - Full type definitions through API dumps
 - Proper resolution of `Instance.new("Class")` and `game:GetService("Service")` to their associated types
 - `Instance:IsA("ClassName")` type refinements
+- JSON Module requiring support
 
 **Note: in non-strict mode, some unknown requires are silently ignored. If it seems a require hasn't resolved correctly, use strict mode (`--!strict`) to warn about unknown requires (i.e., ones which were not able to resolve to a virtual path)**
 

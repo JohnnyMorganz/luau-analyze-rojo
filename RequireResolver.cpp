@@ -200,7 +200,7 @@ void from_json(const json& j, SourceNode& p)
  *
  * @param node SourceNode to find relevant path from
  */
-std::optional<std::filesystem::path> getRelevantFilePath(const SourceNode& node)
+std::optional<std::filesystem::path> RojoResolver::getRelevantFilePath(const SourceNode& node)
 {
     for (const auto& path : node.filePaths)
     {
@@ -208,11 +208,15 @@ std::optional<std::filesystem::path> getRelevantFilePath(const SourceNode& node)
         {
             return path;
         }
+        else if (path.extension() == ".json" && (node.className == "ModuleScript" || node.className == "Script" || node.className == "LocalScript"))
+        {
+            return path;
+        }
     }
     return std::nullopt;
 }
 
-std::optional<std::shared_ptr<SourceNode>> findChildWithName(const SourceNode& node, const std::string_view& name)
+std::optional<std::shared_ptr<SourceNode>> RojoResolver::findChildWithName(const SourceNode& node, const std::string_view& name)
 {
     for (const auto& child : node.children)
     {
@@ -228,7 +232,7 @@ std::optional<std::shared_ptr<SourceNode>> findChildWithName(const SourceNode& n
 void dumpSourceMap(const SourceNode& root, int level = 0)
 {
     printf("%*s%s\n", level, "", root.name.c_str());
-    if (auto path = getRelevantFilePath(root))
+    if (auto path = RojoResolver::getRelevantFilePath(root))
     {
         try
         {
@@ -260,7 +264,7 @@ void dumpSourceMap(const SourceNode& root, int level = 0)
 
 void writePathsToMap(const SourceNode& node, std::string base, std::unordered_map<std::string, std::string>& map)
 {
-    if (auto path = getRelevantFilePath(node))
+    if (auto path = RojoResolver::getRelevantFilePath(node))
     {
 
         try
@@ -412,6 +416,26 @@ std::optional<std::string> RojoResolver::resolveRealPathToVirtual(const Resolved
 static bool endsWith(std::string str, std::string suffix)
 {
     return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+}
+
+Luau::SourceCode::Type RojoResolver::sourceCodeTypeFromClassName(const std::string& className)
+{
+    if (className == "ServerScript")
+    {
+        return Luau::SourceCode::Type::Script;
+    }
+    else if (className == "LocalScript")
+    {
+        return Luau::SourceCode::Type::Local;
+    }
+    else if (className == "ModuleScript")
+    {
+        return Luau::SourceCode::Type::Module;
+    }
+    else
+    {
+        return Luau::SourceCode::Type::None;
+    }
 }
 
 Luau::SourceCode::Type RojoResolver::sourceCodeTypeFromPath(const std::filesystem::path& requirePath)

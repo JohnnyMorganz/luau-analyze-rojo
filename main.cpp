@@ -5,6 +5,7 @@
 #include "Luau/Frontend.h"
 #include "Luau/TypeAttach.h"
 #include "Luau/Transpiler.h"
+#include "extern/json.hpp"
 #include <filesystem>
 #include <vector>
 
@@ -21,6 +22,7 @@ LUAU_FASTINT(LuauTypeInferIterationLimit)
 LUAU_FASTINT(LuauTarjanChildLimit)
 LUAU_FASTFLAG(DebugLuauFreezeArena)
 
+using json = nlohmann::json;
 
 enum class ReportFormat
 {
@@ -162,6 +164,48 @@ bool isManagedModule(const Luau::ModuleName& name)
     return Luau::startsWith(name, "game/") || Luau::startsWith(name, "ProjectRoot/");
 }
 
+std::string jsonValueToLuau(const json& val)
+{
+    if (val.is_string() || val.is_number() || val.is_boolean())
+    {
+        return val.dump();
+    }
+    else if (val.is_null())
+    {
+        return "nil";
+    }
+    else if (val.is_array())
+    {
+        std::string out = "{";
+        for (auto& elem : val)
+        {
+            out += jsonValueToLuau(elem);
+            out += ";";
+        }
+
+        out += "}";
+        return out;
+    }
+    else if (val.is_object())
+    {
+        std::string out = "{";
+
+        for (auto& [key, val] : val.items())
+        {
+            out += "[\"" + key + "\"] = ";
+            out += jsonValueToLuau(val);
+            out += ";";
+        }
+
+        out += "}";
+        return out;
+    }
+    else
+    {
+        return ""; // TODO: should we error here?
+    }
+}
+
 std::optional<std::string> getCurrentModuleVirtualPath(
     const Luau::ModuleName& name, ResolvedSourceMap sourceMap, std::optional<std::filesystem::path> stdinFilepath)
 {
@@ -218,11 +262,40 @@ struct CliFileResolver : Luau::FileResolver
         }
         else if (isManagedModule(name))
         {
-            std::optional<std::filesystem::path> realFilePath = RojoResolver::resolveRequireToRealPath(name, sourceMap.root);
-            if (realFilePath.has_value())
+            std::optional<SourceNode> sourceNode = RojoResolver::resolveRequireToSourceNode(name, sourceMap.root);
+            if (sourceNode.has_value())
             {
-                source = readFile(realFilePath.value());
-                sourceType = RojoResolver::sourceCodeTypeFromPath(realFilePath.value());
+                auto path = RojoResolver::getRelevantFilePath(sourceNode.value());
+                if (path.has_value())
+                {
+                    source = readFile(path.value());
+
+                    // Handle if its a .json file, convert it into a Luau Module
+                    if (source.has_value() && path.value().extension() == ".json")
+                    {
+                        try
+                        {
+                            auto obj = json::parse(source.value());
+                            source = "return " + jsonValueToLuau(obj);
+                        }
+                        catch (const std::exception& ex)
+                        {
+                            fprintf(stderr, "Failed to load JSON module %s: %s\n", path.value().generic_string().c_str(), ex.what());
+                            return std::nullopt;
+                        }
+                    }
+
+                    if (sourceNode.value().className.has_value())
+                    {
+
+                        sourceType = RojoResolver::sourceCodeTypeFromClassName(sourceNode.value().className.value());
+                    }
+                    else
+                    {
+
+                        sourceType = RojoResolver::sourceCodeTypeFromPath(path.value());
+                    }
+                }
             }
         }
         else

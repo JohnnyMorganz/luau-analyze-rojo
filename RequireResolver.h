@@ -30,6 +30,9 @@ std::optional<ResolvedSourceMap> parseProjectFile(const std::filesystem::path& p
 std::optional<ResolvedSourceMap> parseSourceMap(const std::filesystem::path& projectFilePath);
 std::optional<SourceNode> resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root);
 std::optional<std::filesystem::path> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
+std::optional<std::filesystem::path> getRelevantFilePath(const SourceNode& node);
+std::optional<std::shared_ptr<SourceNode>> findChildWithName(const SourceNode& node, const std::string_view& name);
+Luau::SourceCode::Type sourceCodeTypeFromClassName(const std::string& className);
 Luau::SourceCode::Type sourceCodeTypeFromPath(const std::filesystem::path& path);
 std::optional<std::string> resolveRealPathToVirtual(const ResolvedSourceMap& sourceMap, const std::filesystem::path& filePath);
 }; // namespace RojoResolver
