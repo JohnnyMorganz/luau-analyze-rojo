@@ -460,7 +460,7 @@ int main(int argc, char** argv)
         {
             std::string flagSet = std::string(argv[i] + 7);
 
-            int eqIndex = flagSet.find("=");
+            size_t eqIndex = flagSet.find("=");
             if (eqIndex == std::string::npos)
             {
                 printf("Bad flag option, missing =: %s\n", flagSet.c_str());
