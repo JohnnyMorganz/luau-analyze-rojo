@@ -365,6 +365,12 @@ std::optional<SourceNodePtr> RojoResolver::resolveRequireToSourceNode(const std:
     // TODO: this function is O(n*m) [n = depth of instance tree, m = width of instance tree]. Could we improve this?
 
     auto pathParts = Luau::split(requirePath, '/');
+
+    if (pathParts.size() == 0)
+    {
+        return std::nullopt;
+    }
+
     SourceNodePtr currentNode = root;
 
     auto it = ++pathParts.begin(); // Skip first element
