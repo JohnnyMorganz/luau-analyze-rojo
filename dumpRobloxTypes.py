@@ -36,6 +36,17 @@ IGNORED_INSTANCES: List[str] = [
     "RBXScriptSignal",  # Redefined using generics
 ]
 
+# These classes are deferred to the very end of the dump, so that they have access to all the types
+DEFERRED_CLASSES: List[str] = [
+    "ServiceProvider",
+    # The following must be deferred as they rely on ServiceProvider
+    "DataModel",
+    "GenericSettings",
+    "AnalysticsSettings",
+    "GlobalSettings",
+    "UserSettings",
+]
+
 # Metamethods to add in to classes
 METAMETHODS = {
     "Vector3": [
@@ -458,7 +469,14 @@ def printClasses(dump: ApiDump):
     print("type Objects = { Instance }")
 
     for klass in dump["Classes"]:
+        if klass["Name"] in DEFERRED_CLASSES or klass["Name"] in IGNORED_INSTANCES:
+            continue
+
         print(declareClass(klass))
+        print()
+
+    for klassName in DEFERRED_CLASSES:
+        print(declareClass(CLASSES[klassName]))
         print()
 
 

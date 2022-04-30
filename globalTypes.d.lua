@@ -8172,265 +8172,6 @@ end
 declare class ServerStorage extends Instance
 end
 
-declare class ServiceProvider extends Instance
-	function FindService(self, className: string): Instance
-	function getService(self, className: string): Instance
-	function service(self, className: string): Instance
-	Close: RBXScriptSignal<>
-	CloseLate: RBXScriptSignal<>
-	ServiceAdded: RBXScriptSignal<Instance>
-	ServiceRemoving: RBXScriptSignal<Instance>
-	function GetService(self, service: "ABTestService"): ABTestService
-	function GetService(self, service: "AdService"): AdService
-	function GetService(self, service: "AnalyticsService"): AnalyticsService
-	function GetService(self, service: "AnimationClipProvider"): AnimationClipProvider
-	function GetService(self, service: "AnimationFromVideoCreatorService"): AnimationFromVideoCreatorService
-	function GetService(self, service: "AnimationFromVideoCreatorStudioService"): AnimationFromVideoCreatorStudioService
-	function GetService(self, service: "AppUpdateService"): AppUpdateService
-	function GetService(self, service: "AssetCounterService"): AssetCounterService
-	function GetService(self, service: "AssetDeliveryProxy"): AssetDeliveryProxy
-	function GetService(self, service: "AssetImportService"): AssetImportService
-	function GetService(self, service: "AssetManagerService"): AssetManagerService
-	function GetService(self, service: "AssetService"): AssetService
-	function GetService(self, service: "AvatarEditorService"): AvatarEditorService
-	function GetService(self, service: "AvatarImportService"): AvatarImportService
-	function GetService(self, service: "BadgeService"): BadgeService
-	function GetService(self, service: "CoreGui"): CoreGui
-	function GetService(self, service: "StarterGui"): StarterGui
-	function GetService(self, service: "BreakpointManager"): BreakpointManager
-	function GetService(self, service: "BrowserService"): BrowserService
-	function GetService(self, service: "BulkImportService"): BulkImportService
-	function GetService(self, service: "CacheableContentProvider"): CacheableContentProvider
-	function GetService(self, service: "HSRDataContentProvider"): HSRDataContentProvider
-	function GetService(self, service: "MeshContentProvider"): MeshContentProvider
-	function GetService(self, service: "SolidModelContentProvider"): SolidModelContentProvider
-	function GetService(self, service: "CalloutService"): CalloutService
-	function GetService(self, service: "ChangeHistoryService"): ChangeHistoryService
-	function GetService(self, service: "Chat"): Chat
-	function GetService(self, service: "ClusterPacketCache"): ClusterPacketCache
-	function GetService(self, service: "CollectionService"): CollectionService
-	function GetService(self, service: "CommandService"): CommandService
-	function GetService(self, service: "ConfigureServerService"): ConfigureServerService
-	function GetService(self, service: "ContentProvider"): ContentProvider
-	function GetService(self, service: "ContextActionService"): ContextActionService
-	function GetService(self, service: "ControllerService"): ControllerService
-	function GetService(self, service: "CookiesService"): CookiesService
-	function GetService(self, service: "CorePackages"): CorePackages
-	function GetService(self, service: "CoreScriptSyncService"): CoreScriptSyncService
-	function GetService(self, service: "CrossDMScriptChangeListener"): CrossDMScriptChangeListener
-	function GetService(self, service: "DataModelPatchService"): DataModelPatchService
-	function GetService(self, service: "DataStoreService"): DataStoreService
-	function GetService(self, service: "Debris"): Debris
-	function GetService(self, service: "DebuggablePluginWatcher"): DebuggablePluginWatcher
-	function GetService(self, service: "DebuggerConnectionManager"): DebuggerConnectionManager
-	function GetService(self, service: "DebuggerManager"): DebuggerManager
-	function GetService(self, service: "DebuggerUIService"): DebuggerUIService
-	function GetService(self, service: "DraftsService"): DraftsService
-	function GetService(self, service: "DraggerService"): DraggerService
-	function GetService(self, service: "EventIngestService"): EventIngestService
-	function GetService(self, service: "FlagStandService"): FlagStandService
-	function GetService(self, service: "FlyweightService"): FlyweightService
-	function GetService(self, service: "CSGDictionaryService"): CSGDictionaryService
-	function GetService(self, service: "NonReplicatedCSGDictionaryService"): NonReplicatedCSGDictionaryService
-	function GetService(self, service: "FriendService"): FriendService
-	function GetService(self, service: "GamePassService"): GamePassService
-	function GetService(self, service: "GamepadService"): GamepadService
-	function GetService(self, service: "Geometry"): Geometry
-	function GetService(self, service: "GoogleAnalyticsConfiguration"): GoogleAnalyticsConfiguration
-	function GetService(self, service: "GroupService"): GroupService
-	function GetService(self, service: "GuiService"): GuiService
-	function GetService(self, service: "GuidRegistryService"): GuidRegistryService
-	function GetService(self, service: "HapticService"): HapticService
-	function GetService(self, service: "HeightmapImporterService"): HeightmapImporterService
-	function GetService(self, service: "Hopper"): Hopper
-	function GetService(self, service: "HttpRbxApiService"): HttpRbxApiService
-	function GetService(self, service: "HttpService"): HttpService
-	function GetService(self, service: "ILegacyStudioBridge"): ILegacyStudioBridge
-	function GetService(self, service: "LegacyStudioBridge"): LegacyStudioBridge
-	function GetService(self, service: "IXPService"): IXPService
-	function GetService(self, service: "IncrementalPatchBuilder"): IncrementalPatchBuilder
-	function GetService(self, service: "InsertService"): InsertService
-	function GetService(self, service: "JointsService"): JointsService
-	function GetService(self, service: "KeyboardService"): KeyboardService
-	function GetService(self, service: "KeyframeSequenceProvider"): KeyframeSequenceProvider
-	function GetService(self, service: "LSPService"): LSPService
-	function GetService(self, service: "LanguageService"): LanguageService
-	function GetService(self, service: "Lighting"): Lighting
-	function GetService(self, service: "LocalStorageService"): LocalStorageService
-	function GetService(self, service: "AppStorageService"): AppStorageService
-	function GetService(self, service: "UserStorageService"): UserStorageService
-	function GetService(self, service: "LocalizationService"): LocalizationService
-	function GetService(self, service: "LodDataService"): LodDataService
-	function GetService(self, service: "LogService"): LogService
-	function GetService(self, service: "LoginService"): LoginService
-	function GetService(self, service: "LuaWebService"): LuaWebService
-	function GetService(self, service: "LuauScriptAnalyzerService"): LuauScriptAnalyzerService
-	function GetService(self, service: "MarketplaceService"): MarketplaceService
-	function GetService(self, service: "MaterialService"): MaterialService
-	function GetService(self, service: "MemStorageService"): MemStorageService
-	function GetService(self, service: "MemoryStoreService"): MemoryStoreService
-	function GetService(self, service: "MessageBusService"): MessageBusService
-	function GetService(self, service: "MessagingService"): MessagingService
-	function GetService(self, service: "MouseService"): MouseService
-	function GetService(self, service: "NetworkClient"): NetworkClient
-	function GetService(self, service: "NetworkServer"): NetworkServer
-	function GetService(self, service: "NetworkSettings"): NetworkSettings
-	function GetService(self, service: "NotificationService"): NotificationService
-	function GetService(self, service: "Workspace"): Workspace
-	function GetService(self, service: "PackageService"): PackageService
-	function GetService(self, service: "PackageUIService"): PackageUIService
-	function GetService(self, service: "PathfindingService"): PathfindingService
-	function GetService(self, service: "PermissionsService"): PermissionsService
-	function GetService(self, service: "PhysicsService"): PhysicsService
-	function GetService(self, service: "PlayerEmulatorService"): PlayerEmulatorService
-	function GetService(self, service: "Players"): Players
-	function GetService(self, service: "PluginDebugService"): PluginDebugService
-	function GetService(self, service: "PluginGuiService"): PluginGuiService
-	function GetService(self, service: "PluginPolicyService"): PluginPolicyService
-	function GetService(self, service: "PointsService"): PointsService
-	function GetService(self, service: "PolicyService"): PolicyService
-	function GetService(self, service: "ProcessInstancePhysicsService"): ProcessInstancePhysicsService
-	function GetService(self, service: "ProximityPromptService"): ProximityPromptService
-	function GetService(self, service: "PublishService"): PublishService
-	function GetService(self, service: "RbxAnalyticsService"): RbxAnalyticsService
-	function GetService(self, service: "RemoteDebuggerServer"): RemoteDebuggerServer
-	function GetService(self, service: "RenderSettings"): RenderSettings
-	function GetService(self, service: "ReplicatedFirst"): ReplicatedFirst
-	function GetService(self, service: "ReplicatedScriptService"): ReplicatedScriptService
-	function GetService(self, service: "ReplicatedStorage"): ReplicatedStorage
-	function GetService(self, service: "RobloxPluginGuiService"): RobloxPluginGuiService
-	function GetService(self, service: "RobloxReplicatedStorage"): RobloxReplicatedStorage
-	function GetService(self, service: "RunService"): RunService
-	function GetService(self, service: "RuntimeScriptService"): RuntimeScriptService
-	function GetService(self, service: "ScriptChangeService"): ScriptChangeService
-	function GetService(self, service: "ScriptCloneWatcher"): ScriptCloneWatcher
-	function GetService(self, service: "ScriptCloneWatcherHelper"): ScriptCloneWatcherHelper
-	function GetService(self, service: "ScriptContext"): ScriptContext
-	function GetService(self, service: "ScriptRegistrationService"): ScriptRegistrationService
-	function GetService(self, service: "ScriptService"): ScriptService
-	function GetService(self, service: "Selection"): Selection
-	function GetService(self, service: "ServerScriptService"): ServerScriptService
-	function GetService(self, service: "ServerStorage"): ServerStorage
-	function GetService(self, service: "SessionService"): SessionService
-	function GetService(self, service: "SocialService"): SocialService
-	function GetService(self, service: "SoundService"): SoundService
-	function GetService(self, service: "SpawnerService"): SpawnerService
-	function GetService(self, service: "StarterPack"): StarterPack
-	function GetService(self, service: "StarterPlayer"): StarterPlayer
-	function GetService(self, service: "Stats"): Stats
-	function GetService(self, service: "StopWatchReporter"): StopWatchReporter
-	function GetService(self, service: "Studio"): Studio
-	function GetService(self, service: "StudioAssetService"): StudioAssetService
-	function GetService(self, service: "StudioData"): StudioData
-	function GetService(self, service: "StudioDeviceEmulatorService"): StudioDeviceEmulatorService
-	function GetService(self, service: "StudioHighDpiService"): StudioHighDpiService
-	function GetService(self, service: "StudioPublishService"): StudioPublishService
-	function GetService(self, service: "StudioScriptDebugEventListener"): StudioScriptDebugEventListener
-	function GetService(self, service: "StudioService"): StudioService
-	function GetService(self, service: "TaskScheduler"): TaskScheduler
-	function GetService(self, service: "Teams"): Teams
-	function GetService(self, service: "TeleportService"): TeleportService
-	function GetService(self, service: "TemporaryCageMeshProvider"): TemporaryCageMeshProvider
-	function GetService(self, service: "TemporaryScriptService"): TemporaryScriptService
-	function GetService(self, service: "TestService"): TestService
-	function GetService(self, service: "TextBoxService"): TextBoxService
-	function GetService(self, service: "TextChatService"): TextChatService
-	function GetService(self, service: "TextService"): TextService
-	function GetService(self, service: "ThirdPartyUserService"): ThirdPartyUserService
-	function GetService(self, service: "TimerService"): TimerService
-	function GetService(self, service: "ToastNotificationService"): ToastNotificationService
-	function GetService(self, service: "ToolboxService"): ToolboxService
-	function GetService(self, service: "TouchInputService"): TouchInputService
-	function GetService(self, service: "TracerService"): TracerService
-	function GetService(self, service: "TweenService"): TweenService
-	function GetService(self, service: "UGCValidationService"): UGCValidationService
-	function GetService(self, service: "UnvalidatedAssetService"): UnvalidatedAssetService
-	function GetService(self, service: "UserInputService"): UserInputService
-	function GetService(self, service: "UserService"): UserService
-	function GetService(self, service: "VRService"): VRService
-	function GetService(self, service: "VersionControlService"): VersionControlService
-	function GetService(self, service: "VideoCaptureService"): VideoCaptureService
-	function GetService(self, service: "VirtualInputManager"): VirtualInputManager
-	function GetService(self, service: "VirtualUser"): VirtualUser
-	function GetService(self, service: "VisibilityService"): VisibilityService
-	function GetService(self, service: "Visit"): Visit
-	function GetService(self, service: "VoiceChatInternal"): VoiceChatInternal
-	function GetService(self, service: "VoiceChatService"): VoiceChatService
-end
-
-declare class DataModel extends ServiceProvider
-	CreatorId: number
-	CreatorType: EnumCreatorType
-	GameId: number
-	GearGenreSetting: EnumGearGenreSetting
-	Genre: EnumGenre
-	IsSFFlagsLoaded: boolean
-	JobId: string
-	PlaceId: number
-	PlaceVersion: number
-	PrivateServerId: string
-	PrivateServerOwnerId: number
-	VIPServerId: string
-	VIPServerOwnerId: number
-	Workspace: Workspace
-	lighting: Instance
-	workspace: Workspace
-	function BindToClose(self, func: Function): nil
-	function DefineFastFlag(self, name: string, defaultValue: boolean): boolean
-	function DefineFastInt(self, name: string, defaultValue: number): number
-	function DefineFastString(self, name: string, defaultValue: string): string
-	function GetEngineFeature(self, name: string): boolean
-	function GetFastFlag(self, name: string): boolean
-	function GetFastInt(self, name: string): number
-	function GetFastString(self, name: string): string
-	function GetJobsInfo(self): { any }
-	function GetMessage(self): string
-	function GetObjects(self, url: Content): Objects
-	function GetObjectsAllOrNone(self, url: Content): Objects
-	function GetObjectsList(self, urls: { any }): { any }
-	function GetRemoteBuildMode(self): boolean
-	function IsGearTypeAllowed(self, gearType: EnumGearType): boolean
-	function IsLoaded(self): boolean
-	function Load(self, url: Content): nil
-	function OpenScreenshotsFolder(self): nil
-	function OpenVideosFolder(self): nil
-	function ReportInGoogleAnalytics(self, category: string, action: string?, label: string?, value: number?): nil
-	function SetFastFlagForTesting(self, name: string, newValue: boolean): boolean
-	function SetFastIntForTesting(self, name: string, newValue: number): number
-	function SetFastStringForTesting(self, name: string, newValue: string): string
-	function SetPlaceId(self, placeId: number): nil
-	function SetUniverseId(self, universeId: number): nil
-	function Shutdown(self): nil
-	function GetObjectsAsync(self, url: Content): Objects
-	function HttpGetAsync(self, url: string, httpRequestType: EnumHttpRequestType?): string
-	function HttpPostAsync(self, url: string, data: string, contentType: string?, httpRequestType: EnumHttpRequestType?): string
-	function InsertObjectsAndJoinIfLegacyAsync(self, url: Content): Objects
-	function SavePlace(self, saveFilter: EnumSaveFilter?): boolean
-	AllowedGearTypeChanged: RBXScriptSignal<>
-	GraphicsQualityChangeRequest: RBXScriptSignal<boolean>
-	ItemChanged: RBXScriptSignal<Instance, string>
-	Loaded: RBXScriptSignal<>
-	ScreenshotReady: RBXScriptSignal<string>
-	ScreenshotSavedToAlbum: RBXScriptSignal<string, boolean, string>
-	OnClose: () -> any
-end
-
-declare class GenericSettings extends ServiceProvider
-end
-
-declare class AnalysticsSettings extends GenericSettings
-end
-
-declare class GlobalSettings extends GenericSettings
-	function GetFFlag(self, name: string): boolean
-	function GetFVariable(self, name: string): string
-end
-
-declare class UserSettings extends GenericSettings
-	function IsUserFeatureEnabled(self, name: string): boolean
-	function Reset(self): nil
-end
-
 declare class SessionService extends Instance
 	function GetCreatedTimestampUtcMs(self, sid: string): number
 	function GetMetadata(self, sid: string, key: string): any
@@ -9740,6 +9481,265 @@ declare class WeldConstraint extends Instance
 	Enabled: boolean
 	Part0: BasePart
 	Part1: BasePart
+end
+
+declare class ServiceProvider extends Instance
+	function FindService(self, className: string): Instance
+	function getService(self, className: string): Instance
+	function service(self, className: string): Instance
+	Close: RBXScriptSignal<>
+	CloseLate: RBXScriptSignal<>
+	ServiceAdded: RBXScriptSignal<Instance>
+	ServiceRemoving: RBXScriptSignal<Instance>
+	function GetService(self, service: "ABTestService"): ABTestService
+	function GetService(self, service: "AdService"): AdService
+	function GetService(self, service: "AnalyticsService"): AnalyticsService
+	function GetService(self, service: "AnimationClipProvider"): AnimationClipProvider
+	function GetService(self, service: "AnimationFromVideoCreatorService"): AnimationFromVideoCreatorService
+	function GetService(self, service: "AnimationFromVideoCreatorStudioService"): AnimationFromVideoCreatorStudioService
+	function GetService(self, service: "AppUpdateService"): AppUpdateService
+	function GetService(self, service: "AssetCounterService"): AssetCounterService
+	function GetService(self, service: "AssetDeliveryProxy"): AssetDeliveryProxy
+	function GetService(self, service: "AssetImportService"): AssetImportService
+	function GetService(self, service: "AssetManagerService"): AssetManagerService
+	function GetService(self, service: "AssetService"): AssetService
+	function GetService(self, service: "AvatarEditorService"): AvatarEditorService
+	function GetService(self, service: "AvatarImportService"): AvatarImportService
+	function GetService(self, service: "BadgeService"): BadgeService
+	function GetService(self, service: "CoreGui"): CoreGui
+	function GetService(self, service: "StarterGui"): StarterGui
+	function GetService(self, service: "BreakpointManager"): BreakpointManager
+	function GetService(self, service: "BrowserService"): BrowserService
+	function GetService(self, service: "BulkImportService"): BulkImportService
+	function GetService(self, service: "CacheableContentProvider"): CacheableContentProvider
+	function GetService(self, service: "HSRDataContentProvider"): HSRDataContentProvider
+	function GetService(self, service: "MeshContentProvider"): MeshContentProvider
+	function GetService(self, service: "SolidModelContentProvider"): SolidModelContentProvider
+	function GetService(self, service: "CalloutService"): CalloutService
+	function GetService(self, service: "ChangeHistoryService"): ChangeHistoryService
+	function GetService(self, service: "Chat"): Chat
+	function GetService(self, service: "ClusterPacketCache"): ClusterPacketCache
+	function GetService(self, service: "CollectionService"): CollectionService
+	function GetService(self, service: "CommandService"): CommandService
+	function GetService(self, service: "ConfigureServerService"): ConfigureServerService
+	function GetService(self, service: "ContentProvider"): ContentProvider
+	function GetService(self, service: "ContextActionService"): ContextActionService
+	function GetService(self, service: "ControllerService"): ControllerService
+	function GetService(self, service: "CookiesService"): CookiesService
+	function GetService(self, service: "CorePackages"): CorePackages
+	function GetService(self, service: "CoreScriptSyncService"): CoreScriptSyncService
+	function GetService(self, service: "CrossDMScriptChangeListener"): CrossDMScriptChangeListener
+	function GetService(self, service: "DataModelPatchService"): DataModelPatchService
+	function GetService(self, service: "DataStoreService"): DataStoreService
+	function GetService(self, service: "Debris"): Debris
+	function GetService(self, service: "DebuggablePluginWatcher"): DebuggablePluginWatcher
+	function GetService(self, service: "DebuggerConnectionManager"): DebuggerConnectionManager
+	function GetService(self, service: "DebuggerManager"): DebuggerManager
+	function GetService(self, service: "DebuggerUIService"): DebuggerUIService
+	function GetService(self, service: "DraftsService"): DraftsService
+	function GetService(self, service: "DraggerService"): DraggerService
+	function GetService(self, service: "EventIngestService"): EventIngestService
+	function GetService(self, service: "FlagStandService"): FlagStandService
+	function GetService(self, service: "FlyweightService"): FlyweightService
+	function GetService(self, service: "CSGDictionaryService"): CSGDictionaryService
+	function GetService(self, service: "NonReplicatedCSGDictionaryService"): NonReplicatedCSGDictionaryService
+	function GetService(self, service: "FriendService"): FriendService
+	function GetService(self, service: "GamePassService"): GamePassService
+	function GetService(self, service: "GamepadService"): GamepadService
+	function GetService(self, service: "Geometry"): Geometry
+	function GetService(self, service: "GoogleAnalyticsConfiguration"): GoogleAnalyticsConfiguration
+	function GetService(self, service: "GroupService"): GroupService
+	function GetService(self, service: "GuiService"): GuiService
+	function GetService(self, service: "GuidRegistryService"): GuidRegistryService
+	function GetService(self, service: "HapticService"): HapticService
+	function GetService(self, service: "HeightmapImporterService"): HeightmapImporterService
+	function GetService(self, service: "Hopper"): Hopper
+	function GetService(self, service: "HttpRbxApiService"): HttpRbxApiService
+	function GetService(self, service: "HttpService"): HttpService
+	function GetService(self, service: "ILegacyStudioBridge"): ILegacyStudioBridge
+	function GetService(self, service: "LegacyStudioBridge"): LegacyStudioBridge
+	function GetService(self, service: "IXPService"): IXPService
+	function GetService(self, service: "IncrementalPatchBuilder"): IncrementalPatchBuilder
+	function GetService(self, service: "InsertService"): InsertService
+	function GetService(self, service: "JointsService"): JointsService
+	function GetService(self, service: "KeyboardService"): KeyboardService
+	function GetService(self, service: "KeyframeSequenceProvider"): KeyframeSequenceProvider
+	function GetService(self, service: "LSPService"): LSPService
+	function GetService(self, service: "LanguageService"): LanguageService
+	function GetService(self, service: "Lighting"): Lighting
+	function GetService(self, service: "LocalStorageService"): LocalStorageService
+	function GetService(self, service: "AppStorageService"): AppStorageService
+	function GetService(self, service: "UserStorageService"): UserStorageService
+	function GetService(self, service: "LocalizationService"): LocalizationService
+	function GetService(self, service: "LodDataService"): LodDataService
+	function GetService(self, service: "LogService"): LogService
+	function GetService(self, service: "LoginService"): LoginService
+	function GetService(self, service: "LuaWebService"): LuaWebService
+	function GetService(self, service: "LuauScriptAnalyzerService"): LuauScriptAnalyzerService
+	function GetService(self, service: "MarketplaceService"): MarketplaceService
+	function GetService(self, service: "MaterialService"): MaterialService
+	function GetService(self, service: "MemStorageService"): MemStorageService
+	function GetService(self, service: "MemoryStoreService"): MemoryStoreService
+	function GetService(self, service: "MessageBusService"): MessageBusService
+	function GetService(self, service: "MessagingService"): MessagingService
+	function GetService(self, service: "MouseService"): MouseService
+	function GetService(self, service: "NetworkClient"): NetworkClient
+	function GetService(self, service: "NetworkServer"): NetworkServer
+	function GetService(self, service: "NetworkSettings"): NetworkSettings
+	function GetService(self, service: "NotificationService"): NotificationService
+	function GetService(self, service: "Workspace"): Workspace
+	function GetService(self, service: "PackageService"): PackageService
+	function GetService(self, service: "PackageUIService"): PackageUIService
+	function GetService(self, service: "PathfindingService"): PathfindingService
+	function GetService(self, service: "PermissionsService"): PermissionsService
+	function GetService(self, service: "PhysicsService"): PhysicsService
+	function GetService(self, service: "PlayerEmulatorService"): PlayerEmulatorService
+	function GetService(self, service: "Players"): Players
+	function GetService(self, service: "PluginDebugService"): PluginDebugService
+	function GetService(self, service: "PluginGuiService"): PluginGuiService
+	function GetService(self, service: "PluginPolicyService"): PluginPolicyService
+	function GetService(self, service: "PointsService"): PointsService
+	function GetService(self, service: "PolicyService"): PolicyService
+	function GetService(self, service: "ProcessInstancePhysicsService"): ProcessInstancePhysicsService
+	function GetService(self, service: "ProximityPromptService"): ProximityPromptService
+	function GetService(self, service: "PublishService"): PublishService
+	function GetService(self, service: "RbxAnalyticsService"): RbxAnalyticsService
+	function GetService(self, service: "RemoteDebuggerServer"): RemoteDebuggerServer
+	function GetService(self, service: "RenderSettings"): RenderSettings
+	function GetService(self, service: "ReplicatedFirst"): ReplicatedFirst
+	function GetService(self, service: "ReplicatedScriptService"): ReplicatedScriptService
+	function GetService(self, service: "ReplicatedStorage"): ReplicatedStorage
+	function GetService(self, service: "RobloxPluginGuiService"): RobloxPluginGuiService
+	function GetService(self, service: "RobloxReplicatedStorage"): RobloxReplicatedStorage
+	function GetService(self, service: "RunService"): RunService
+	function GetService(self, service: "RuntimeScriptService"): RuntimeScriptService
+	function GetService(self, service: "ScriptChangeService"): ScriptChangeService
+	function GetService(self, service: "ScriptCloneWatcher"): ScriptCloneWatcher
+	function GetService(self, service: "ScriptCloneWatcherHelper"): ScriptCloneWatcherHelper
+	function GetService(self, service: "ScriptContext"): ScriptContext
+	function GetService(self, service: "ScriptRegistrationService"): ScriptRegistrationService
+	function GetService(self, service: "ScriptService"): ScriptService
+	function GetService(self, service: "Selection"): Selection
+	function GetService(self, service: "ServerScriptService"): ServerScriptService
+	function GetService(self, service: "ServerStorage"): ServerStorage
+	function GetService(self, service: "SessionService"): SessionService
+	function GetService(self, service: "SocialService"): SocialService
+	function GetService(self, service: "SoundService"): SoundService
+	function GetService(self, service: "SpawnerService"): SpawnerService
+	function GetService(self, service: "StarterPack"): StarterPack
+	function GetService(self, service: "StarterPlayer"): StarterPlayer
+	function GetService(self, service: "Stats"): Stats
+	function GetService(self, service: "StopWatchReporter"): StopWatchReporter
+	function GetService(self, service: "Studio"): Studio
+	function GetService(self, service: "StudioAssetService"): StudioAssetService
+	function GetService(self, service: "StudioData"): StudioData
+	function GetService(self, service: "StudioDeviceEmulatorService"): StudioDeviceEmulatorService
+	function GetService(self, service: "StudioHighDpiService"): StudioHighDpiService
+	function GetService(self, service: "StudioPublishService"): StudioPublishService
+	function GetService(self, service: "StudioScriptDebugEventListener"): StudioScriptDebugEventListener
+	function GetService(self, service: "StudioService"): StudioService
+	function GetService(self, service: "TaskScheduler"): TaskScheduler
+	function GetService(self, service: "Teams"): Teams
+	function GetService(self, service: "TeleportService"): TeleportService
+	function GetService(self, service: "TemporaryCageMeshProvider"): TemporaryCageMeshProvider
+	function GetService(self, service: "TemporaryScriptService"): TemporaryScriptService
+	function GetService(self, service: "TestService"): TestService
+	function GetService(self, service: "TextBoxService"): TextBoxService
+	function GetService(self, service: "TextChatService"): TextChatService
+	function GetService(self, service: "TextService"): TextService
+	function GetService(self, service: "ThirdPartyUserService"): ThirdPartyUserService
+	function GetService(self, service: "TimerService"): TimerService
+	function GetService(self, service: "ToastNotificationService"): ToastNotificationService
+	function GetService(self, service: "ToolboxService"): ToolboxService
+	function GetService(self, service: "TouchInputService"): TouchInputService
+	function GetService(self, service: "TracerService"): TracerService
+	function GetService(self, service: "TweenService"): TweenService
+	function GetService(self, service: "UGCValidationService"): UGCValidationService
+	function GetService(self, service: "UnvalidatedAssetService"): UnvalidatedAssetService
+	function GetService(self, service: "UserInputService"): UserInputService
+	function GetService(self, service: "UserService"): UserService
+	function GetService(self, service: "VRService"): VRService
+	function GetService(self, service: "VersionControlService"): VersionControlService
+	function GetService(self, service: "VideoCaptureService"): VideoCaptureService
+	function GetService(self, service: "VirtualInputManager"): VirtualInputManager
+	function GetService(self, service: "VirtualUser"): VirtualUser
+	function GetService(self, service: "VisibilityService"): VisibilityService
+	function GetService(self, service: "Visit"): Visit
+	function GetService(self, service: "VoiceChatInternal"): VoiceChatInternal
+	function GetService(self, service: "VoiceChatService"): VoiceChatService
+end
+
+declare class DataModel extends ServiceProvider
+	CreatorId: number
+	CreatorType: EnumCreatorType
+	GameId: number
+	GearGenreSetting: EnumGearGenreSetting
+	Genre: EnumGenre
+	IsSFFlagsLoaded: boolean
+	JobId: string
+	PlaceId: number
+	PlaceVersion: number
+	PrivateServerId: string
+	PrivateServerOwnerId: number
+	VIPServerId: string
+	VIPServerOwnerId: number
+	Workspace: Workspace
+	lighting: Instance
+	workspace: Workspace
+	function BindToClose(self, func: Function): nil
+	function DefineFastFlag(self, name: string, defaultValue: boolean): boolean
+	function DefineFastInt(self, name: string, defaultValue: number): number
+	function DefineFastString(self, name: string, defaultValue: string): string
+	function GetEngineFeature(self, name: string): boolean
+	function GetFastFlag(self, name: string): boolean
+	function GetFastInt(self, name: string): number
+	function GetFastString(self, name: string): string
+	function GetJobsInfo(self): { any }
+	function GetMessage(self): string
+	function GetObjects(self, url: Content): Objects
+	function GetObjectsAllOrNone(self, url: Content): Objects
+	function GetObjectsList(self, urls: { any }): { any }
+	function GetRemoteBuildMode(self): boolean
+	function IsGearTypeAllowed(self, gearType: EnumGearType): boolean
+	function IsLoaded(self): boolean
+	function Load(self, url: Content): nil
+	function OpenScreenshotsFolder(self): nil
+	function OpenVideosFolder(self): nil
+	function ReportInGoogleAnalytics(self, category: string, action: string?, label: string?, value: number?): nil
+	function SetFastFlagForTesting(self, name: string, newValue: boolean): boolean
+	function SetFastIntForTesting(self, name: string, newValue: number): number
+	function SetFastStringForTesting(self, name: string, newValue: string): string
+	function SetPlaceId(self, placeId: number): nil
+	function SetUniverseId(self, universeId: number): nil
+	function Shutdown(self): nil
+	function GetObjectsAsync(self, url: Content): Objects
+	function HttpGetAsync(self, url: string, httpRequestType: EnumHttpRequestType?): string
+	function HttpPostAsync(self, url: string, data: string, contentType: string?, httpRequestType: EnumHttpRequestType?): string
+	function InsertObjectsAndJoinIfLegacyAsync(self, url: Content): Objects
+	function SavePlace(self, saveFilter: EnumSaveFilter?): boolean
+	AllowedGearTypeChanged: RBXScriptSignal<>
+	GraphicsQualityChangeRequest: RBXScriptSignal<boolean>
+	ItemChanged: RBXScriptSignal<Instance, string>
+	Loaded: RBXScriptSignal<>
+	ScreenshotReady: RBXScriptSignal<string>
+	ScreenshotSavedToAlbum: RBXScriptSignal<string, boolean, string>
+	OnClose: () -> any
+end
+
+declare class GenericSettings extends ServiceProvider
+end
+
+declare class AnalysticsSettings extends GenericSettings
+end
+
+declare class GlobalSettings extends GenericSettings
+	function GetFFlag(self, name: string): boolean
+	function GetFVariable(self, name: string): string
+end
+
+declare class UserSettings extends GenericSettings
+	function IsUserFeatureEnabled(self, name: string): boolean
+	function Reset(self): nil
 end
 
 declare Instance: {
