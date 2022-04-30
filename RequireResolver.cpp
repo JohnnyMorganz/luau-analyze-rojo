@@ -8,7 +8,7 @@
 
 using json = nlohmann::json;
 
-namespace ns
+namespace project
 {
 struct ProjectNode
 {
@@ -44,11 +44,9 @@ void from_json(const json& j, Project& p)
     j.at("name").get_to(p.name);
     j.at("tree").get_to(p.tree);
 };
-}; // namespace ns
-
 
 void handleNodePath(SourceNode& node, const std::filesystem::path& path, const std::filesystem::path& basePath);
-void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::filesystem::path& basePath);
+void populateChildren(SourceNode& parent, const std::string& name, const ProjectNode& node, const std::filesystem::path& basePath);
 
 std::string removeRojoExtension(std::string& nameWithExtension)
 {
@@ -62,7 +60,7 @@ std::string removeRojoExtension(std::string& nameWithExtension)
     return nameWithExtension;
 }
 
-void readProjectFile(SourceNode& node, ns::Project& project, const std::filesystem::path& basePath)
+void readProjectFile(SourceNode& node, Project& project, const std::filesystem::path& basePath)
 {
     node.className = project.tree.class_name;
     if (project.tree.path)
@@ -89,7 +87,7 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
         if (nestedProjectSource)
         {
             auto j = json::parse(*nestedProjectSource);
-            auto project = j.get<ns::Project>();
+            auto project = j.get<Project>();
             readProjectFile(node, project, fullPath);
         }
         else
@@ -114,20 +112,21 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
                     {
                         node.className = "ModuleScript";
                     }
-                    node.path = path;
+                    node.filePaths.emplace_back(path);
                 }
                 else
                 {
                     SourceNode childNode;
+                    childNode.name = fileName;
                     handleNodePath(childNode, path, ""); // Don't need to basePath here since name is the full path
-                    node.children.insert(std::pair(fileName, std::make_shared<SourceNode>(childNode)));
+                    node.children.emplace_back(std::make_shared<SourceNode>(childNode));
                 }
             }
         }
     }
     else
     {
-        node.path = fullPath;
+        node.filePaths.emplace_back(fullPath);
         auto sourceType = RojoResolver::sourceCodeTypeFromPath(fullPath);
         if (sourceType == Luau::SourceCode::Script)
         {
@@ -159,9 +158,10 @@ void handleNodePath(SourceNode& node, const std::filesystem::path& path, const s
     }
 }
 
-void populateChildren(SourceNode& parent, const std::string& name, const ns::ProjectNode& node, const std::filesystem::path& basePath)
+void populateChildren(SourceNode& parent, const std::string& name, const ProjectNode& node, const std::filesystem::path& basePath)
 {
     SourceNode childNode;
+    childNode.name = name;
     childNode.className = node.class_name;
     if (node.path)
     {
@@ -173,84 +173,119 @@ void populateChildren(SourceNode& parent, const std::string& name, const ns::Pro
         populateChildren(childNode, child.first, *child.second.get(), basePath);
     }
 
-    parent.children.insert(std::pair(name, std::make_shared<SourceNode>(childNode)));
+    parent.children.emplace_back(std::make_shared<SourceNode>(childNode));
 }
+}; // namespace project
+
+/**
+ * @brief Returns the relevant file path from a SourceNode.
+ * The file paths in a SourceNode can be multiple number of contributing sources (meta.json, project.json, etc.).
+ * We only want the corresponding script (if available)
+ *
+ * @param node SourceNode to find relevant path from
+ */
+std::optional<std::filesystem::path> getRelevantFilePath(const SourceNode& node)
+{
+    for (const auto& path : node.filePaths)
+    {
+        if (path.extension() == ".lua" || path.extension() == ".luau")
+        {
+            return path;
+        }
+    }
+    return std::nullopt;
+}
+
+std::optional<std::shared_ptr<SourceNode>> findChildWithName(const SourceNode& node, const std::string_view& name)
+{
+    for (const auto& child : node.children)
+    {
+        if ((*child).name == name)
+        {
+            return child;
+        }
+    }
+    return std::nullopt;
+}
+
 
 void dumpSourceMap(const SourceNode& root, int level = 0)
 {
-    if (root.path.has_value())
+    printf("%*s%s\n", level, "", root.name.c_str());
+    if (auto path = getRelevantFilePath(root))
     {
         try
         {
-            auto canonicalPath = std::filesystem::canonical(root.path.value());
-            printf("%*sPath: %s\n", level, "", canonicalPath.generic_string().c_str());
+            auto canonicalPath = std::filesystem::canonical(path.value());
+            printf("%*sPath: %s\n", level + 2, "", canonicalPath.generic_string().c_str());
         }
         catch (const std::exception& ex)
         {
-            printf("%*sPath: FAILED TO GENERATE: %s\n", level, "", ex.what());
+            printf("%*sPath: FAILED TO GENERATE: %s\n", level + 2, "", ex.what());
         }
     }
     else
     {
-        printf("%*sNO PATH\n", level, "");
+        printf("%*sNO PATH\n", level + 2, "");
     }
     if (root.className)
     {
-        printf("%*sClassName: %s\n", level, "", (*root.className).c_str());
+        printf("%*sClassName: %s\n", level + 2, "", (*root.className).c_str());
     }
 
     if (root.children.size() > 0)
     {
         for (auto& child : root.children)
         {
-            printf("%*s%s\n", level, "", child.first.c_str());
-            dumpSourceMap(*child.second.get(), level + 4);
+            dumpSourceMap(*child, level + 4);
         }
     }
 }
 
-void writePathsToMap(SourceNode& node, std::string base, std::unordered_map<std::string, std::string>& map)
+void writePathsToMap(const SourceNode& node, std::string base, std::unordered_map<std::string, std::string>& map)
 {
-    if (node.path)
+    if (auto path = getRelevantFilePath(node))
     {
 
         try
         {
-            auto canonicalPath = std::filesystem::canonical(node.path.value());
+            auto canonicalPath = std::filesystem::canonical(path.value());
             map[canonicalPath.generic_string()] = base;
         }
         catch (const std::exception& ex)
         {
-            std::cout << "Failed to generate canonical path for " << node.path.value() << ":\n" << ex.what() << '\n';
+            std::cout << "Failed to generate canonical path for " << path.value() << ":\n" << ex.what() << '\n';
         }
     }
 
-    for (auto& ch : node.children)
+    for (auto& child : node.children)
     {
-        writePathsToMap(*ch.second, base + "/" + ch.first, map);
+        writePathsToMap(*child, base + "/" + (*child).name, map);
     }
 }
 
-std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::filesystem::path& sourceMapPath)
+std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::filesystem::path& projectFilePath)
 {
-    std::optional<std::string> projectSource = readFile(sourceMapPath);
+    std::optional<std::string> projectSource = readFile(projectFilePath);
     if (projectSource)
     {
         try
         {
 
             auto j = json::parse(projectSource.value());
-            auto project = j.get<ns::Project>();
+            auto project = j.get<project::Project>();
 
             // Create root node
             SourceNode rootNode;
-            readProjectFile(rootNode, project, "");
+            rootNode.name = "game";
+            project::readProjectFile(rootNode, project, "");
 
             // Create map between real file paths to virtual
             std::unordered_map<std::string, std::string> pathToVirtualMap;
             std::string base = "game";
             if (!project.tree.class_name.has_value() || project.tree.class_name.value() != "DataModel")
             {
+                rootNode.name = "ProjectRoot";
                 base = "ProjectRoot";
             }
             writePathsToMap(rootNode, base, pathToVirtualMap);
@@ -266,8 +301,22 @@ std::optional<ResolvedSourceMap> RojoResolver::parseProjectFile(const std::files
     return std::nullopt;
 }
 
+std::optional<ResolvedSourceMap> RojoResolver::parseSourceMap(const std::filesystem::path& sourceMapPath)
+{
+    // TODO
+    return std::nullopt;
+}
+
+/**
+ * @brief Searches through the game tree to find the SourceNode corresponding to the path to an instance
+ *
+ * @param requirePath A fully-qualified path to an Instance. e.g. `game/ReplicatedStorage/Script`
+ * @param root The root of the instance tree
+ */
 std::optional<SourceNode> RojoResolver::resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root)
 {
+    // TODO: this function is O(n*m) [n = depth of instance tree, m = width of instance tree]. Could we improve this?
+
     auto pathParts = Luau::split(requirePath, '/');
     SourceNode currentNode = root;
 
@@ -275,10 +324,11 @@ std::optional<SourceNode> RojoResolver::resolveRequireToSourceNode(const std::st
     while (it != pathParts.end())
     {
         auto part = *it;
+        auto child = findChildWithName(currentNode, part);
 
-        if (currentNode.children.find(std::string(part)) != currentNode.children.end())
+        if (child.has_value())
         {
-            currentNode = *currentNode.children.at(std::string(part));
+            currentNode = *child.value();
         }
         else
         {
@@ -295,7 +345,7 @@ std::optional<std::filesystem::path> RojoResolver::resolveRequireToRealPath(cons
 {
     if (auto node = RojoResolver::resolveRequireToSourceNode(requirePath, root))
     {
-        return node.value().path;
+        return getRelevantFilePath(node.value());
     }
     return std::nullopt;
 }

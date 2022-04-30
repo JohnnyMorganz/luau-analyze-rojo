@@ -121,7 +121,8 @@ static void displayHelp(const char* argv0)
     printf("  --formatter=plain: report analysis errors in Luacheck-compatible format\n");
     printf("  --formatter=gnu: report analysis errors in GNU-compatible format\n");
     printf("  --timetrace: record compiler time tracing information into trace.json\n");
-    printf("  --project=PATH: path to Rojo .project.json for resolving\n");
+    printf("  --sourcemap=PATH: path to a Rojo-style sourcemap\n");
+    printf("  --project=PATH: path to Rojo .project.json for resolving [DEPRECATED - USE --sourcemap=PATH INSTEAD]\n");
     printf("  --defs=PATH: path to definition file for global types\n");
     printf("  --stdin-filepath=PATH: path to file being sent through stdin. Used for require resolution\n");
     printf("  --dump-source-map: dump the currently resolved source map\n");
@@ -361,7 +362,7 @@ struct CliConfigResolver : Luau::ConfigResolver
     }
 };
 
-std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, SourceNode& node)
+std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const Luau::ScopePtr& globalScope, const SourceNode& node)
 {
     std::optional<Luau::TypeFun> baseType;
     if (node.className.has_value())
@@ -387,11 +388,11 @@ std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const L
         Luau::TableTypeVar children{Luau::TableState::Sealed, globalScope->level};
         for (const auto& child : node.children)
         {
-            auto childType = makeInstanceType(typeArena, globalScope, *child.second);
+            auto childType = makeInstanceType(typeArena, globalScope, *child);
             if (childType.has_value())
             {
                 auto childProperty = Luau::makeProperty(childType.value(), "@luau/instance");
-                children.props[child.first] = childProperty;
+                children.props[(*child).name] = childProperty;
             }
         }
         Luau::TypeId childId = typeArena.addType(children);
@@ -447,7 +448,8 @@ int main(int argc, char** argv)
     bool annotate = false;
     bool dumpMap = false;
     bool excludeVirtualPath = false;
-    std::optional<std::filesystem::path> projectPath = std::nullopt;
+    std::optional<std::filesystem::path> sourcemapPath = std::nullopt;
+    std::optional<std::filesystem::path> projectPath = std::nullopt; // TODO: remove when deprecated
     std::vector<std::filesystem::path> globalDefsPaths;
     std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
 
@@ -471,6 +473,8 @@ int main(int argc, char** argv)
             dumpMap = true;
         else if (strcmp(argv[i], "--exclude-virtual-path") == 0)
             excludeVirtualPath = true;
+        else if (strncmp(argv[i], "--sourcemap=", 12) == 0)
+            sourcemapPath = std::string(argv[i] + 12);
         else if (strncmp(argv[i], "--project=", 10) == 0)
             projectPath = std::string(argv[i] + 10);
         else if (strncmp(argv[i], "--defs=", 7) == 0)
@@ -496,6 +500,7 @@ int main(int argc, char** argv)
         }
     }
 
+    // Override Fast Flags
     for (Luau::FValue<bool>* flag = Luau::FValue<bool>::list; flag; flag = flag->next)
     {
         if (fastValues->find(flag->name) != fastValues->end())
@@ -555,9 +560,21 @@ int main(int argc, char** argv)
     }
 #endif
 
+    if (projectPath.has_value() && sourcemapPath.has_value())
+    {
+        fprintf(stderr, "Can only use one of --sourcemap=PATH and --project=PATH\n");
+        return 1;
+    }
+
     if (projectPath.has_value() && !std::filesystem::exists(projectPath.value()))
     {
         fprintf(stderr, "Cannot load project path %s: path does not exist\n", projectPath.value().generic_string().c_str());
+        return 1;
+    }
+
+    if (sourcemapPath.has_value() && !std::filesystem::exists(sourcemapPath.value()))
+    {
+        fprintf(stderr, "Cannot load sourcemap path %s: path does not exist\n", projectPath.value().generic_string().c_str());
         return 1;
     }
 
@@ -567,7 +584,17 @@ int main(int argc, char** argv)
     CliFileResolver fileResolver;
     fileResolver.excludeVirtualPath = excludeVirtualPath;
     fileResolver.stdinFilepath = stdinFilepath;
-    if (projectPath)
+    if (sourcemapPath.has_value())
+    {
+        auto sourceMap = RojoResolver::parseSourceMap(sourcemapPath.value());
+        if (sourceMap)
+        {
+            fileResolver.sourceMap = sourceMap.value();
+            if (dumpMap)
+                dumpSourceMap(fileResolver.sourceMap.root, 0);
+        }
+    }
+    else if (projectPath.has_value())
     {
         auto sourceMap = RojoResolver::parseProjectFile(projectPath.value());
         if (sourceMap)
@@ -623,20 +650,19 @@ int main(int argc, char** argv)
             {
                 for (const auto& services : root.children)
                 {
-                    auto serviceType = frontend.typeChecker.globalScope->lookupType(services.first);
+                    auto serviceType = frontend.typeChecker.globalScope->lookupType((*services).name); // TODO: change to className
                     if (serviceType.has_value())
                     {
                         if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(serviceType.value().type))
                         {
                             // Extend the props to include the children
-                            for (const auto& child : (*services.second).children)
+                            for (const auto& child : (*services).children)
                             {
-                                auto childType =
-                                    makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *(child.second));
+                                auto childType = makeInstanceType(frontend.typeChecker.globalTypes, frontend.typeChecker.globalScope, *child);
                                 if (childType.has_value())
                                 {
 
-                                    ctv->props[child.first] = makeProperty(childType.value(), "@luau/serviceChild");
+                                    ctv->props[(*child).name] = makeProperty(childType.value(), "@luau/serviceChild");
                                 }
                             }
                         }

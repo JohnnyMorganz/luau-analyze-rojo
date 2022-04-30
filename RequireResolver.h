@@ -12,9 +12,10 @@
 
 struct SourceNode
 {
-    std::optional<std::filesystem::path> path;
-    std::optional<std::string> className;
-    std::unordered_map<std::string, std::shared_ptr<SourceNode>> children;
+    std::string name;
+    std::optional<std::string> className; // TODO: make no longer optional when removing project file parsing
+    std::vector<std::filesystem::path> filePaths;
+    std::vector<std::shared_ptr<SourceNode>> children;
 };
 
 struct ResolvedSourceMap
@@ -26,6 +27,7 @@ struct ResolvedSourceMap
 namespace RojoResolver
 {
 std::optional<ResolvedSourceMap> parseProjectFile(const std::filesystem::path& projectFilePath);
+std::optional<ResolvedSourceMap> parseSourceMap(const std::filesystem::path& projectFilePath);
 std::optional<SourceNode> resolveRequireToSourceNode(const std::string& requirePath, const SourceNode& root);
 std::optional<std::filesystem::path> resolveRequireToRealPath(const std::string& requirePath, const SourceNode& root);
 Luau::SourceCode::Type sourceCodeTypeFromPath(const std::filesystem::path& path);
