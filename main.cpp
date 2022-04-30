@@ -143,7 +143,7 @@ static void displayFlags()
     {
         printf("  %s=%s\n", flag->name, flag->value ? "true" : "false");
     }
-    
+
     for (Luau::FValue<int>* flag = Luau::FValue<int>::list; flag; flag = flag->next)
     {
         printf("  %s=%d\n", flag->name, flag->value);
@@ -400,6 +400,29 @@ std::optional<Luau::TypeId> makeInstanceType(Luau::TypeArena& typeArena, const L
     return typeId;
 }
 
+// Magic function for `Instance:IsA("ClassName")` predicate
+std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionInstanceIsA(
+    Luau::TypeChecker& typeChecker, const Luau::ScopePtr& scope, const Luau::AstExprCall& expr, Luau::ExprResult<Luau::TypePackId> exprResult)
+{
+    if (expr.args.size != 1)
+        return std::nullopt;
+
+    auto index = expr.func->as<Luau::AstExprIndexName>();
+    auto str = expr.args.data[0]->as<Luau::AstExprConstantString>();
+    if (!index || !str)
+        return std::nullopt;
+
+    std::optional<Luau::LValue> lvalue = tryGetLValue(*index->expr);
+    std::optional<Luau::TypeFun> tfun = scope->lookupType(std::string(str->value.data, str->value.size));
+    if (!lvalue || !tfun)
+        return std::nullopt;
+
+    unfreeze(typeChecker.globalTypes);
+    Luau::TypePackId booleanPack = typeChecker.globalTypes.addTypePack({typeChecker.booleanType});
+    freeze(typeChecker.globalTypes);
+    return Luau::ExprResult<Luau::TypePackId>{booleanPack, {Luau::IsAPredicate{std::move(*lvalue), expr.location, tfun->type}}};
+}
+
 int main(int argc, char** argv)
 {
     Luau::assertHandler() = assertionHandler;
@@ -413,7 +436,7 @@ int main(int argc, char** argv)
         displayHelp(argv[0]);
         return 0;
     }
-    
+
     if (argc >= 2 && strcmp(argv[1], "--show-flags") == 0)
     {
         displayFlags();
@@ -427,7 +450,7 @@ int main(int argc, char** argv)
     std::optional<std::filesystem::path> projectPath = std::nullopt;
     std::vector<std::filesystem::path> globalDefsPaths;
     std::optional<std::filesystem::path> stdinFilepath = std::nullopt;
-    
+
     bool errorOnUnknownFlags = true;
     std::unordered_map<std::string, std::string>* fastValues = new std::unordered_map<std::string, std::string>();
 
@@ -472,7 +495,7 @@ int main(int argc, char** argv)
             fastValues->insert_or_assign(flagName, flagValue);
         }
     }
-    
+
     for (Luau::FValue<bool>* flag = Luau::FValue<bool>::list; flag; flag = flag->next)
     {
         if (fastValues->find(flag->name) != fastValues->end())
@@ -488,11 +511,11 @@ int main(int argc, char** argv)
                 printf("Bad flag option, %s expects a boolean 'true' or 'false'\n", flag->name);
                 return 1;
             }
-            
+
             fastValues->erase(flag->name);
         }
     }
-    
+
     for (Luau::FValue<int>* flag = Luau::FValue<int>::list; flag; flag = flag->next)
     {
         if (fastValues->find(flag->name) != fastValues->end())
@@ -500,10 +523,11 @@ int main(int argc, char** argv)
             std::string valueStr = fastValues->at(flag->name);
 
             int value = 0;
-            try {
+            try
+            {
                 value = std::stoi(valueStr);
             }
-            catch(...)
+            catch (...)
             {
                 printf("Bad flag option, %s expects an int\n", flag->name);
                 return 1;
@@ -514,8 +538,10 @@ int main(int argc, char** argv)
         }
     }
 
-    if (errorOnUnknownFlags && fastValues->size() != 0) {
-        for (auto entry = fastValues->begin(); entry != fastValues->end(); entry++) {
+    if (errorOnUnknownFlags && fastValues->size() != 0)
+    {
+        for (auto entry = fastValues->begin(); entry != fastValues->end(); entry++)
+        {
             printf("Unknown flag: %s\n", entry->first.c_str());
         }
         return 1;
@@ -615,6 +641,16 @@ int main(int argc, char** argv)
                             }
                         }
                     }
+                }
+            }
+
+            // Register Instance:IsA("ClassName") type predicate
+            auto instanceType = frontend.typeChecker.globalScope->lookupType("Instance");
+            if (instanceType.has_value())
+            {
+                if (Luau::ClassTypeVar* ctv = Luau::getMutable<Luau::ClassTypeVar>(instanceType.value().type))
+                {
+                    Luau::attachMagicFunction(ctv->props["IsA"].type, magicFunctionInstanceIsA);
                 }
             }
         }
