@@ -10,6 +10,8 @@ DATA_TYPES_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/mast
 API_DUMP_URL = "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json"
 CORRECTIONS_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/master/server/api/Corrections.json"
 
+INCLUDE_DEPRECATED_METHODS = True
+
 TYPE_INDEX = {
     "Tuple": "any",
     "Variant": "any",
@@ -240,6 +242,7 @@ ApiFunction = TypedDict(
         "Parameters": List[ApiParameter],
         "ReturnType": ApiValueType,
         "TupleReturns": Optional[CorrectionsValueType],
+        "Tags": Optional[List[str]],  # TODO: stricter type?
     },
 )
 
@@ -250,6 +253,7 @@ ApiEvent = TypedDict(
         "MemberType": Literal["Event"],
         "Description": Optional[str],
         "Parameters": List[ApiParameter],
+        "Tags": Optional[List[str]],  # TODO: stricter type?
     },
 )
 
@@ -262,6 +266,7 @@ ApiCallback = TypedDict(
         "Parameters": List[ApiParameter],
         "ReturnType": ApiValueType,
         "TupleReturns": Optional[CorrectionsValueType],
+        "Tags": Optional[List[str]],  # TODO: stricter type?
     },
 )
 
@@ -369,6 +374,13 @@ def declareClass(klass: ApiClass):
     if klass["Name"] in IGNORED_INSTANCES:
         return ""
 
+    if (
+        not INCLUDE_DEPRECATED_METHODS
+        and "Tags" in klass
+        and "Deprecated" in klass["Tags"]
+    ):
+        return ""
+
     out = "declare class " + klass["Name"]
     if "Superclass" in klass and klass["Superclass"] != "<<<ROOT>>>":
         out += " extends " + klass["Superclass"]
@@ -377,6 +389,13 @@ def declareClass(klass: ApiClass):
     isGetService = False
 
     for member in klass["Members"]:
+        if (
+            not INCLUDE_DEPRECATED_METHODS
+            and "Tags" in member
+            and "Deprecated" in member["Tags"]
+        ):
+            continue
+
         if member["MemberType"] == "Property":
             out += (
                 f"\t{escapeName(member['Name'])}: {resolveType(member['ValueType'])}\n"
@@ -591,6 +610,8 @@ def loadClassesIntoStructures(dump: ApiDump):
     for klass in dump["Classes"]:
         isCreatable = True
         if "Tags" in klass:
+            if "Deprecated" in klass and not INCLUDE_DEPRECATED_METHODS:
+                continue
             if "Service" in klass["Tags"]:
                 SERVICES.append(klass["Name"])
             if "NotCreatable" in klass["Tags"]:
