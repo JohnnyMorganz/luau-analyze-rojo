@@ -245,7 +245,7 @@ struct CliFileResolver : Luau::FileResolver
 
     std::optional<Luau::SourceCode> readSource(const Luau::ModuleName& name) override
     {
-        Luau::SourceCode::Type sourceType;
+        Luau::SourceCode::Type sourceType = Luau::SourceCode::Script;
         std::optional<std::string> source = std::nullopt;
 
         // If the module name is "-", then read source from stdin
