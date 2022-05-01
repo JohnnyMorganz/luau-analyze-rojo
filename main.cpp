@@ -540,6 +540,19 @@ std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionInstanceIsA(
     return Luau::ExprResult<Luau::TypePackId>{booleanPack, {Luau::IsAPredicate{std::move(*lvalue), expr.location, tfun->type}}};
 }
 
+// Magic function for `instance:Clone()`, so that we return the exact subclass that `instance` is, rather than just a generic Instance
+static std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionInstanceClone(
+    Luau::TypeChecker& typeChecker, const Luau::ScopePtr& scope, const Luau::AstExprCall& expr, Luau::ExprResult<Luau::TypePackId> exprResult)
+{
+    auto index = expr.func->as<Luau::AstExprIndexName>();
+    if (!index)
+        return std::nullopt;
+
+    Luau::TypeArena& arena = typeChecker.currentModule->internalTypes;
+    Luau::TypeId instanceType = typeChecker.checkLValueBinding(scope, *index->expr);
+    return Luau::ExprResult<Luau::TypePackId>{arena.addTypePack({instanceType})};
+}
+
 // Magic function for `Instance:FindFirstChildWhichIsA("ClassName")` and friends
 std::optional<Luau::ExprResult<Luau::TypePackId>> magicFunctionFindFirstXWhichIsA(
     Luau::TypeChecker& typeChecker, const Luau::ScopePtr& scope, const Luau::AstExprCall& expr, Luau::ExprResult<Luau::TypePackId> exprResult)
@@ -833,6 +846,7 @@ int main(int argc, char** argv)
 
             // Register Instance:IsA("ClassName") type predicate
             // Register FindFirstChildWhichIsA / FindFirstChildOfClassName / FindFirstAncestorWhichIsA / FindFirstAncestorOfClass magic functions
+            // Register Instance:Clone() magic function
             auto instanceType = frontend.typeChecker.globalScope->lookupType("Instance");
             if (instanceType.has_value())
             {
@@ -843,6 +857,7 @@ int main(int argc, char** argv)
                     Luau::attachMagicFunction(ctv->props["FindFirstChildOfClass"].type, magicFunctionFindFirstXWhichIsA);
                     Luau::attachMagicFunction(ctv->props["FindFirstAncestorWhichIsA"].type, magicFunctionFindFirstXWhichIsA);
                     Luau::attachMagicFunction(ctv->props["FindFirstAncestorOfClass"].type, magicFunctionFindFirstXWhichIsA);
+                    Luau::attachMagicFunction(ctv->props["Clone"].type, magicFunctionInstanceClone);
                 }
             }
         }
