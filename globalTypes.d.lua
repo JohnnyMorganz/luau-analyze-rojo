@@ -56,2792 +56,3075 @@ export type RBXScriptSignal<T... = ...any> = {
     ConnectParallel: (self: RBXScriptSignal<T...>, callback: (T...) -> ()) -> RBXScriptConnection,
 }
 
-type EnumABTestLoadingStatus = {
-	None: EnumItem,
-	Pending: EnumItem,
-	Initialized: EnumItem,
-	Error: EnumItem,
-	TimedOut: EnumItem,
-	ShutOff: EnumItem,
-}
-type EnumAccessoryType = {
-	Unknown: EnumItem,
-	Hat: EnumItem,
-	Hair: EnumItem,
-	Face: EnumItem,
-	Neck: EnumItem,
-	Shoulder: EnumItem,
-	Front: EnumItem,
-	Back: EnumItem,
-	Waist: EnumItem,
-	TShirt: EnumItem,
-	Shirt: EnumItem,
-	Pants: EnumItem,
-	Jacket: EnumItem,
-	Sweater: EnumItem,
-	Shorts: EnumItem,
-	LeftShoe: EnumItem,
-	RightShoe: EnumItem,
-	DressSkirt: EnumItem,
-	Eyebrow: EnumItem,
-	Eyelash: EnumItem,
-}
-type EnumActionType = {
-	Nothing: EnumItem,
-	Pause: EnumItem,
-	Lose: EnumItem,
-	Draw: EnumItem,
-	Win: EnumItem,
-}
-type EnumActuatorRelativeTo = {
-	Attachment0: EnumItem,
-	Attachment1: EnumItem,
-	World: EnumItem,
-}
-type EnumActuatorType = {
-	None: EnumItem,
-	Motor: EnumItem,
-	Servo: EnumItem,
-}
-type EnumAdornCullingMode = {
-	Automatic: EnumItem,
-	Never: EnumItem,
-}
-type EnumAlignType = {
-	Parallel: EnumItem,
-	Perpendicular: EnumItem,
-}
-type EnumAlphaMode = {
-	Overlay: EnumItem,
-	Transparency: EnumItem,
-}
-type EnumAnalyticsEconomyAction = {
-	Default: EnumItem,
-	Acquire: EnumItem,
-	Spend: EnumItem,
-}
-type EnumAnalyticsLogLevel = {
-	Trace: EnumItem,
-	Debug: EnumItem,
-	Information: EnumItem,
-	Warning: EnumItem,
-	Error: EnumItem,
-	Fatal: EnumItem,
-}
-type EnumAnalyticsProgressionStatus = {
-	Default: EnumItem,
-	Begin: EnumItem,
-	Complete: EnumItem,
-	Abandon: EnumItem,
-	Fail: EnumItem,
-}
-type EnumAnimationPriority = {
-	Idle: EnumItem,
-	Movement: EnumItem,
-	Action: EnumItem,
-	Action2: EnumItem,
-	Action3: EnumItem,
-	Action4: EnumItem,
-	Core: EnumItem,
-}
-type EnumAnimatorRetargetingMode = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumAppShellActionType = {
-	None: EnumItem,
-	OpenApp: EnumItem,
-	TapChatTab: EnumItem,
-	TapConversationEntry: EnumItem,
-	TapAvatarTab: EnumItem,
-	ReadConversation: EnumItem,
-	TapGamePageTab: EnumItem,
-	TapHomePageTab: EnumItem,
-	GamePageLoaded: EnumItem,
-	HomePageLoaded: EnumItem,
-	AvatarEditorPageLoaded: EnumItem,
-}
-type EnumAppShellFeature = {
-	None: EnumItem,
-	Chat: EnumItem,
-	AvatarEditor: EnumItem,
-	GamePage: EnumItem,
-	HomePage: EnumItem,
-	More: EnumItem,
-	Landing: EnumItem,
-}
-type EnumAppUpdateStatus = {
-	Unknown: EnumItem,
-	NotSupported: EnumItem,
-	Failed: EnumItem,
-	NotAvailable: EnumItem,
-	Available: EnumItem,
-}
-type EnumApplyStrokeMode = {
-	Contextual: EnumItem,
-	Border: EnumItem,
-}
-type EnumAspectType = {
-	FitWithinMaxSize: EnumItem,
-	ScaleWithParentSize: EnumItem,
-}
-type EnumAssetFetchStatus = {
-	Success: EnumItem,
-	Failure: EnumItem,
-}
-type EnumAssetType = {
-	Image: EnumItem,
-	TShirt: EnumItem,
-	Audio: EnumItem,
-	Mesh: EnumItem,
-	Lua: EnumItem,
-	Hat: EnumItem,
-	Place: EnumItem,
-	Model: EnumItem,
-	Shirt: EnumItem,
-	Pants: EnumItem,
-	Decal: EnumItem,
-	Head: EnumItem,
-	Face: EnumItem,
-	Gear: EnumItem,
-	Badge: EnumItem,
-	Animation: EnumItem,
-	Torso: EnumItem,
-	RightArm: EnumItem,
-	LeftArm: EnumItem,
-	LeftLeg: EnumItem,
-	RightLeg: EnumItem,
-	Package: EnumItem,
-	GamePass: EnumItem,
-	Plugin: EnumItem,
-	MeshPart: EnumItem,
-	HairAccessory: EnumItem,
-	FaceAccessory: EnumItem,
-	NeckAccessory: EnumItem,
-	ShoulderAccessory: EnumItem,
-	FrontAccessory: EnumItem,
-	BackAccessory: EnumItem,
-	WaistAccessory: EnumItem,
-	ClimbAnimation: EnumItem,
-	DeathAnimation: EnumItem,
-	FallAnimation: EnumItem,
-	IdleAnimation: EnumItem,
-	JumpAnimation: EnumItem,
-	RunAnimation: EnumItem,
-	SwimAnimation: EnumItem,
-	WalkAnimation: EnumItem,
-	PoseAnimation: EnumItem,
-	EarAccessory: EnumItem,
-	EyeAccessory: EnumItem,
-	EmoteAnimation: EnumItem,
-	Video: EnumItem,
-	TShirtAccessory: EnumItem,
-	ShirtAccessory: EnumItem,
-	PantsAccessory: EnumItem,
-	JacketAccessory: EnumItem,
-	SweaterAccessory: EnumItem,
-	ShortsAccessory: EnumItem,
-	LeftShoeAccessory: EnumItem,
-	RightShoeAccessory: EnumItem,
-	DressSkirtAccessory: EnumItem,
-	EyebrowAccessory: EnumItem,
-	EyelashAccessory: EnumItem,
-}
-type EnumAssetTypeVerification = {
-	Default: EnumItem,
-	ClientOnly: EnumItem,
-	Always: EnumItem,
-}
-type EnumAutoIndentRule = {
-	Off: EnumItem,
-	Absolute: EnumItem,
-	Relative: EnumItem,
-}
-type EnumAutomaticSize = {
-	None: EnumItem,
-	X: EnumItem,
-	Y: EnumItem,
-	XY: EnumItem,
-}
-type EnumAvatarAssetType = {
-	TShirt: EnumItem,
-	Hat: EnumItem,
-	HairAccessory: EnumItem,
-	FaceAccessory: EnumItem,
-	NeckAccessory: EnumItem,
-	ShoulderAccessory: EnumItem,
-	FrontAccessory: EnumItem,
-	BackAccessory: EnumItem,
-	WaistAccessory: EnumItem,
-	Shirt: EnumItem,
-	Pants: EnumItem,
-	Gear: EnumItem,
-	Head: EnumItem,
-	Face: EnumItem,
-	Torso: EnumItem,
-	RightArm: EnumItem,
-	LeftArm: EnumItem,
-	LeftLeg: EnumItem,
-	RightLeg: EnumItem,
-	ClimbAnimation: EnumItem,
-	FallAnimation: EnumItem,
-	IdleAnimation: EnumItem,
-	JumpAnimation: EnumItem,
-	RunAnimation: EnumItem,
-	SwimAnimation: EnumItem,
-	WalkAnimation: EnumItem,
-	EmoteAnimation: EnumItem,
-	TShirtAccessory: EnumItem,
-	ShirtAccessory: EnumItem,
-	PantsAccessory: EnumItem,
-	JacketAccessory: EnumItem,
-	SweaterAccessory: EnumItem,
-	ShortsAccessory: EnumItem,
-	LeftShoeAccessory: EnumItem,
-	RightShoeAccessory: EnumItem,
-	DressSkirtAccessory: EnumItem,
-	EyebrowAccessory: EnumItem,
-	EyelashAccessory: EnumItem,
-}
-type EnumAvatarContextMenuOption = {
-	Friend: EnumItem,
-	Chat: EnumItem,
-	Emote: EnumItem,
-	InspectMenu: EnumItem,
-}
-type EnumAvatarItemType = {
-	Asset: EnumItem,
-	Bundle: EnumItem,
-}
-type EnumAvatarPromptResult = {
-	Success: EnumItem,
-	PermissionDenied: EnumItem,
-	Failed: EnumItem,
-}
-type EnumAxis = {
-	X: EnumItem,
-	Y: EnumItem,
-	Z: EnumItem,
-}
-type EnumBinType = {
-	Script: EnumItem,
-	GameTool: EnumItem,
-	Grab: EnumItem,
-	Clone: EnumItem,
-	Hammer: EnumItem,
-}
-type EnumBodyPart = {
-	Head: EnumItem,
-	Torso: EnumItem,
-	LeftArm: EnumItem,
-	RightArm: EnumItem,
-	LeftLeg: EnumItem,
-	RightLeg: EnumItem,
-}
-type EnumBodyPartR15 = {
-	Head: EnumItem,
-	UpperTorso: EnumItem,
-	LowerTorso: EnumItem,
-	LeftFoot: EnumItem,
-	LeftLowerLeg: EnumItem,
-	LeftUpperLeg: EnumItem,
-	RightFoot: EnumItem,
-	RightLowerLeg: EnumItem,
-	RightUpperLeg: EnumItem,
-	LeftHand: EnumItem,
-	LeftLowerArm: EnumItem,
-	LeftUpperArm: EnumItem,
-	RightHand: EnumItem,
-	RightLowerArm: EnumItem,
-	RightUpperArm: EnumItem,
-	RootPart: EnumItem,
-	Unknown: EnumItem,
-}
-type EnumBorderMode = {
-	Outline: EnumItem,
-	Middle: EnumItem,
-	Inset: EnumItem,
-}
-type EnumBreakReason = {
-	Other: EnumItem,
-	Error: EnumItem,
-	UserBreakpoint: EnumItem,
-	SpecialBreakpoint: EnumItem,
-}
-type EnumBreakpointRemoveReason = {
-	Requested: EnumItem,
-	ScriptChanged: EnumItem,
-	ScriptRemoved: EnumItem,
-}
-type EnumBulkMoveMode = {
-	FireAllEvents: EnumItem,
-	FireCFrameChanged: EnumItem,
-}
-type EnumBundleType = {
-	BodyParts: EnumItem,
-	Animations: EnumItem,
-	Shoes: EnumItem,
-}
-type EnumButton = {
-	Jump: EnumItem,
-	Dismount: EnumItem,
-}
-type EnumButtonStyle = {
-	Custom: EnumItem,
-	RobloxButtonDefault: EnumItem,
-	RobloxButton: EnumItem,
-	RobloxRoundButton: EnumItem,
-	RobloxRoundDefaultButton: EnumItem,
-	RobloxRoundDropdownButton: EnumItem,
-}
-type EnumCageType = {
-	Inner: EnumItem,
-	Outer: EnumItem,
-}
-type EnumCameraMode = {
-	Classic: EnumItem,
-	LockFirstPerson: EnumItem,
-}
-type EnumCameraPanMode = {
-	Classic: EnumItem,
-	EdgeBump: EnumItem,
-}
-type EnumCameraType = {
-	Fixed: EnumItem,
-	Watch: EnumItem,
-	Attach: EnumItem,
-	Track: EnumItem,
-	Follow: EnumItem,
-	Custom: EnumItem,
-	Scriptable: EnumItem,
-	Orbital: EnumItem,
-}
-type EnumCatalogCategoryFilter = {
-	None: EnumItem,
-	Featured: EnumItem,
-	Collectibles: EnumItem,
-	CommunityCreations: EnumItem,
-	Premium: EnumItem,
-	Recommended: EnumItem,
-}
-type EnumCatalogSortType = {
-	Relevance: EnumItem,
-	PriceHighToLow: EnumItem,
-	PriceLowToHigh: EnumItem,
-	RecentlyUpdated: EnumItem,
-	MostFavorited: EnumItem,
-}
-type EnumCellBlock = {
-	Solid: EnumItem,
-	VerticalWedge: EnumItem,
-	CornerWedge: EnumItem,
-	InverseCornerWedge: EnumItem,
-	HorizontalWedge: EnumItem,
-}
-type EnumCellMaterial = {
-	Empty: EnumItem,
-	Grass: EnumItem,
-	Sand: EnumItem,
-	Brick: EnumItem,
-	Granite: EnumItem,
-	Asphalt: EnumItem,
-	Iron: EnumItem,
-	Aluminum: EnumItem,
-	Gold: EnumItem,
-	WoodPlank: EnumItem,
-	WoodLog: EnumItem,
-	Gravel: EnumItem,
-	CinderBlock: EnumItem,
-	MossyStone: EnumItem,
-	Cement: EnumItem,
-	RedPlastic: EnumItem,
-	BluePlastic: EnumItem,
-	Water: EnumItem,
-}
-type EnumCellOrientation = {
-	NegZ: EnumItem,
-	X: EnumItem,
-	Z: EnumItem,
-	NegX: EnumItem,
-}
-type EnumCenterDialogType = {
-	UnsolicitedDialog: EnumItem,
-	PlayerInitiatedDialog: EnumItem,
-	ModalDialog: EnumItem,
-	QuitDialog: EnumItem,
-}
-type EnumChatCallbackType = {
-	OnCreatingChatWindow: EnumItem,
-	OnClientSendingMessage: EnumItem,
-	OnClientFormattingMessage: EnumItem,
-	OnServerReceivingMessage: EnumItem,
-}
-type EnumChatColor = {
-	Blue: EnumItem,
-	Green: EnumItem,
-	Red: EnumItem,
-	White: EnumItem,
-}
-type EnumChatMode = {
-	Menu: EnumItem,
-	TextAndMenu: EnumItem,
-}
-type EnumChatPrivacyMode = {
-	AllUsers: EnumItem,
-	NoOne: EnumItem,
-	Friends: EnumItem,
-}
-type EnumChatStyle = {
-	Classic: EnumItem,
-	Bubble: EnumItem,
-	ClassicAndBubble: EnumItem,
-}
-type EnumChatVersion = {
-	LegacyChatService: EnumItem,
-	TextChatService: EnumItem,
-}
-type EnumClientAnimatorThrottlingMode = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumCollisionFidelity = {
-	Default: EnumItem,
-	Hull: EnumItem,
-	Box: EnumItem,
-	PreciseConvexDecomposition: EnumItem,
-}
-type EnumCommandPermission = {
-	Plugin: EnumItem,
-	LocalUser: EnumItem,
-}
-type EnumComputerCameraMovementMode = {
-	Default: EnumItem,
-	Follow: EnumItem,
-	Classic: EnumItem,
-	Orbital: EnumItem,
-	CameraToggle: EnumItem,
-}
-type EnumComputerMovementMode = {
-	Default: EnumItem,
-	KeyboardMouse: EnumItem,
-	ClickToMove: EnumItem,
-}
-type EnumConnectionError = {
-	OK: EnumItem,
-	DisconnectErrors: EnumItem,
-	DisconnectBadhash: EnumItem,
-	DisconnectSecurityKeyMismatch: EnumItem,
-	DisconnectNewSecurityKeyMismatch: EnumItem,
-	DisconnectProtocolMismatch: EnumItem,
-	DisconnectReceivePacketError: EnumItem,
-	DisconnectReceivePacketStreamError: EnumItem,
-	DisconnectSendPacketError: EnumItem,
-	DisconnectIllegalTeleport: EnumItem,
-	DisconnectDuplicatePlayer: EnumItem,
-	DisconnectDuplicateTicket: EnumItem,
-	DisconnectTimeout: EnumItem,
-	DisconnectLuaKick: EnumItem,
-	DisconnectOnRemoteSysStats: EnumItem,
-	DisconnectHashTimeout: EnumItem,
-	DisconnectCloudEditKick: EnumItem,
-	DisconnectPlayerless: EnumItem,
-	DisconnectEvicted: EnumItem,
-	DisconnectDevMaintenance: EnumItem,
-	DisconnectRobloxMaintenance: EnumItem,
-	DisconnectRejoin: EnumItem,
-	DisconnectConnectionLost: EnumItem,
-	DisconnectIdle: EnumItem,
-	DisconnectRaknetErrors: EnumItem,
-	DisconnectWrongVersion: EnumItem,
-	DisconnectBySecurityPolicy: EnumItem,
-	DisconnectBlockedIP: EnumItem,
-	DisconnectClientFailure: EnumItem,
-	DisconnectClientRequest: EnumItem,
-	DisconnectOutOfMemory: EnumItem,
-	DisconnectModeratedGame: EnumItem,
-	PlacelaunchErrors: EnumItem,
-	PlacelaunchDisabled: EnumItem,
-	PlacelaunchError: EnumItem,
-	PlacelaunchGameEnded: EnumItem,
-	PlacelaunchGameFull: EnumItem,
-	PlacelaunchUserLeft: EnumItem,
-	PlacelaunchRestricted: EnumItem,
-	PlacelaunchUnauthorized: EnumItem,
-	PlacelaunchFlooded: EnumItem,
-	PlacelaunchHashExpired: EnumItem,
-	PlacelaunchHashException: EnumItem,
-	PlacelaunchPartyCannotFit: EnumItem,
-	PlacelaunchHttpError: EnumItem,
-	PlacelaunchCustomMessage: EnumItem,
-	PlacelaunchOtherError: EnumItem,
-	TeleportErrors: EnumItem,
-	TeleportFailure: EnumItem,
-	TeleportGameNotFound: EnumItem,
-	TeleportGameEnded: EnumItem,
-	TeleportGameFull: EnumItem,
-	TeleportUnauthorized: EnumItem,
-	TeleportFlooded: EnumItem,
-	TeleportIsTeleporting: EnumItem,
-}
-type EnumConnectionState = {
-	Connected: EnumItem,
-	Disconnected: EnumItem,
-}
-type EnumContextActionPriority = {
-	Low: EnumItem,
-	Medium: EnumItem,
-	Default: EnumItem,
-	High: EnumItem,
-}
-type EnumContextActionResult = {
-	Pass: EnumItem,
-	Sink: EnumItem,
-}
-type EnumControlMode = {
-	MouseLockSwitch: EnumItem,
-	Classic: EnumItem,
-}
-type EnumCoreGuiType = {
-	PlayerList: EnumItem,
-	Health: EnumItem,
-	Backpack: EnumItem,
-	Chat: EnumItem,
-	All: EnumItem,
-	EmotesMenu: EnumItem,
-}
-type EnumCreateOutfitFailure = {
-	InvalidName: EnumItem,
-	OutfitLimitReached: EnumItem,
-	Other: EnumItem,
-}
-type EnumCreatorType = {
-	User: EnumItem,
-	Group: EnumItem,
-}
-type EnumCurrencyType = {
-	Default: EnumItem,
-	Robux: EnumItem,
-	Tix: EnumItem,
-}
-type EnumCustomCameraMode = {
-	Default: EnumItem,
-	Follow: EnumItem,
-	Classic: EnumItem,
-}
-type EnumDataStoreRequestType = {
-	GetAsync: EnumItem,
-	SetIncrementAsync: EnumItem,
-	UpdateAsync: EnumItem,
-	GetSortedAsync: EnumItem,
-	SetIncrementSortedAsync: EnumItem,
-	OnUpdate: EnumItem,
-}
-type EnumDebuggerEndReason = {
-	ClientRequest: EnumItem,
-	Timeout: EnumItem,
-	InvalidHost: EnumItem,
-	Disconnected: EnumItem,
-	ServerShutdown: EnumItem,
-	ServerProtocolMismatch: EnumItem,
-	ConfigurationFailed: EnumItem,
-	RpcError: EnumItem,
-}
-type EnumDebuggerExceptionBreakMode = {
-	Never: EnumItem,
-	Unhandled: EnumItem,
-	Always: EnumItem,
-}
-type EnumDebuggerFrameType = {
-	C: EnumItem,
-	Lua: EnumItem,
-}
-type EnumDebuggerPauseReason = {
-	Unknown: EnumItem,
-	Requested: EnumItem,
-	Breakpoint: EnumItem,
-	Exception: EnumItem,
-	SingleStep: EnumItem,
-	Entrypoint: EnumItem,
-}
-type EnumDebuggerStatus = {
-	Success: EnumItem,
-	Timeout: EnumItem,
-	ConnectionLost: EnumItem,
-	InvalidResponse: EnumItem,
-	InternalError: EnumItem,
-	InvalidState: EnumItem,
-	RpcError: EnumItem,
-	InvalidArgument: EnumItem,
-	ConnectionClosed: EnumItem,
-}
-type EnumDevCameraOcclusionMode = {
-	Zoom: EnumItem,
-	Invisicam: EnumItem,
-}
-type EnumDevComputerCameraMovementMode = {
-	UserChoice: EnumItem,
-	Classic: EnumItem,
-	Follow: EnumItem,
-	Orbital: EnumItem,
-	CameraToggle: EnumItem,
-}
-type EnumDevComputerMovementMode = {
-	UserChoice: EnumItem,
-	KeyboardMouse: EnumItem,
-	ClickToMove: EnumItem,
-	Scriptable: EnumItem,
-}
-type EnumDevTouchCameraMovementMode = {
-	UserChoice: EnumItem,
-	Classic: EnumItem,
-	Follow: EnumItem,
-	Orbital: EnumItem,
-}
-type EnumDevTouchMovementMode = {
-	UserChoice: EnumItem,
-	Thumbstick: EnumItem,
-	DPad: EnumItem,
-	Thumbpad: EnumItem,
-	ClickToMove: EnumItem,
-	Scriptable: EnumItem,
-	DynamicThumbstick: EnumItem,
-}
-type EnumDeveloperMemoryTag = {
-	Internal: EnumItem,
-	HttpCache: EnumItem,
-	Instances: EnumItem,
-	Signals: EnumItem,
-	LuaHeap: EnumItem,
-	Script: EnumItem,
-	PhysicsCollision: EnumItem,
-	PhysicsParts: EnumItem,
-	GraphicsSolidModels: EnumItem,
-	GraphicsMeshParts: EnumItem,
-	GraphicsParticles: EnumItem,
-	GraphicsParts: EnumItem,
-	GraphicsSpatialHash: EnumItem,
-	GraphicsTerrain: EnumItem,
-	GraphicsTexture: EnumItem,
-	GraphicsTextureCharacter: EnumItem,
-	Sounds: EnumItem,
-	StreamingSounds: EnumItem,
-	TerrainVoxels: EnumItem,
-	Gui: EnumItem,
-	Animation: EnumItem,
-	Navigation: EnumItem,
-}
-type EnumDeviceType = {
-	Unknown: EnumItem,
-	Desktop: EnumItem,
-	Tablet: EnumItem,
-	Phone: EnumItem,
-}
-type EnumDialogBehaviorType = {
-	SinglePlayer: EnumItem,
-	MultiplePlayers: EnumItem,
-}
-type EnumDialogPurpose = {
-	Quest: EnumItem,
-	Help: EnumItem,
-	Shop: EnumItem,
-}
-type EnumDialogTone = {
-	Neutral: EnumItem,
-	Friendly: EnumItem,
-	Enemy: EnumItem,
-}
-type EnumDominantAxis = {
-	Width: EnumItem,
-	Height: EnumItem,
-}
-type EnumDraftStatusCode = {
-	OK: EnumItem,
-	DraftOutdated: EnumItem,
-	ScriptRemoved: EnumItem,
-	DraftCommitted: EnumItem,
-}
-type EnumDraggerCoordinateSpace = {
-	Object: EnumItem,
-	World: EnumItem,
-}
-type EnumDraggerMovementMode = {
-	Geometric: EnumItem,
-	Physical: EnumItem,
-}
-type EnumEasingDirection = {
-	In: EnumItem,
-	Out: EnumItem,
-	InOut: EnumItem,
-}
-type EnumEasingStyle = {
-	Linear: EnumItem,
-	Sine: EnumItem,
-	Back: EnumItem,
-	Quad: EnumItem,
-	Quart: EnumItem,
-	Quint: EnumItem,
-	Bounce: EnumItem,
-	Elastic: EnumItem,
-	Exponential: EnumItem,
-	Circular: EnumItem,
-	Cubic: EnumItem,
-}
-type EnumElasticBehavior = {
-	WhenScrollable: EnumItem,
-	Always: EnumItem,
-	Never: EnumItem,
-}
-type EnumEnviromentalPhysicsThrottle = {
-	DefaultAuto: EnumItem,
-	Disabled: EnumItem,
-	Always: EnumItem,
-	Skip2: EnumItem,
-	Skip4: EnumItem,
-	Skip8: EnumItem,
-	Skip16: EnumItem,
-}
-type EnumExplosionType = {
-	NoCraters: EnumItem,
-	Craters: EnumItem,
-}
-type EnumFieldOfViewMode = {
-	Vertical: EnumItem,
-	Diagonal: EnumItem,
-	MaxAxis: EnumItem,
-}
-type EnumFillDirection = {
-	Horizontal: EnumItem,
-	Vertical: EnumItem,
-}
-type EnumFilterResult = {
-	Rejected: EnumItem,
-	Accepted: EnumItem,
-}
-type EnumFont = {
-	Legacy: EnumItem,
-	Arial: EnumItem,
-	ArialBold: EnumItem,
-	SourceSans: EnumItem,
-	SourceSansBold: EnumItem,
-	SourceSansSemibold: EnumItem,
-	SourceSansLight: EnumItem,
-	SourceSansItalic: EnumItem,
-	Bodoni: EnumItem,
-	Garamond: EnumItem,
-	Cartoon: EnumItem,
-	Code: EnumItem,
-	Highway: EnumItem,
-	SciFi: EnumItem,
-	Arcade: EnumItem,
-	Fantasy: EnumItem,
-	Antique: EnumItem,
-	Gotham: EnumItem,
-	GothamSemibold: EnumItem,
-	GothamBold: EnumItem,
-	GothamBlack: EnumItem,
-	AmaticSC: EnumItem,
-	Bangers: EnumItem,
-	Creepster: EnumItem,
-	DenkOne: EnumItem,
-	Fondamento: EnumItem,
-	FredokaOne: EnumItem,
-	GrenzeGotisch: EnumItem,
-	IndieFlower: EnumItem,
-	JosefinSans: EnumItem,
-	Jura: EnumItem,
-	Kalam: EnumItem,
-	LuckiestGuy: EnumItem,
-	Merriweather: EnumItem,
-	Michroma: EnumItem,
-	Nunito: EnumItem,
-	Oswald: EnumItem,
-	PatrickHand: EnumItem,
-	PermanentMarker: EnumItem,
-	Roboto: EnumItem,
-	RobotoCondensed: EnumItem,
-	RobotoMono: EnumItem,
-	Sarpanch: EnumItem,
-	SpecialElite: EnumItem,
-	TitilliumWeb: EnumItem,
-	Ubuntu: EnumItem,
-	Unknown: EnumItem,
-}
-type EnumFontSize = {
-	Size8: EnumItem,
-	Size9: EnumItem,
-	Size10: EnumItem,
-	Size11: EnumItem,
-	Size12: EnumItem,
-	Size14: EnumItem,
-	Size18: EnumItem,
-	Size24: EnumItem,
-	Size36: EnumItem,
-	Size48: EnumItem,
-	Size28: EnumItem,
-	Size32: EnumItem,
-	Size42: EnumItem,
-	Size60: EnumItem,
-	Size96: EnumItem,
-}
-type EnumFontStyle = {
-	Normal: EnumItem,
-	Italic: EnumItem,
-}
-type EnumFontWeight = {
-	Thin: EnumItem,
-	ExtraLight: EnumItem,
-	Light: EnumItem,
-	Regular: EnumItem,
-	Medium: EnumItem,
-	SemiBold: EnumItem,
-	Bold: EnumItem,
-	ExtraBold: EnumItem,
-	Heavy: EnumItem,
-}
-type EnumFormFactor = {
-	Symmetric: EnumItem,
-	Brick: EnumItem,
-	Plate: EnumItem,
-	Custom: EnumItem,
-}
-type EnumFrameStyle = {
-	Custom: EnumItem,
-	ChatBlue: EnumItem,
-	RobloxSquare: EnumItem,
-	RobloxRound: EnumItem,
-	ChatGreen: EnumItem,
-	ChatRed: EnumItem,
-	DropShadow: EnumItem,
-}
-type EnumFramerateManagerMode = {
-	Automatic: EnumItem,
-	On: EnumItem,
-	Off: EnumItem,
-}
-type EnumFriendRequestEvent = {
-	Issue: EnumItem,
-	Revoke: EnumItem,
-	Accept: EnumItem,
-	Deny: EnumItem,
-}
-type EnumFriendStatus = {
-	Unknown: EnumItem,
-	NotFriend: EnumItem,
-	Friend: EnumItem,
-	FriendRequestSent: EnumItem,
-	FriendRequestReceived: EnumItem,
-}
-type EnumFunctionalTestResult = {
-	Passed: EnumItem,
-	Warning: EnumItem,
-	Error: EnumItem,
-}
-type EnumGameAvatarType = {
-	R6: EnumItem,
-	R15: EnumItem,
-	PlayerChoice: EnumItem,
-}
-type EnumGearGenreSetting = {
-	AllGenres: EnumItem,
-	MatchingGenreOnly: EnumItem,
-}
-type EnumGearType = {
-	MeleeWeapons: EnumItem,
-	RangedWeapons: EnumItem,
-	Explosives: EnumItem,
-	PowerUps: EnumItem,
-	NavigationEnhancers: EnumItem,
-	MusicalInstruments: EnumItem,
-	SocialItems: EnumItem,
-	BuildingTools: EnumItem,
-	Transport: EnumItem,
-}
-type EnumGenre = {
-	All: EnumItem,
-	TownAndCity: EnumItem,
-	Fantasy: EnumItem,
-	SciFi: EnumItem,
-	Ninja: EnumItem,
-	Scary: EnumItem,
-	Pirate: EnumItem,
-	Adventure: EnumItem,
-	Sports: EnumItem,
-	Funny: EnumItem,
-	WildWest: EnumItem,
-	War: EnumItem,
-	SkatePark: EnumItem,
-	Tutorial: EnumItem,
-}
-type EnumGraphicsMode = {
-	Automatic: EnumItem,
-	Direct3D11: EnumItem,
-	OpenGL: EnumItem,
-	Metal: EnumItem,
-	Vulkan: EnumItem,
-	NoGraphics: EnumItem,
-}
-type EnumHandlesStyle = {
-	Resize: EnumItem,
-	Movement: EnumItem,
-}
-type EnumHighlightDepthMode = {
-	AlwaysOnTop: EnumItem,
-	Occluded: EnumItem,
-}
-type EnumHorizontalAlignment = {
-	Center: EnumItem,
-	Left: EnumItem,
-	Right: EnumItem,
-}
-type EnumHoverAnimateSpeed = {
-	VerySlow: EnumItem,
-	Slow: EnumItem,
-	Medium: EnumItem,
-	Fast: EnumItem,
-	VeryFast: EnumItem,
-}
-type EnumHttpCachePolicy = {
-	None: EnumItem,
-	Full: EnumItem,
-	DataOnly: EnumItem,
-	Default: EnumItem,
-	InternalRedirectRefresh: EnumItem,
-}
-type EnumHttpContentType = {
-	ApplicationJson: EnumItem,
-	ApplicationXml: EnumItem,
-	ApplicationUrlEncoded: EnumItem,
-	TextPlain: EnumItem,
-	TextXml: EnumItem,
-}
-type EnumHttpError = {
-	OK: EnumItem,
-	InvalidUrl: EnumItem,
-	DnsResolve: EnumItem,
-	ConnectFail: EnumItem,
-	OutOfMemory: EnumItem,
-	TimedOut: EnumItem,
-	TooManyRedirects: EnumItem,
-	InvalidRedirect: EnumItem,
-	NetFail: EnumItem,
-	Aborted: EnumItem,
-	SslConnectFail: EnumItem,
-	SslVerificationFail: EnumItem,
-	Unknown: EnumItem,
-}
-type EnumHttpRequestType = {
-	Default: EnumItem,
-	MarketplaceService: EnumItem,
-	Players: EnumItem,
-	Chat: EnumItem,
-	Avatar: EnumItem,
-	Analytics: EnumItem,
-	Localization: EnumItem,
-}
-type EnumHumanoidCollisionType = {
-	OuterBox: EnumItem,
-	InnerBox: EnumItem,
-}
-type EnumHumanoidDisplayDistanceType = {
-	Viewer: EnumItem,
-	Subject: EnumItem,
-	None: EnumItem,
-}
-type EnumHumanoidHealthDisplayType = {
-	DisplayWhenDamaged: EnumItem,
-	AlwaysOn: EnumItem,
-	AlwaysOff: EnumItem,
-}
-type EnumHumanoidOnlySetCollisionsOnStateChange = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumHumanoidRigType = {
-	R6: EnumItem,
-	R15: EnumItem,
-}
-type EnumHumanoidStateType = {
-	FallingDown: EnumItem,
-	Running: EnumItem,
-	RunningNoPhysics: EnumItem,
-	Climbing: EnumItem,
-	StrafingNoPhysics: EnumItem,
-	Ragdoll: EnumItem,
-	GettingUp: EnumItem,
-	Jumping: EnumItem,
-	Landed: EnumItem,
-	Flying: EnumItem,
-	Freefall: EnumItem,
-	Seated: EnumItem,
-	PlatformStanding: EnumItem,
-	Dead: EnumItem,
-	Swimming: EnumItem,
-	Physics: EnumItem,
-	None: EnumItem,
-}
-type EnumIKCollisionsMode = {
-	NoCollisions: EnumItem,
-	OtherMechanismsAnchored: EnumItem,
-	IncludeContactedMechanisms: EnumItem,
-}
-type EnumIXPLoadingStatus = {
-	None: EnumItem,
-	Pending: EnumItem,
-	Initialized: EnumItem,
-	ShutOff: EnumItem,
-	ErrorTimedOut: EnumItem,
-	ErrorConnection: EnumItem,
-	ErrorJsonParse: EnumItem,
-	ErrorInvalidUser: EnumItem,
-}
-type EnumInOut = {
-	Edge: EnumItem,
-	Inset: EnumItem,
-	Center: EnumItem,
-}
-type EnumInfoType = {
-	Asset: EnumItem,
-	Product: EnumItem,
-	GamePass: EnumItem,
-	Subscription: EnumItem,
-	Bundle: EnumItem,
-}
-type EnumInitialDockState = {
-	Top: EnumItem,
-	Bottom: EnumItem,
-	Left: EnumItem,
-	Right: EnumItem,
-	Float: EnumItem,
-}
-type EnumInputType = {
-	NoInput: EnumItem,
-	Constant: EnumItem,
-	Sin: EnumItem,
-}
-type EnumInterpolationThrottlingMode = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumJointCreationMode = {
-	All: EnumItem,
-	Surface: EnumItem,
-	None: EnumItem,
-}
-type EnumKeyCode = {
-	Unknown: EnumItem,
-	Backspace: EnumItem,
-	Tab: EnumItem,
-	Clear: EnumItem,
-	Return: EnumItem,
-	Pause: EnumItem,
-	Escape: EnumItem,
-	Space: EnumItem,
-	QuotedDouble: EnumItem,
-	Hash: EnumItem,
-	Dollar: EnumItem,
-	Percent: EnumItem,
-	Ampersand: EnumItem,
-	Quote: EnumItem,
-	LeftParenthesis: EnumItem,
-	RightParenthesis: EnumItem,
-	Asterisk: EnumItem,
-	Plus: EnumItem,
-	Comma: EnumItem,
-	Minus: EnumItem,
-	Period: EnumItem,
-	Slash: EnumItem,
-	Zero: EnumItem,
-	One: EnumItem,
-	Two: EnumItem,
-	Three: EnumItem,
-	Four: EnumItem,
-	Five: EnumItem,
-	Six: EnumItem,
-	Seven: EnumItem,
-	Eight: EnumItem,
-	Nine: EnumItem,
-	Colon: EnumItem,
-	Semicolon: EnumItem,
-	LessThan: EnumItem,
-	Equals: EnumItem,
-	GreaterThan: EnumItem,
-	Question: EnumItem,
-	At: EnumItem,
-	LeftBracket: EnumItem,
-	BackSlash: EnumItem,
-	RightBracket: EnumItem,
-	Caret: EnumItem,
-	Underscore: EnumItem,
-	Backquote: EnumItem,
-	A: EnumItem,
-	B: EnumItem,
-	C: EnumItem,
-	D: EnumItem,
-	E: EnumItem,
-	F: EnumItem,
-	G: EnumItem,
-	H: EnumItem,
-	I: EnumItem,
-	J: EnumItem,
-	K: EnumItem,
-	L: EnumItem,
-	M: EnumItem,
-	N: EnumItem,
-	O: EnumItem,
-	P: EnumItem,
-	Q: EnumItem,
-	R: EnumItem,
-	S: EnumItem,
-	T: EnumItem,
-	U: EnumItem,
-	V: EnumItem,
-	W: EnumItem,
-	X: EnumItem,
-	Y: EnumItem,
-	Z: EnumItem,
-	LeftCurly: EnumItem,
-	Pipe: EnumItem,
-	RightCurly: EnumItem,
-	Tilde: EnumItem,
-	Delete: EnumItem,
-	KeypadZero: EnumItem,
-	KeypadOne: EnumItem,
-	KeypadTwo: EnumItem,
-	KeypadThree: EnumItem,
-	KeypadFour: EnumItem,
-	KeypadFive: EnumItem,
-	KeypadSix: EnumItem,
-	KeypadSeven: EnumItem,
-	KeypadEight: EnumItem,
-	KeypadNine: EnumItem,
-	KeypadPeriod: EnumItem,
-	KeypadDivide: EnumItem,
-	KeypadMultiply: EnumItem,
-	KeypadMinus: EnumItem,
-	KeypadPlus: EnumItem,
-	KeypadEnter: EnumItem,
-	KeypadEquals: EnumItem,
-	Up: EnumItem,
-	Down: EnumItem,
-	Right: EnumItem,
-	Left: EnumItem,
-	Insert: EnumItem,
-	Home: EnumItem,
-	End: EnumItem,
-	PageUp: EnumItem,
-	PageDown: EnumItem,
-	LeftShift: EnumItem,
-	RightShift: EnumItem,
-	LeftMeta: EnumItem,
-	RightMeta: EnumItem,
-	LeftAlt: EnumItem,
-	RightAlt: EnumItem,
-	LeftControl: EnumItem,
-	RightControl: EnumItem,
-	CapsLock: EnumItem,
-	NumLock: EnumItem,
-	ScrollLock: EnumItem,
-	LeftSuper: EnumItem,
-	RightSuper: EnumItem,
-	Mode: EnumItem,
-	Compose: EnumItem,
-	Help: EnumItem,
-	Print: EnumItem,
-	SysReq: EnumItem,
-	Break: EnumItem,
-	Menu: EnumItem,
-	Power: EnumItem,
-	Euro: EnumItem,
-	Undo: EnumItem,
-	F1: EnumItem,
-	F2: EnumItem,
-	F3: EnumItem,
-	F4: EnumItem,
-	F5: EnumItem,
-	F6: EnumItem,
-	F7: EnumItem,
-	F8: EnumItem,
-	F9: EnumItem,
-	F10: EnumItem,
-	F11: EnumItem,
-	F12: EnumItem,
-	F13: EnumItem,
-	F14: EnumItem,
-	F15: EnumItem,
-	World0: EnumItem,
-	World1: EnumItem,
-	World2: EnumItem,
-	World3: EnumItem,
-	World4: EnumItem,
-	World5: EnumItem,
-	World6: EnumItem,
-	World7: EnumItem,
-	World8: EnumItem,
-	World9: EnumItem,
-	World10: EnumItem,
-	World11: EnumItem,
-	World12: EnumItem,
-	World13: EnumItem,
-	World14: EnumItem,
-	World15: EnumItem,
-	World16: EnumItem,
-	World17: EnumItem,
-	World18: EnumItem,
-	World19: EnumItem,
-	World20: EnumItem,
-	World21: EnumItem,
-	World22: EnumItem,
-	World23: EnumItem,
-	World24: EnumItem,
-	World25: EnumItem,
-	World26: EnumItem,
-	World27: EnumItem,
-	World28: EnumItem,
-	World29: EnumItem,
-	World30: EnumItem,
-	World31: EnumItem,
-	World32: EnumItem,
-	World33: EnumItem,
-	World34: EnumItem,
-	World35: EnumItem,
-	World36: EnumItem,
-	World37: EnumItem,
-	World38: EnumItem,
-	World39: EnumItem,
-	World40: EnumItem,
-	World41: EnumItem,
-	World42: EnumItem,
-	World43: EnumItem,
-	World44: EnumItem,
-	World45: EnumItem,
-	World46: EnumItem,
-	World47: EnumItem,
-	World48: EnumItem,
-	World49: EnumItem,
-	World50: EnumItem,
-	World51: EnumItem,
-	World52: EnumItem,
-	World53: EnumItem,
-	World54: EnumItem,
-	World55: EnumItem,
-	World56: EnumItem,
-	World57: EnumItem,
-	World58: EnumItem,
-	World59: EnumItem,
-	World60: EnumItem,
-	World61: EnumItem,
-	World62: EnumItem,
-	World63: EnumItem,
-	World64: EnumItem,
-	World65: EnumItem,
-	World66: EnumItem,
-	World67: EnumItem,
-	World68: EnumItem,
-	World69: EnumItem,
-	World70: EnumItem,
-	World71: EnumItem,
-	World72: EnumItem,
-	World73: EnumItem,
-	World74: EnumItem,
-	World75: EnumItem,
-	World76: EnumItem,
-	World77: EnumItem,
-	World78: EnumItem,
-	World79: EnumItem,
-	World80: EnumItem,
-	World81: EnumItem,
-	World82: EnumItem,
-	World83: EnumItem,
-	World84: EnumItem,
-	World85: EnumItem,
-	World86: EnumItem,
-	World87: EnumItem,
-	World88: EnumItem,
-	World89: EnumItem,
-	World90: EnumItem,
-	World91: EnumItem,
-	World92: EnumItem,
-	World93: EnumItem,
-	World94: EnumItem,
-	World95: EnumItem,
-	ButtonX: EnumItem,
-	ButtonY: EnumItem,
-	ButtonA: EnumItem,
-	ButtonB: EnumItem,
-	ButtonR1: EnumItem,
-	ButtonL1: EnumItem,
-	ButtonR2: EnumItem,
-	ButtonL2: EnumItem,
-	ButtonR3: EnumItem,
-	ButtonL3: EnumItem,
-	ButtonStart: EnumItem,
-	ButtonSelect: EnumItem,
-	DPadLeft: EnumItem,
-	DPadRight: EnumItem,
-	DPadUp: EnumItem,
-	DPadDown: EnumItem,
-	Thumbstick1: EnumItem,
-	Thumbstick2: EnumItem,
-}
-type EnumKeyInterpolationMode = {
-	Constant: EnumItem,
-	Linear: EnumItem,
-	Cubic: EnumItem,
-}
-type EnumKeywordFilterType = {
-	Include: EnumItem,
-	Exclude: EnumItem,
-}
-type EnumLSPMethodType = {
-	Initialize: EnumItem,
-	Initialized: EnumItem,
-	CancelRequest: EnumItem,
-	TextDocument_didOpen: EnumItem,
-	TextDocument_didChange: EnumItem,
-	TextDocument_didClose: EnumItem,
-	TextDocument_foldingRange: EnumItem,
-	TextDocument_onTypeFormatting: EnumItem,
-	TextDocument_formatting: EnumItem,
-	TextDocument_rangeFormatting: EnumItem,
-	TextDocument_hover: EnumItem,
-	TextDocument_signatureHelp: EnumItem,
-	Workspace_DidChangeConfiguration: EnumItem,
-	ShutdownRequest: EnumItem,
-	Completion: EnumItem,
-	Declaration: EnumItem,
-	DocumentSymbols: EnumItem,
-	TextDocument_publishDiagnostics: EnumItem,
-	Window_showMessage: EnumItem,
-	Window_showMessageRequest: EnumItem,
-	Roblox_registerSyntaxCategories: EnumItem,
-	Roblox_signalQuiescence: EnumItem,
-	Roblox_syntaxHighlight: EnumItem,
-	Roblox_suggestExtraSelections: EnumItem,
-	Roblox_findExecutablePosition: EnumItem,
-	Roblox_findColor3: EnumItem,
-}
-type EnumLanguage = {
-	Default: EnumItem,
-}
-type EnumLeftRight = {
-	Left: EnumItem,
-	Center: EnumItem,
-	Right: EnumItem,
-}
-type EnumLevelOfDetailSetting = {
-	High: EnumItem,
-	Medium: EnumItem,
-	Low: EnumItem,
-}
-type EnumLimb = {
-	Head: EnumItem,
-	Torso: EnumItem,
-	LeftArm: EnumItem,
-	RightArm: EnumItem,
-	LeftLeg: EnumItem,
-	RightLeg: EnumItem,
-	Unknown: EnumItem,
-}
-type EnumLineJoinMode = {
-	Round: EnumItem,
-	Bevel: EnumItem,
-	Miter: EnumItem,
-}
-type EnumListDisplayMode = {
-	Horizontal: EnumItem,
-	Vertical: EnumItem,
-}
-type EnumListenerType = {
-	Camera: EnumItem,
-	CFrame: EnumItem,
-	ObjectPosition: EnumItem,
-	ObjectCFrame: EnumItem,
-}
-type EnumLoadCharacterLayeredClothing = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumMaterial = {
-	Plastic: EnumItem,
-	Wood: EnumItem,
-	Slate: EnumItem,
-	Concrete: EnumItem,
-	CorrodedMetal: EnumItem,
-	DiamondPlate: EnumItem,
-	Foil: EnumItem,
-	Grass: EnumItem,
-	Ice: EnumItem,
-	Marble: EnumItem,
-	Granite: EnumItem,
-	Brick: EnumItem,
-	Pebble: EnumItem,
-	Sand: EnumItem,
-	Fabric: EnumItem,
-	SmoothPlastic: EnumItem,
-	Metal: EnumItem,
-	WoodPlanks: EnumItem,
-	Cobblestone: EnumItem,
-	Air: EnumItem,
-	Water: EnumItem,
-	Rock: EnumItem,
-	Glacier: EnumItem,
-	Snow: EnumItem,
-	Sandstone: EnumItem,
-	Mud: EnumItem,
-	Basalt: EnumItem,
-	Ground: EnumItem,
-	CrackedLava: EnumItem,
-	Neon: EnumItem,
-	Glass: EnumItem,
-	Asphalt: EnumItem,
-	LeafyGrass: EnumItem,
-	Salt: EnumItem,
-	Limestone: EnumItem,
-	Pavement: EnumItem,
-	ForceField: EnumItem,
-}
-type EnumMaterialPattern = {
-	Regular: EnumItem,
-	Organic: EnumItem,
-}
-type EnumMembershipType = {
-	None: EnumItem,
-	BuildersClub: EnumItem,
-	TurboBuildersClub: EnumItem,
-	OutrageousBuildersClub: EnumItem,
-	Premium: EnumItem,
-}
-type EnumMeshPartDetailLevel = {
-	DistanceBased: EnumItem,
-	Level01: EnumItem,
-	Level02: EnumItem,
-	Level03: EnumItem,
-	Level04: EnumItem,
-}
-type EnumMeshPartHeadsAndAccessories = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumMeshScaleUnit = {
-	Stud: EnumItem,
-	Meter: EnumItem,
-	CM: EnumItem,
-	MM: EnumItem,
-	Foot: EnumItem,
-	Inch: EnumItem,
-}
-type EnumMeshType = {
-	Head: EnumItem,
-	Torso: EnumItem,
-	Wedge: EnumItem,
-	Prism: EnumItem,
-	Pyramid: EnumItem,
-	ParallelRamp: EnumItem,
-	RightAngleRamp: EnumItem,
-	CornerWedge: EnumItem,
-	Brick: EnumItem,
-	Sphere: EnumItem,
-	Cylinder: EnumItem,
-	FileMesh: EnumItem,
-}
-type EnumMessageType = {
-	MessageOutput: EnumItem,
-	MessageInfo: EnumItem,
-	MessageWarning: EnumItem,
-	MessageError: EnumItem,
-}
-type EnumModelLevelOfDetail = {
-	Automatic: EnumItem,
-	StreamingMesh: EnumItem,
-	Disabled: EnumItem,
-}
-type EnumModifierKey = {
-	Alt: EnumItem,
-	Ctrl: EnumItem,
-	Meta: EnumItem,
-	Shift: EnumItem,
-}
-type EnumMouseBehavior = {
-	Default: EnumItem,
-	LockCenter: EnumItem,
-	LockCurrentPosition: EnumItem,
-}
-type EnumMoveState = {
-	Stopped: EnumItem,
-	Coasting: EnumItem,
-	Pushing: EnumItem,
-	Stopping: EnumItem,
-	AirFree: EnumItem,
-}
-type EnumNameOcclusion = {
-	OccludeAll: EnumItem,
-	EnemyOcclusion: EnumItem,
-	NoOcclusion: EnumItem,
-}
-type EnumNetworkOwnership = {
-	Automatic: EnumItem,
-	Manual: EnumItem,
-	OnContact: EnumItem,
-}
-type EnumNewAnimationRuntimeSetting = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumNormalId = {
-	Top: EnumItem,
-	Bottom: EnumItem,
-	Back: EnumItem,
-	Front: EnumItem,
-	Right: EnumItem,
-	Left: EnumItem,
-}
-type EnumOrientationAlignmentMode = {
-	OneAttachment: EnumItem,
-	TwoAttachment: EnumItem,
-}
-type EnumOutfitSource = {
-	All: EnumItem,
-	Created: EnumItem,
-	Purchased: EnumItem,
-}
-type EnumOutputLayoutMode = {
-	Horizontal: EnumItem,
-	Vertical: EnumItem,
-}
-type EnumOverrideMouseIconBehavior = {
-	None: EnumItem,
-	ForceShow: EnumItem,
-	ForceHide: EnumItem,
-}
-type EnumPackagePermission = {
-	None: EnumItem,
-	NoAccess: EnumItem,
-	Revoked: EnumItem,
-	UseView: EnumItem,
-	Edit: EnumItem,
-	Own: EnumItem,
-}
-type EnumPartType = {
-	Ball: EnumItem,
-	Block: EnumItem,
-	Cylinder: EnumItem,
-}
-type EnumParticleEmitterShape = {
-	Box: EnumItem,
-	Sphere: EnumItem,
-	Cylinder: EnumItem,
-	Disc: EnumItem,
-}
-type EnumParticleEmitterShapeInOut = {
-	Outward: EnumItem,
-	Inward: EnumItem,
-	InAndOut: EnumItem,
-}
-type EnumParticleEmitterShapeStyle = {
-	Volume: EnumItem,
-	Surface: EnumItem,
-}
-type EnumParticleFlipbookLayout = {
-	None: EnumItem,
-	TwoByTwo: EnumItem,
-	FourByFour: EnumItem,
-	EightByEight: EnumItem,
-}
-type EnumParticleFlipbookMode = {
-	Loop: EnumItem,
-	OneShot: EnumItem,
-	PingPong: EnumItem,
-	Random: EnumItem,
-}
-type EnumParticleOrientation = {
-	FacingCamera: EnumItem,
-	FacingCameraWorldUp: EnumItem,
-	VelocityParallel: EnumItem,
-	VelocityPerpendicular: EnumItem,
-}
-type EnumPathStatus = {
-	Success: EnumItem,
-	ClosestNoPath: EnumItem,
-	ClosestOutOfRange: EnumItem,
-	FailStartNotEmpty: EnumItem,
-	FailFinishNotEmpty: EnumItem,
-	NoPath: EnumItem,
-}
-type EnumPathWaypointAction = {
-	Walk: EnumItem,
-	Jump: EnumItem,
-	Custom: EnumItem,
-}
-type EnumPermissionLevelShown = {
-	Game: EnumItem,
-	RobloxGame: EnumItem,
-	RobloxScript: EnumItem,
-	Studio: EnumItem,
-	Roblox: EnumItem,
-}
-type EnumPhysicsSimulationRate = {
-	Fixed240Hz: EnumItem,
-	Fixed120Hz: EnumItem,
-	Fixed60Hz: EnumItem,
-}
-type EnumPhysicsSteppingMethod = {
-	Default: EnumItem,
-	Fixed: EnumItem,
-	Adaptive: EnumItem,
-}
-type EnumPlatform = {
-	Windows: EnumItem,
-	OSX: EnumItem,
-	IOS: EnumItem,
-	Android: EnumItem,
-	XBoxOne: EnumItem,
-	PS4: EnumItem,
-	PS3: EnumItem,
-	XBox360: EnumItem,
-	WiiU: EnumItem,
-	NX: EnumItem,
-	Ouya: EnumItem,
-	AndroidTV: EnumItem,
-	Chromecast: EnumItem,
-	Linux: EnumItem,
-	SteamOS: EnumItem,
-	WebOS: EnumItem,
-	DOS: EnumItem,
-	BeOS: EnumItem,
-	UWP: EnumItem,
-	None: EnumItem,
-}
-type EnumPlaybackState = {
-	Begin: EnumItem,
-	Delayed: EnumItem,
-	Playing: EnumItem,
-	Paused: EnumItem,
-	Completed: EnumItem,
-	Cancelled: EnumItem,
-}
-type EnumPlayerActions = {
-	CharacterForward: EnumItem,
-	CharacterBackward: EnumItem,
-	CharacterLeft: EnumItem,
-	CharacterRight: EnumItem,
-	CharacterJump: EnumItem,
-}
-type EnumPlayerChatType = {
-	All: EnumItem,
-	Team: EnumItem,
-	Whisper: EnumItem,
-}
-type EnumPoseEasingDirection = {
-	Out: EnumItem,
-	InOut: EnumItem,
-	In: EnumItem,
-}
-type EnumPoseEasingStyle = {
-	Linear: EnumItem,
-	Constant: EnumItem,
-	Elastic: EnumItem,
-	Cubic: EnumItem,
-	Bounce: EnumItem,
-}
-type EnumPositionAlignmentMode = {
-	OneAttachment: EnumItem,
-	TwoAttachment: EnumItem,
-}
-type EnumPrivilegeType = {
-	Owner: EnumItem,
-	Admin: EnumItem,
-	Member: EnumItem,
-	Visitor: EnumItem,
-	Banned: EnumItem,
-}
-type EnumProductLocationRestriction = {
-	AvatarShop: EnumItem,
-	AllowedGames: EnumItem,
-	AllGames: EnumItem,
-}
-type EnumProductPurchaseDecision = {
-	NotProcessedYet: EnumItem,
-	PurchaseGranted: EnumItem,
-}
-type EnumPropertyStatus = {
-	Ok: EnumItem,
-	Warning: EnumItem,
-	Error: EnumItem,
-}
-type EnumProximityPromptExclusivity = {
-	OnePerButton: EnumItem,
-	OneGlobally: EnumItem,
-	AlwaysShow: EnumItem,
-}
-type EnumProximityPromptInputType = {
-	Keyboard: EnumItem,
-	Gamepad: EnumItem,
-	Touch: EnumItem,
-}
-type EnumProximityPromptStyle = {
-	Default: EnumItem,
-	Custom: EnumItem,
-}
-type EnumQualityLevel = {
-	Automatic: EnumItem,
-	Level01: EnumItem,
-	Level02: EnumItem,
-	Level03: EnumItem,
-	Level04: EnumItem,
-	Level05: EnumItem,
-	Level06: EnumItem,
-	Level07: EnumItem,
-	Level08: EnumItem,
-	Level09: EnumItem,
-	Level10: EnumItem,
-	Level11: EnumItem,
-	Level12: EnumItem,
-	Level13: EnumItem,
-	Level14: EnumItem,
-	Level15: EnumItem,
-	Level16: EnumItem,
-	Level17: EnumItem,
-	Level18: EnumItem,
-	Level19: EnumItem,
-	Level20: EnumItem,
-	Level21: EnumItem,
-}
-type EnumR15CollisionType = {
-	OuterBox: EnumItem,
-	InnerBox: EnumItem,
-}
-type EnumRaycastFilterType = {
-	Blacklist: EnumItem,
-	Whitelist: EnumItem,
-}
-type EnumRenderFidelity = {
-	Automatic: EnumItem,
-	Precise: EnumItem,
-	Performance: EnumItem,
-}
-type EnumRenderPriority = {
-	First: EnumItem,
-	Input: EnumItem,
-	Camera: EnumItem,
-	Character: EnumItem,
-	Last: EnumItem,
-}
-type EnumRenderingTestComparisonMethod = {
-	psnr: EnumItem,
-	diff: EnumItem,
-}
-type EnumReplicateInstanceDestroySetting = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumResamplerMode = {
-	Default: EnumItem,
-	Pixelated: EnumItem,
-}
-type EnumReturnKeyType = {
-	Default: EnumItem,
-	Done: EnumItem,
-	Go: EnumItem,
-	Next: EnumItem,
-	Search: EnumItem,
-	Send: EnumItem,
-}
-type EnumReverbType = {
-	NoReverb: EnumItem,
-	GenericReverb: EnumItem,
-	PaddedCell: EnumItem,
-	Room: EnumItem,
-	Bathroom: EnumItem,
-	LivingRoom: EnumItem,
-	StoneRoom: EnumItem,
-	Auditorium: EnumItem,
-	ConcertHall: EnumItem,
-	Cave: EnumItem,
-	Arena: EnumItem,
-	Hangar: EnumItem,
-	CarpettedHallway: EnumItem,
-	Hallway: EnumItem,
-	StoneCorridor: EnumItem,
-	Alley: EnumItem,
-	Forest: EnumItem,
-	City: EnumItem,
-	Mountains: EnumItem,
-	Quarry: EnumItem,
-	Plain: EnumItem,
-	ParkingLot: EnumItem,
-	SewerPipe: EnumItem,
-	UnderWater: EnumItem,
-}
-type EnumRibbonTool = {
-	Select: EnumItem,
-	Scale: EnumItem,
-	Rotate: EnumItem,
-	Move: EnumItem,
-	Transform: EnumItem,
-	ColorPicker: EnumItem,
-	MaterialPicker: EnumItem,
-	Group: EnumItem,
-	Ungroup: EnumItem,
-	None: EnumItem,
-}
-type EnumRigType = {
-	R15: EnumItem,
-	Rthro: EnumItem,
-	RthroNarrow: EnumItem,
-	Custom: EnumItem,
-	None: EnumItem,
-}
-type EnumRollOffMode = {
-	Inverse: EnumItem,
-	Linear: EnumItem,
-	InverseTapered: EnumItem,
-	LinearSquare: EnumItem,
-}
-type EnumRotationOrder = {
-	XYZ: EnumItem,
-	XZY: EnumItem,
-	YZX: EnumItem,
-	YXZ: EnumItem,
-	ZXY: EnumItem,
-	ZYX: EnumItem,
-}
-type EnumRotationType = {
-	MovementRelative: EnumItem,
-	CameraRelative: EnumItem,
-}
-type EnumRuntimeUndoBehavior = {
-	Aggregate: EnumItem,
-	Snapshot: EnumItem,
-	Hybrid: EnumItem,
-}
-type EnumSaveFilter = {
-	SaveAll: EnumItem,
-	SaveWorld: EnumItem,
-	SaveGame: EnumItem,
-}
-type EnumSavedQualitySetting = {
-	Automatic: EnumItem,
-	QualityLevel1: EnumItem,
-	QualityLevel2: EnumItem,
-	QualityLevel3: EnumItem,
-	QualityLevel4: EnumItem,
-	QualityLevel5: EnumItem,
-	QualityLevel6: EnumItem,
-	QualityLevel7: EnumItem,
-	QualityLevel8: EnumItem,
-	QualityLevel9: EnumItem,
-	QualityLevel10: EnumItem,
-}
-type EnumScaleType = {
-	Stretch: EnumItem,
-	Slice: EnumItem,
-	Tile: EnumItem,
-	Fit: EnumItem,
-	Crop: EnumItem,
-}
-type EnumScreenOrientation = {
-	LandscapeLeft: EnumItem,
-	LandscapeRight: EnumItem,
-	LandscapeSensor: EnumItem,
-	Portrait: EnumItem,
-	Sensor: EnumItem,
-}
-type EnumScrollBarInset = {
-	None: EnumItem,
-	ScrollBar: EnumItem,
-	Always: EnumItem,
-}
-type EnumScrollingDirection = {
-	X: EnumItem,
-	Y: EnumItem,
-	XY: EnumItem,
-}
-type EnumSelectionBehavior = {
-	Escape: EnumItem,
-	Stop: EnumItem,
-}
-type EnumServerAudioBehavior = {
-	Enabled: EnumItem,
-	Muted: EnumItem,
-	OnlineGame: EnumItem,
-}
-type EnumSignalBehavior = {
-	Default: EnumItem,
-	Immediate: EnumItem,
-	Deferred: EnumItem,
-	AncestryDeferred: EnumItem,
-}
-type EnumSizeConstraint = {
-	RelativeXY: EnumItem,
-	RelativeXX: EnumItem,
-	RelativeYY: EnumItem,
-}
-type EnumSortDirection = {
-	Ascending: EnumItem,
-	Descending: EnumItem,
-}
-type EnumSortOrder = {
-	LayoutOrder: EnumItem,
-	Name: EnumItem,
-	Custom: EnumItem,
-}
-type EnumSpecialKey = {
-	Insert: EnumItem,
-	Home: EnumItem,
-	End: EnumItem,
-	PageUp: EnumItem,
-	PageDown: EnumItem,
-	ChatHotkey: EnumItem,
-}
-type EnumStartCorner = {
-	TopLeft: EnumItem,
-	TopRight: EnumItem,
-	BottomLeft: EnumItem,
-	BottomRight: EnumItem,
-}
-type EnumStatus = {
-	Poison: EnumItem,
-	Confusion: EnumItem,
-}
-type EnumStreamOutBehavior = {
-	Default: EnumItem,
-	LowMemory: EnumItem,
-	Opportunistic: EnumItem,
-}
-type EnumStreamingPauseMode = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	ClientPhysicsPause: EnumItem,
-}
-type EnumStudioCloseMode = {
-	None: EnumItem,
-	CloseStudio: EnumItem,
-	CloseDoc: EnumItem,
-}
-type EnumStudioDataModelType = {
-	Edit: EnumItem,
-	PlayClient: EnumItem,
-	PlayServer: EnumItem,
-	Standalone: EnumItem,
-	None: EnumItem,
-}
-type EnumStudioScriptEditorColorCategories = {
-	Default: EnumItem,
-	Operator: EnumItem,
-	Number: EnumItem,
-	String: EnumItem,
-	Comment: EnumItem,
-	Keyword: EnumItem,
-	Builtin: EnumItem,
-	Method: EnumItem,
-	Property: EnumItem,
-	Nil: EnumItem,
-	Bool: EnumItem,
-	Function: EnumItem,
-	Local: EnumItem,
-	Self: EnumItem,
-	LuauKeyword: EnumItem,
-	FunctionName: EnumItem,
-	TODO: EnumItem,
-	Background: EnumItem,
-	SelectionText: EnumItem,
-	SelectionBackground: EnumItem,
-	FindSelectionBackground: EnumItem,
-	MatchingWordBackground: EnumItem,
-	Warning: EnumItem,
-	Error: EnumItem,
-	Whitespace: EnumItem,
-	ActiveLine: EnumItem,
-	DebuggerCurrentLine: EnumItem,
-	DebuggerErrorLine: EnumItem,
-	Ruler: EnumItem,
-	Bracket: EnumItem,
-	MenuPrimaryText: EnumItem,
-	MenuSecondaryText: EnumItem,
-	MenuSelectedText: EnumItem,
-	MenuBackground: EnumItem,
-	MenuSelectedBackground: EnumItem,
-	MenuScrollbarBackground: EnumItem,
-	MenuScrollbarHandle: EnumItem,
-	MenuBorder: EnumItem,
-	DocViewCodeBackground: EnumItem,
-}
-type EnumStudioScriptEditorColorPresets = {
-	RobloxDefault: EnumItem,
-	Extra1: EnumItem,
-	Extra2: EnumItem,
-	Custom: EnumItem,
-}
-type EnumStudioStyleGuideColor = {
-	MainBackground: EnumItem,
-	Titlebar: EnumItem,
-	Dropdown: EnumItem,
-	Tooltip: EnumItem,
-	Notification: EnumItem,
-	ScrollBar: EnumItem,
-	ScrollBarBackground: EnumItem,
-	TabBar: EnumItem,
-	Tab: EnumItem,
-	FilterButtonDefault: EnumItem,
-	FilterButtonHover: EnumItem,
-	FilterButtonChecked: EnumItem,
-	FilterButtonAccent: EnumItem,
-	FilterButtonBorder: EnumItem,
-	FilterButtonBorderAlt: EnumItem,
-	RibbonTab: EnumItem,
-	RibbonTabTopBar: EnumItem,
-	Button: EnumItem,
-	MainButton: EnumItem,
-	RibbonButton: EnumItem,
-	ViewPortBackground: EnumItem,
-	InputFieldBackground: EnumItem,
-	Item: EnumItem,
-	TableItem: EnumItem,
-	CategoryItem: EnumItem,
-	GameSettingsTableItem: EnumItem,
-	GameSettingsTooltip: EnumItem,
-	EmulatorBar: EnumItem,
-	EmulatorDropDown: EnumItem,
-	ColorPickerFrame: EnumItem,
-	CurrentMarker: EnumItem,
-	Border: EnumItem,
-	DropShadow: EnumItem,
-	Shadow: EnumItem,
-	Light: EnumItem,
-	Dark: EnumItem,
-	Mid: EnumItem,
-	MainText: EnumItem,
-	SubText: EnumItem,
-	TitlebarText: EnumItem,
-	BrightText: EnumItem,
-	DimmedText: EnumItem,
-	LinkText: EnumItem,
-	WarningText: EnumItem,
-	ErrorText: EnumItem,
-	InfoText: EnumItem,
-	SensitiveText: EnumItem,
-	ScriptSideWidget: EnumItem,
-	ScriptBackground: EnumItem,
-	ScriptText: EnumItem,
-	ScriptSelectionText: EnumItem,
-	ScriptSelectionBackground: EnumItem,
-	ScriptFindSelectionBackground: EnumItem,
-	ScriptMatchingWordSelectionBackground: EnumItem,
-	ScriptOperator: EnumItem,
-	ScriptNumber: EnumItem,
-	ScriptString: EnumItem,
-	ScriptComment: EnumItem,
-	ScriptKeyword: EnumItem,
-	ScriptBuiltInFunction: EnumItem,
-	ScriptWarning: EnumItem,
-	ScriptError: EnumItem,
-	ScriptWhitespace: EnumItem,
-	ScriptRuler: EnumItem,
-	DocViewCodeBackground: EnumItem,
-	DebuggerCurrentLine: EnumItem,
-	DebuggerErrorLine: EnumItem,
-	ScriptEditorCurrentLine: EnumItem,
-	DiffFilePathText: EnumItem,
-	DiffTextHunkInfo: EnumItem,
-	DiffTextNoChange: EnumItem,
-	DiffTextAddition: EnumItem,
-	DiffTextDeletion: EnumItem,
-	DiffTextSeparatorBackground: EnumItem,
-	DiffTextNoChangeBackground: EnumItem,
-	DiffTextAdditionBackground: EnumItem,
-	DiffTextDeletionBackground: EnumItem,
-	DiffLineNum: EnumItem,
-	DiffLineNumSeparatorBackground: EnumItem,
-	DiffLineNumNoChangeBackground: EnumItem,
-	DiffLineNumAdditionBackground: EnumItem,
-	DiffLineNumDeletionBackground: EnumItem,
-	DiffFilePathBackground: EnumItem,
-	DiffFilePathBorder: EnumItem,
-	ChatIncomingBgColor: EnumItem,
-	ChatIncomingTextColor: EnumItem,
-	ChatOutgoingBgColor: EnumItem,
-	ChatOutgoingTextColor: EnumItem,
-	ChatModeratedMessageColor: EnumItem,
-	Separator: EnumItem,
-	ButtonBorder: EnumItem,
-	ButtonText: EnumItem,
-	InputFieldBorder: EnumItem,
-	CheckedFieldBackground: EnumItem,
-	CheckedFieldBorder: EnumItem,
-	CheckedFieldIndicator: EnumItem,
-	HeaderSection: EnumItem,
-	Midlight: EnumItem,
-	StatusBar: EnumItem,
-	DialogButton: EnumItem,
-	DialogButtonText: EnumItem,
-	DialogButtonBorder: EnumItem,
-	DialogMainButton: EnumItem,
-	DialogMainButtonText: EnumItem,
-	InfoBarWarningBackground: EnumItem,
-	InfoBarWarningText: EnumItem,
-	ScriptMethod: EnumItem,
-	ScriptProperty: EnumItem,
-	ScriptNil: EnumItem,
-	ScriptBool: EnumItem,
-	ScriptFunction: EnumItem,
-	ScriptLocal: EnumItem,
-	ScriptSelf: EnumItem,
-	ScriptLuauKeyword: EnumItem,
-	ScriptFunctionName: EnumItem,
-	ScriptTodo: EnumItem,
-	ScriptBracket: EnumItem,
-	AttributeCog: EnumItem,
-}
-type EnumStudioStyleGuideModifier = {
-	Default: EnumItem,
-	Selected: EnumItem,
-	Pressed: EnumItem,
-	Disabled: EnumItem,
-	Hover: EnumItem,
-}
-type EnumStyle = {
-	AlternatingSupports: EnumItem,
-	BridgeStyleSupports: EnumItem,
-	NoSupports: EnumItem,
-}
-type EnumSurfaceConstraint = {
-	None: EnumItem,
-	Hinge: EnumItem,
-	SteppingMotor: EnumItem,
-	Motor: EnumItem,
-}
-type EnumSurfaceGuiSizingMode = {
-	FixedSize: EnumItem,
-	PixelsPerStud: EnumItem,
-}
-type EnumSurfaceType = {
-	Smooth: EnumItem,
-	Glue: EnumItem,
-	Weld: EnumItem,
-	Studs: EnumItem,
-	Inlet: EnumItem,
-	Universal: EnumItem,
-	Hinge: EnumItem,
-	Motor: EnumItem,
-	SteppingMotor: EnumItem,
-	SmoothNoOutlines: EnumItem,
-}
-type EnumSwipeDirection = {
-	Right: EnumItem,
-	Left: EnumItem,
-	Up: EnumItem,
-	Down: EnumItem,
-	None: EnumItem,
-}
-type EnumTableMajorAxis = {
-	RowMajor: EnumItem,
-	ColumnMajor: EnumItem,
-}
-type EnumTechnology = {
-	Compatibility: EnumItem,
-	Voxel: EnumItem,
-	ShadowMap: EnumItem,
-	Legacy: EnumItem,
-	Future: EnumItem,
-}
-type EnumTeleportMethod = {
-	TeleportToSpawnByName: EnumItem,
-	TeleportToPlaceInstance: EnumItem,
-	TeleportToPrivateServer: EnumItem,
-	TeleportPartyAsync: EnumItem,
-	TeleportUnknown: EnumItem,
-}
-type EnumTeleportResult = {
-	Success: EnumItem,
-	Failure: EnumItem,
-	GameNotFound: EnumItem,
-	GameEnded: EnumItem,
-	GameFull: EnumItem,
-	Unauthorized: EnumItem,
-	Flooded: EnumItem,
-	IsTeleporting: EnumItem,
-}
-type EnumTeleportState = {
-	RequestedFromServer: EnumItem,
-	Started: EnumItem,
-	WaitingForServer: EnumItem,
-	Failed: EnumItem,
-	InProgress: EnumItem,
-}
-type EnumTeleportType = {
-	ToPlace: EnumItem,
-	ToInstance: EnumItem,
-	ToReservedServer: EnumItem,
-}
-type EnumTerrainAcquisitionMethod = {
-	None: EnumItem,
-	Legacy: EnumItem,
-	Template: EnumItem,
-	Generate: EnumItem,
-	Import: EnumItem,
-	Convert: EnumItem,
-	EditAddTool: EnumItem,
-	EditSeaLevelTool: EnumItem,
-	EditReplaceTool: EnumItem,
-	RegionFillTool: EnumItem,
-	RegionPasteTool: EnumItem,
-	Other: EnumItem,
-}
-type EnumTerrainFace = {
-	Top: EnumItem,
-	Side: EnumItem,
-	Bottom: EnumItem,
-}
-type EnumTextChatMessageStatus = {
-	Unknown: EnumItem,
-	Success: EnumItem,
-	Sending: EnumItem,
-	TextFilterFailed: EnumItem,
-	Floodchecked: EnumItem,
-	InvalidPrivacySettings: EnumItem,
-	InvalidTextChannelPermissions: EnumItem,
-	MessageTooLong: EnumItem,
-}
-type EnumTextFilterContext = {
-	PublicChat: EnumItem,
-	PrivateChat: EnumItem,
-}
-type EnumTextInputType = {
-	Default: EnumItem,
-	NoSuggestions: EnumItem,
-	Number: EnumItem,
-	Email: EnumItem,
-	Phone: EnumItem,
-	Password: EnumItem,
-	PasswordShown: EnumItem,
-	Username: EnumItem,
-	OneTimePassword: EnumItem,
-}
-type EnumTextTruncate = {
-	None: EnumItem,
-	AtEnd: EnumItem,
-}
-type EnumTextXAlignment = {
-	Left: EnumItem,
-	Center: EnumItem,
-	Right: EnumItem,
-}
-type EnumTextYAlignment = {
-	Top: EnumItem,
-	Center: EnumItem,
-	Bottom: EnumItem,
-}
-type EnumTextureMode = {
-	Stretch: EnumItem,
-	Wrap: EnumItem,
-	Static: EnumItem,
-}
-type EnumTextureQueryType = {
-	NonHumanoid: EnumItem,
-	NonHumanoidOrphaned: EnumItem,
-	Humanoid: EnumItem,
-	HumanoidOrphaned: EnumItem,
-}
-type EnumThreadPoolConfig = {
-	Auto: EnumItem,
-	PerCore1: EnumItem,
-	PerCore2: EnumItem,
-	PerCore3: EnumItem,
-	PerCore4: EnumItem,
-	Threads1: EnumItem,
-	Threads2: EnumItem,
-	Threads3: EnumItem,
-	Threads4: EnumItem,
-	Threads8: EnumItem,
-	Threads16: EnumItem,
-}
-type EnumThrottlingPriority = {
-	Extreme: EnumItem,
-	ElevatedOnServer: EnumItem,
-	Default: EnumItem,
-}
-type EnumThumbnailSize = {
-	Size48x48: EnumItem,
-	Size180x180: EnumItem,
-	Size420x420: EnumItem,
-	Size60x60: EnumItem,
-	Size100x100: EnumItem,
-	Size150x150: EnumItem,
-	Size352x352: EnumItem,
-}
-type EnumThumbnailType = {
-	HeadShot: EnumItem,
-	AvatarBust: EnumItem,
-	AvatarThumbnail: EnumItem,
-}
-type EnumTickCountSampleMethod = {
-	Fast: EnumItem,
-	Benchmark: EnumItem,
-	Precise: EnumItem,
-}
-type EnumTopBottom = {
-	Top: EnumItem,
-	Center: EnumItem,
-	Bottom: EnumItem,
-}
-type EnumTouchCameraMovementMode = {
-	Default: EnumItem,
-	Follow: EnumItem,
-	Classic: EnumItem,
-	Orbital: EnumItem,
-}
-type EnumTouchMovementMode = {
-	Default: EnumItem,
-	Thumbstick: EnumItem,
-	DPad: EnumItem,
-	Thumbpad: EnumItem,
-	ClickToMove: EnumItem,
-	DynamicThumbstick: EnumItem,
-}
-type EnumTriStateBoolean = {
-	Unknown: EnumItem,
-	True: EnumItem,
-	False: EnumItem,
-}
-type EnumTweenStatus = {
-	Canceled: EnumItem,
-	Completed: EnumItem,
-}
-type EnumUITheme = {
-	Light: EnumItem,
-	Dark: EnumItem,
-}
-type EnumUiMessageType = {
-	UiMessageError: EnumItem,
-	UiMessageInfo: EnumItem,
-}
-type EnumUsageContext = {
-	Default: EnumItem,
-	Preview: EnumItem,
-}
-type EnumUserCFrame = {
-	Head: EnumItem,
-	LeftHand: EnumItem,
-	RightHand: EnumItem,
-}
-type EnumUserInputState = {
-	Begin: EnumItem,
-	Change: EnumItem,
-	End: EnumItem,
-	Cancel: EnumItem,
-	None: EnumItem,
-}
-type EnumUserInputType = {
-	MouseButton1: EnumItem,
-	MouseButton2: EnumItem,
-	MouseButton3: EnumItem,
-	MouseWheel: EnumItem,
-	MouseMovement: EnumItem,
-	Touch: EnumItem,
-	Keyboard: EnumItem,
-	Focus: EnumItem,
-	Accelerometer: EnumItem,
-	Gyro: EnumItem,
-	Gamepad1: EnumItem,
-	Gamepad2: EnumItem,
-	Gamepad3: EnumItem,
-	Gamepad4: EnumItem,
-	Gamepad5: EnumItem,
-	Gamepad6: EnumItem,
-	Gamepad7: EnumItem,
-	Gamepad8: EnumItem,
-	TextInput: EnumItem,
-	InputMethod: EnumItem,
-	None: EnumItem,
-}
-type EnumVRTouchpad = {
-	Left: EnumItem,
-	Right: EnumItem,
-}
-type EnumVRTouchpadMode = {
-	Touch: EnumItem,
-	VirtualThumbstick: EnumItem,
-	ABXY: EnumItem,
-}
-type EnumVelocityConstraintMode = {
-	Line: EnumItem,
-	Plane: EnumItem,
-	Vector: EnumItem,
-}
-type EnumVerticalAlignment = {
-	Center: EnumItem,
-	Top: EnumItem,
-	Bottom: EnumItem,
-}
-type EnumVerticalScrollBarPosition = {
-	Left: EnumItem,
-	Right: EnumItem,
-}
-type EnumVibrationMotor = {
-	Large: EnumItem,
-	Small: EnumItem,
-	LeftTrigger: EnumItem,
-	RightTrigger: EnumItem,
-	LeftHand: EnumItem,
-	RightHand: EnumItem,
-}
-type EnumVirtualCursorMode = {
-	Default: EnumItem,
-	Disabled: EnumItem,
-	Enabled: EnumItem,
-}
-type EnumVirtualInputMode = {
-	Recording: EnumItem,
-	Playing: EnumItem,
-	None: EnumItem,
-}
-type EnumVoiceChatState = {
-	Idle: EnumItem,
-	Joining: EnumItem,
-	JoiningRetry: EnumItem,
-	Joined: EnumItem,
-	Leaving: EnumItem,
-	Ended: EnumItem,
-	Failed: EnumItem,
-}
-type EnumWaterDirection = {
-	NegX: EnumItem,
-	X: EnumItem,
-	NegY: EnumItem,
-	Y: EnumItem,
-	NegZ: EnumItem,
-	Z: EnumItem,
-}
-type EnumWaterForce = {
-	None: EnumItem,
-	Small: EnumItem,
-	Medium: EnumItem,
-	Strong: EnumItem,
-	Max: EnumItem,
-}
-type EnumWrapLayerDebugMode = {
-	None: EnumItem,
-	BoundCage: EnumItem,
-	LayerCage: EnumItem,
-	BoundCageAndLinks: EnumItem,
-	Reference: EnumItem,
-	Rbf: EnumItem,
-	OuterCage: EnumItem,
-	ReferenceMeshAfterMorph: EnumItem,
-	HSROuterDetail: EnumItem,
-	HSROuter: EnumItem,
-	HSRInner: EnumItem,
-	HSRInnerReverse: EnumItem,
-}
-type EnumWrapTargetDebugMode = {
-	None: EnumItem,
-	TargetCageOriginal: EnumItem,
-	TargetCageCompressed: EnumItem,
-	TargetCageInterface: EnumItem,
-	TargetLayerCageOriginal: EnumItem,
-	TargetLayerCageCompressed: EnumItem,
-	TargetLayerInterface: EnumItem,
-	Rbf: EnumItem,
-	OuterCageDetail: EnumItem,
-}
-type EnumZIndexBehavior = {
-	Global: EnumItem,
-	Sibling: EnumItem,
-}
+declare class EnumABTestLoadingStatus extends EnumItem end
+declare class EnumABTestLoadingStatusT extends Enum
+	None: EnumABTestLoadingStatus
+	Pending: EnumABTestLoadingStatus
+	Initialized: EnumABTestLoadingStatus
+	Error: EnumABTestLoadingStatus
+	TimedOut: EnumABTestLoadingStatus
+	ShutOff: EnumABTestLoadingStatus
+end
+declare class EnumAccessoryType extends EnumItem end
+declare class EnumAccessoryTypeT extends Enum
+	Unknown: EnumAccessoryType
+	Hat: EnumAccessoryType
+	Hair: EnumAccessoryType
+	Face: EnumAccessoryType
+	Neck: EnumAccessoryType
+	Shoulder: EnumAccessoryType
+	Front: EnumAccessoryType
+	Back: EnumAccessoryType
+	Waist: EnumAccessoryType
+	TShirt: EnumAccessoryType
+	Shirt: EnumAccessoryType
+	Pants: EnumAccessoryType
+	Jacket: EnumAccessoryType
+	Sweater: EnumAccessoryType
+	Shorts: EnumAccessoryType
+	LeftShoe: EnumAccessoryType
+	RightShoe: EnumAccessoryType
+	DressSkirt: EnumAccessoryType
+	Eyebrow: EnumAccessoryType
+	Eyelash: EnumAccessoryType
+end
+declare class EnumActionType extends EnumItem end
+declare class EnumActionTypeT extends Enum
+	Nothing: EnumActionType
+	Pause: EnumActionType
+	Lose: EnumActionType
+	Draw: EnumActionType
+	Win: EnumActionType
+end
+declare class EnumActuatorRelativeTo extends EnumItem end
+declare class EnumActuatorRelativeToT extends Enum
+	Attachment0: EnumActuatorRelativeTo
+	Attachment1: EnumActuatorRelativeTo
+	World: EnumActuatorRelativeTo
+end
+declare class EnumActuatorType extends EnumItem end
+declare class EnumActuatorTypeT extends Enum
+	None: EnumActuatorType
+	Motor: EnumActuatorType
+	Servo: EnumActuatorType
+end
+declare class EnumAdornCullingMode extends EnumItem end
+declare class EnumAdornCullingModeT extends Enum
+	Automatic: EnumAdornCullingMode
+	Never: EnumAdornCullingMode
+end
+declare class EnumAlignType extends EnumItem end
+declare class EnumAlignTypeT extends Enum
+	Parallel: EnumAlignType
+	Perpendicular: EnumAlignType
+end
+declare class EnumAlphaMode extends EnumItem end
+declare class EnumAlphaModeT extends Enum
+	Overlay: EnumAlphaMode
+	Transparency: EnumAlphaMode
+end
+declare class EnumAnalyticsEconomyAction extends EnumItem end
+declare class EnumAnalyticsEconomyActionT extends Enum
+	Default: EnumAnalyticsEconomyAction
+	Acquire: EnumAnalyticsEconomyAction
+	Spend: EnumAnalyticsEconomyAction
+end
+declare class EnumAnalyticsLogLevel extends EnumItem end
+declare class EnumAnalyticsLogLevelT extends Enum
+	Trace: EnumAnalyticsLogLevel
+	Debug: EnumAnalyticsLogLevel
+	Information: EnumAnalyticsLogLevel
+	Warning: EnumAnalyticsLogLevel
+	Error: EnumAnalyticsLogLevel
+	Fatal: EnumAnalyticsLogLevel
+end
+declare class EnumAnalyticsProgressionStatus extends EnumItem end
+declare class EnumAnalyticsProgressionStatusT extends Enum
+	Default: EnumAnalyticsProgressionStatus
+	Begin: EnumAnalyticsProgressionStatus
+	Complete: EnumAnalyticsProgressionStatus
+	Abandon: EnumAnalyticsProgressionStatus
+	Fail: EnumAnalyticsProgressionStatus
+end
+declare class EnumAnimationPriority extends EnumItem end
+declare class EnumAnimationPriorityT extends Enum
+	Idle: EnumAnimationPriority
+	Movement: EnumAnimationPriority
+	Action: EnumAnimationPriority
+	Action2: EnumAnimationPriority
+	Action3: EnumAnimationPriority
+	Action4: EnumAnimationPriority
+	Core: EnumAnimationPriority
+end
+declare class EnumAnimatorRetargetingMode extends EnumItem end
+declare class EnumAnimatorRetargetingModeT extends Enum
+	Default: EnumAnimatorRetargetingMode
+	Disabled: EnumAnimatorRetargetingMode
+	Enabled: EnumAnimatorRetargetingMode
+end
+declare class EnumAppShellActionType extends EnumItem end
+declare class EnumAppShellActionTypeT extends Enum
+	None: EnumAppShellActionType
+	OpenApp: EnumAppShellActionType
+	TapChatTab: EnumAppShellActionType
+	TapConversationEntry: EnumAppShellActionType
+	TapAvatarTab: EnumAppShellActionType
+	ReadConversation: EnumAppShellActionType
+	TapGamePageTab: EnumAppShellActionType
+	TapHomePageTab: EnumAppShellActionType
+	GamePageLoaded: EnumAppShellActionType
+	HomePageLoaded: EnumAppShellActionType
+	AvatarEditorPageLoaded: EnumAppShellActionType
+end
+declare class EnumAppShellFeature extends EnumItem end
+declare class EnumAppShellFeatureT extends Enum
+	None: EnumAppShellFeature
+	Chat: EnumAppShellFeature
+	AvatarEditor: EnumAppShellFeature
+	GamePage: EnumAppShellFeature
+	HomePage: EnumAppShellFeature
+	More: EnumAppShellFeature
+	Landing: EnumAppShellFeature
+end
+declare class EnumAppUpdateStatus extends EnumItem end
+declare class EnumAppUpdateStatusT extends Enum
+	Unknown: EnumAppUpdateStatus
+	NotSupported: EnumAppUpdateStatus
+	Failed: EnumAppUpdateStatus
+	NotAvailable: EnumAppUpdateStatus
+	Available: EnumAppUpdateStatus
+end
+declare class EnumApplyStrokeMode extends EnumItem end
+declare class EnumApplyStrokeModeT extends Enum
+	Contextual: EnumApplyStrokeMode
+	Border: EnumApplyStrokeMode
+end
+declare class EnumAspectType extends EnumItem end
+declare class EnumAspectTypeT extends Enum
+	FitWithinMaxSize: EnumAspectType
+	ScaleWithParentSize: EnumAspectType
+end
+declare class EnumAssetFetchStatus extends EnumItem end
+declare class EnumAssetFetchStatusT extends Enum
+	Success: EnumAssetFetchStatus
+	Failure: EnumAssetFetchStatus
+end
+declare class EnumAssetType extends EnumItem end
+declare class EnumAssetTypeT extends Enum
+	Image: EnumAssetType
+	TShirt: EnumAssetType
+	Audio: EnumAssetType
+	Mesh: EnumAssetType
+	Lua: EnumAssetType
+	Hat: EnumAssetType
+	Place: EnumAssetType
+	Model: EnumAssetType
+	Shirt: EnumAssetType
+	Pants: EnumAssetType
+	Decal: EnumAssetType
+	Head: EnumAssetType
+	Face: EnumAssetType
+	Gear: EnumAssetType
+	Badge: EnumAssetType
+	Animation: EnumAssetType
+	Torso: EnumAssetType
+	RightArm: EnumAssetType
+	LeftArm: EnumAssetType
+	LeftLeg: EnumAssetType
+	RightLeg: EnumAssetType
+	Package: EnumAssetType
+	GamePass: EnumAssetType
+	Plugin: EnumAssetType
+	MeshPart: EnumAssetType
+	HairAccessory: EnumAssetType
+	FaceAccessory: EnumAssetType
+	NeckAccessory: EnumAssetType
+	ShoulderAccessory: EnumAssetType
+	FrontAccessory: EnumAssetType
+	BackAccessory: EnumAssetType
+	WaistAccessory: EnumAssetType
+	ClimbAnimation: EnumAssetType
+	DeathAnimation: EnumAssetType
+	FallAnimation: EnumAssetType
+	IdleAnimation: EnumAssetType
+	JumpAnimation: EnumAssetType
+	RunAnimation: EnumAssetType
+	SwimAnimation: EnumAssetType
+	WalkAnimation: EnumAssetType
+	PoseAnimation: EnumAssetType
+	EarAccessory: EnumAssetType
+	EyeAccessory: EnumAssetType
+	EmoteAnimation: EnumAssetType
+	Video: EnumAssetType
+	TShirtAccessory: EnumAssetType
+	ShirtAccessory: EnumAssetType
+	PantsAccessory: EnumAssetType
+	JacketAccessory: EnumAssetType
+	SweaterAccessory: EnumAssetType
+	ShortsAccessory: EnumAssetType
+	LeftShoeAccessory: EnumAssetType
+	RightShoeAccessory: EnumAssetType
+	DressSkirtAccessory: EnumAssetType
+	EyebrowAccessory: EnumAssetType
+	EyelashAccessory: EnumAssetType
+end
+declare class EnumAssetTypeVerification extends EnumItem end
+declare class EnumAssetTypeVerificationT extends Enum
+	Default: EnumAssetTypeVerification
+	ClientOnly: EnumAssetTypeVerification
+	Always: EnumAssetTypeVerification
+end
+declare class EnumAutoIndentRule extends EnumItem end
+declare class EnumAutoIndentRuleT extends Enum
+	Off: EnumAutoIndentRule
+	Absolute: EnumAutoIndentRule
+	Relative: EnumAutoIndentRule
+end
+declare class EnumAutomaticSize extends EnumItem end
+declare class EnumAutomaticSizeT extends Enum
+	None: EnumAutomaticSize
+	X: EnumAutomaticSize
+	Y: EnumAutomaticSize
+	XY: EnumAutomaticSize
+end
+declare class EnumAvatarAssetType extends EnumItem end
+declare class EnumAvatarAssetTypeT extends Enum
+	TShirt: EnumAvatarAssetType
+	Hat: EnumAvatarAssetType
+	HairAccessory: EnumAvatarAssetType
+	FaceAccessory: EnumAvatarAssetType
+	NeckAccessory: EnumAvatarAssetType
+	ShoulderAccessory: EnumAvatarAssetType
+	FrontAccessory: EnumAvatarAssetType
+	BackAccessory: EnumAvatarAssetType
+	WaistAccessory: EnumAvatarAssetType
+	Shirt: EnumAvatarAssetType
+	Pants: EnumAvatarAssetType
+	Gear: EnumAvatarAssetType
+	Head: EnumAvatarAssetType
+	Face: EnumAvatarAssetType
+	Torso: EnumAvatarAssetType
+	RightArm: EnumAvatarAssetType
+	LeftArm: EnumAvatarAssetType
+	LeftLeg: EnumAvatarAssetType
+	RightLeg: EnumAvatarAssetType
+	ClimbAnimation: EnumAvatarAssetType
+	FallAnimation: EnumAvatarAssetType
+	IdleAnimation: EnumAvatarAssetType
+	JumpAnimation: EnumAvatarAssetType
+	RunAnimation: EnumAvatarAssetType
+	SwimAnimation: EnumAvatarAssetType
+	WalkAnimation: EnumAvatarAssetType
+	EmoteAnimation: EnumAvatarAssetType
+	TShirtAccessory: EnumAvatarAssetType
+	ShirtAccessory: EnumAvatarAssetType
+	PantsAccessory: EnumAvatarAssetType
+	JacketAccessory: EnumAvatarAssetType
+	SweaterAccessory: EnumAvatarAssetType
+	ShortsAccessory: EnumAvatarAssetType
+	LeftShoeAccessory: EnumAvatarAssetType
+	RightShoeAccessory: EnumAvatarAssetType
+	DressSkirtAccessory: EnumAvatarAssetType
+	EyebrowAccessory: EnumAvatarAssetType
+	EyelashAccessory: EnumAvatarAssetType
+end
+declare class EnumAvatarContextMenuOption extends EnumItem end
+declare class EnumAvatarContextMenuOptionT extends Enum
+	Friend: EnumAvatarContextMenuOption
+	Chat: EnumAvatarContextMenuOption
+	Emote: EnumAvatarContextMenuOption
+	InspectMenu: EnumAvatarContextMenuOption
+end
+declare class EnumAvatarItemType extends EnumItem end
+declare class EnumAvatarItemTypeT extends Enum
+	Asset: EnumAvatarItemType
+	Bundle: EnumAvatarItemType
+end
+declare class EnumAvatarPromptResult extends EnumItem end
+declare class EnumAvatarPromptResultT extends Enum
+	Success: EnumAvatarPromptResult
+	PermissionDenied: EnumAvatarPromptResult
+	Failed: EnumAvatarPromptResult
+end
+declare class EnumAxis extends EnumItem end
+declare class EnumAxisT extends Enum
+	X: EnumAxis
+	Y: EnumAxis
+	Z: EnumAxis
+end
+declare class EnumBinType extends EnumItem end
+declare class EnumBinTypeT extends Enum
+	Script: EnumBinType
+	GameTool: EnumBinType
+	Grab: EnumBinType
+	Clone: EnumBinType
+	Hammer: EnumBinType
+end
+declare class EnumBodyPart extends EnumItem end
+declare class EnumBodyPartT extends Enum
+	Head: EnumBodyPart
+	Torso: EnumBodyPart
+	LeftArm: EnumBodyPart
+	RightArm: EnumBodyPart
+	LeftLeg: EnumBodyPart
+	RightLeg: EnumBodyPart
+end
+declare class EnumBodyPartR15 extends EnumItem end
+declare class EnumBodyPartR15T extends Enum
+	Head: EnumBodyPartR15
+	UpperTorso: EnumBodyPartR15
+	LowerTorso: EnumBodyPartR15
+	LeftFoot: EnumBodyPartR15
+	LeftLowerLeg: EnumBodyPartR15
+	LeftUpperLeg: EnumBodyPartR15
+	RightFoot: EnumBodyPartR15
+	RightLowerLeg: EnumBodyPartR15
+	RightUpperLeg: EnumBodyPartR15
+	LeftHand: EnumBodyPartR15
+	LeftLowerArm: EnumBodyPartR15
+	LeftUpperArm: EnumBodyPartR15
+	RightHand: EnumBodyPartR15
+	RightLowerArm: EnumBodyPartR15
+	RightUpperArm: EnumBodyPartR15
+	RootPart: EnumBodyPartR15
+	Unknown: EnumBodyPartR15
+end
+declare class EnumBorderMode extends EnumItem end
+declare class EnumBorderModeT extends Enum
+	Outline: EnumBorderMode
+	Middle: EnumBorderMode
+	Inset: EnumBorderMode
+end
+declare class EnumBreakReason extends EnumItem end
+declare class EnumBreakReasonT extends Enum
+	Other: EnumBreakReason
+	Error: EnumBreakReason
+	UserBreakpoint: EnumBreakReason
+	SpecialBreakpoint: EnumBreakReason
+end
+declare class EnumBreakpointRemoveReason extends EnumItem end
+declare class EnumBreakpointRemoveReasonT extends Enum
+	Requested: EnumBreakpointRemoveReason
+	ScriptChanged: EnumBreakpointRemoveReason
+	ScriptRemoved: EnumBreakpointRemoveReason
+end
+declare class EnumBulkMoveMode extends EnumItem end
+declare class EnumBulkMoveModeT extends Enum
+	FireAllEvents: EnumBulkMoveMode
+	FireCFrameChanged: EnumBulkMoveMode
+end
+declare class EnumBundleType extends EnumItem end
+declare class EnumBundleTypeT extends Enum
+	BodyParts: EnumBundleType
+	Animations: EnumBundleType
+	Shoes: EnumBundleType
+end
+declare class EnumButton extends EnumItem end
+declare class EnumButtonT extends Enum
+	Jump: EnumButton
+	Dismount: EnumButton
+end
+declare class EnumButtonStyle extends EnumItem end
+declare class EnumButtonStyleT extends Enum
+	Custom: EnumButtonStyle
+	RobloxButtonDefault: EnumButtonStyle
+	RobloxButton: EnumButtonStyle
+	RobloxRoundButton: EnumButtonStyle
+	RobloxRoundDefaultButton: EnumButtonStyle
+	RobloxRoundDropdownButton: EnumButtonStyle
+end
+declare class EnumCageType extends EnumItem end
+declare class EnumCageTypeT extends Enum
+	Inner: EnumCageType
+	Outer: EnumCageType
+end
+declare class EnumCameraMode extends EnumItem end
+declare class EnumCameraModeT extends Enum
+	Classic: EnumCameraMode
+	LockFirstPerson: EnumCameraMode
+end
+declare class EnumCameraPanMode extends EnumItem end
+declare class EnumCameraPanModeT extends Enum
+	Classic: EnumCameraPanMode
+	EdgeBump: EnumCameraPanMode
+end
+declare class EnumCameraType extends EnumItem end
+declare class EnumCameraTypeT extends Enum
+	Fixed: EnumCameraType
+	Watch: EnumCameraType
+	Attach: EnumCameraType
+	Track: EnumCameraType
+	Follow: EnumCameraType
+	Custom: EnumCameraType
+	Scriptable: EnumCameraType
+	Orbital: EnumCameraType
+end
+declare class EnumCatalogCategoryFilter extends EnumItem end
+declare class EnumCatalogCategoryFilterT extends Enum
+	None: EnumCatalogCategoryFilter
+	Featured: EnumCatalogCategoryFilter
+	Collectibles: EnumCatalogCategoryFilter
+	CommunityCreations: EnumCatalogCategoryFilter
+	Premium: EnumCatalogCategoryFilter
+	Recommended: EnumCatalogCategoryFilter
+end
+declare class EnumCatalogSortType extends EnumItem end
+declare class EnumCatalogSortTypeT extends Enum
+	Relevance: EnumCatalogSortType
+	PriceHighToLow: EnumCatalogSortType
+	PriceLowToHigh: EnumCatalogSortType
+	RecentlyUpdated: EnumCatalogSortType
+	MostFavorited: EnumCatalogSortType
+end
+declare class EnumCellBlock extends EnumItem end
+declare class EnumCellBlockT extends Enum
+	Solid: EnumCellBlock
+	VerticalWedge: EnumCellBlock
+	CornerWedge: EnumCellBlock
+	InverseCornerWedge: EnumCellBlock
+	HorizontalWedge: EnumCellBlock
+end
+declare class EnumCellMaterial extends EnumItem end
+declare class EnumCellMaterialT extends Enum
+	Empty: EnumCellMaterial
+	Grass: EnumCellMaterial
+	Sand: EnumCellMaterial
+	Brick: EnumCellMaterial
+	Granite: EnumCellMaterial
+	Asphalt: EnumCellMaterial
+	Iron: EnumCellMaterial
+	Aluminum: EnumCellMaterial
+	Gold: EnumCellMaterial
+	WoodPlank: EnumCellMaterial
+	WoodLog: EnumCellMaterial
+	Gravel: EnumCellMaterial
+	CinderBlock: EnumCellMaterial
+	MossyStone: EnumCellMaterial
+	Cement: EnumCellMaterial
+	RedPlastic: EnumCellMaterial
+	BluePlastic: EnumCellMaterial
+	Water: EnumCellMaterial
+end
+declare class EnumCellOrientation extends EnumItem end
+declare class EnumCellOrientationT extends Enum
+	NegZ: EnumCellOrientation
+	X: EnumCellOrientation
+	Z: EnumCellOrientation
+	NegX: EnumCellOrientation
+end
+declare class EnumCenterDialogType extends EnumItem end
+declare class EnumCenterDialogTypeT extends Enum
+	UnsolicitedDialog: EnumCenterDialogType
+	PlayerInitiatedDialog: EnumCenterDialogType
+	ModalDialog: EnumCenterDialogType
+	QuitDialog: EnumCenterDialogType
+end
+declare class EnumChatCallbackType extends EnumItem end
+declare class EnumChatCallbackTypeT extends Enum
+	OnCreatingChatWindow: EnumChatCallbackType
+	OnClientSendingMessage: EnumChatCallbackType
+	OnClientFormattingMessage: EnumChatCallbackType
+	OnServerReceivingMessage: EnumChatCallbackType
+end
+declare class EnumChatColor extends EnumItem end
+declare class EnumChatColorT extends Enum
+	Blue: EnumChatColor
+	Green: EnumChatColor
+	Red: EnumChatColor
+	White: EnumChatColor
+end
+declare class EnumChatMode extends EnumItem end
+declare class EnumChatModeT extends Enum
+	Menu: EnumChatMode
+	TextAndMenu: EnumChatMode
+end
+declare class EnumChatPrivacyMode extends EnumItem end
+declare class EnumChatPrivacyModeT extends Enum
+	AllUsers: EnumChatPrivacyMode
+	NoOne: EnumChatPrivacyMode
+	Friends: EnumChatPrivacyMode
+end
+declare class EnumChatStyle extends EnumItem end
+declare class EnumChatStyleT extends Enum
+	Classic: EnumChatStyle
+	Bubble: EnumChatStyle
+	ClassicAndBubble: EnumChatStyle
+end
+declare class EnumChatVersion extends EnumItem end
+declare class EnumChatVersionT extends Enum
+	LegacyChatService: EnumChatVersion
+	TextChatService: EnumChatVersion
+end
+declare class EnumClientAnimatorThrottlingMode extends EnumItem end
+declare class EnumClientAnimatorThrottlingModeT extends Enum
+	Default: EnumClientAnimatorThrottlingMode
+	Disabled: EnumClientAnimatorThrottlingMode
+	Enabled: EnumClientAnimatorThrottlingMode
+end
+declare class EnumCollisionFidelity extends EnumItem end
+declare class EnumCollisionFidelityT extends Enum
+	Default: EnumCollisionFidelity
+	Hull: EnumCollisionFidelity
+	Box: EnumCollisionFidelity
+	PreciseConvexDecomposition: EnumCollisionFidelity
+end
+declare class EnumCommandPermission extends EnumItem end
+declare class EnumCommandPermissionT extends Enum
+	Plugin: EnumCommandPermission
+	LocalUser: EnumCommandPermission
+end
+declare class EnumComputerCameraMovementMode extends EnumItem end
+declare class EnumComputerCameraMovementModeT extends Enum
+	Default: EnumComputerCameraMovementMode
+	Follow: EnumComputerCameraMovementMode
+	Classic: EnumComputerCameraMovementMode
+	Orbital: EnumComputerCameraMovementMode
+	CameraToggle: EnumComputerCameraMovementMode
+end
+declare class EnumComputerMovementMode extends EnumItem end
+declare class EnumComputerMovementModeT extends Enum
+	Default: EnumComputerMovementMode
+	KeyboardMouse: EnumComputerMovementMode
+	ClickToMove: EnumComputerMovementMode
+end
+declare class EnumConnectionError extends EnumItem end
+declare class EnumConnectionErrorT extends Enum
+	OK: EnumConnectionError
+	DisconnectErrors: EnumConnectionError
+	DisconnectBadhash: EnumConnectionError
+	DisconnectSecurityKeyMismatch: EnumConnectionError
+	DisconnectNewSecurityKeyMismatch: EnumConnectionError
+	DisconnectProtocolMismatch: EnumConnectionError
+	DisconnectReceivePacketError: EnumConnectionError
+	DisconnectReceivePacketStreamError: EnumConnectionError
+	DisconnectSendPacketError: EnumConnectionError
+	DisconnectIllegalTeleport: EnumConnectionError
+	DisconnectDuplicatePlayer: EnumConnectionError
+	DisconnectDuplicateTicket: EnumConnectionError
+	DisconnectTimeout: EnumConnectionError
+	DisconnectLuaKick: EnumConnectionError
+	DisconnectOnRemoteSysStats: EnumConnectionError
+	DisconnectHashTimeout: EnumConnectionError
+	DisconnectCloudEditKick: EnumConnectionError
+	DisconnectPlayerless: EnumConnectionError
+	DisconnectEvicted: EnumConnectionError
+	DisconnectDevMaintenance: EnumConnectionError
+	DisconnectRobloxMaintenance: EnumConnectionError
+	DisconnectRejoin: EnumConnectionError
+	DisconnectConnectionLost: EnumConnectionError
+	DisconnectIdle: EnumConnectionError
+	DisconnectRaknetErrors: EnumConnectionError
+	DisconnectWrongVersion: EnumConnectionError
+	DisconnectBySecurityPolicy: EnumConnectionError
+	DisconnectBlockedIP: EnumConnectionError
+	DisconnectClientFailure: EnumConnectionError
+	DisconnectClientRequest: EnumConnectionError
+	DisconnectOutOfMemory: EnumConnectionError
+	DisconnectModeratedGame: EnumConnectionError
+	PlacelaunchErrors: EnumConnectionError
+	PlacelaunchDisabled: EnumConnectionError
+	PlacelaunchError: EnumConnectionError
+	PlacelaunchGameEnded: EnumConnectionError
+	PlacelaunchGameFull: EnumConnectionError
+	PlacelaunchUserLeft: EnumConnectionError
+	PlacelaunchRestricted: EnumConnectionError
+	PlacelaunchUnauthorized: EnumConnectionError
+	PlacelaunchFlooded: EnumConnectionError
+	PlacelaunchHashExpired: EnumConnectionError
+	PlacelaunchHashException: EnumConnectionError
+	PlacelaunchPartyCannotFit: EnumConnectionError
+	PlacelaunchHttpError: EnumConnectionError
+	PlacelaunchCustomMessage: EnumConnectionError
+	PlacelaunchOtherError: EnumConnectionError
+	TeleportErrors: EnumConnectionError
+	TeleportFailure: EnumConnectionError
+	TeleportGameNotFound: EnumConnectionError
+	TeleportGameEnded: EnumConnectionError
+	TeleportGameFull: EnumConnectionError
+	TeleportUnauthorized: EnumConnectionError
+	TeleportFlooded: EnumConnectionError
+	TeleportIsTeleporting: EnumConnectionError
+end
+declare class EnumConnectionState extends EnumItem end
+declare class EnumConnectionStateT extends Enum
+	Connected: EnumConnectionState
+	Disconnected: EnumConnectionState
+end
+declare class EnumContextActionPriority extends EnumItem end
+declare class EnumContextActionPriorityT extends Enum
+	Low: EnumContextActionPriority
+	Medium: EnumContextActionPriority
+	Default: EnumContextActionPriority
+	High: EnumContextActionPriority
+end
+declare class EnumContextActionResult extends EnumItem end
+declare class EnumContextActionResultT extends Enum
+	Pass: EnumContextActionResult
+	Sink: EnumContextActionResult
+end
+declare class EnumControlMode extends EnumItem end
+declare class EnumControlModeT extends Enum
+	MouseLockSwitch: EnumControlMode
+	Classic: EnumControlMode
+end
+declare class EnumCoreGuiType extends EnumItem end
+declare class EnumCoreGuiTypeT extends Enum
+	PlayerList: EnumCoreGuiType
+	Health: EnumCoreGuiType
+	Backpack: EnumCoreGuiType
+	Chat: EnumCoreGuiType
+	All: EnumCoreGuiType
+	EmotesMenu: EnumCoreGuiType
+end
+declare class EnumCreateOutfitFailure extends EnumItem end
+declare class EnumCreateOutfitFailureT extends Enum
+	InvalidName: EnumCreateOutfitFailure
+	OutfitLimitReached: EnumCreateOutfitFailure
+	Other: EnumCreateOutfitFailure
+end
+declare class EnumCreatorType extends EnumItem end
+declare class EnumCreatorTypeT extends Enum
+	User: EnumCreatorType
+	Group: EnumCreatorType
+end
+declare class EnumCurrencyType extends EnumItem end
+declare class EnumCurrencyTypeT extends Enum
+	Default: EnumCurrencyType
+	Robux: EnumCurrencyType
+	Tix: EnumCurrencyType
+end
+declare class EnumCustomCameraMode extends EnumItem end
+declare class EnumCustomCameraModeT extends Enum
+	Default: EnumCustomCameraMode
+	Follow: EnumCustomCameraMode
+	Classic: EnumCustomCameraMode
+end
+declare class EnumDataStoreRequestType extends EnumItem end
+declare class EnumDataStoreRequestTypeT extends Enum
+	GetAsync: EnumDataStoreRequestType
+	SetIncrementAsync: EnumDataStoreRequestType
+	UpdateAsync: EnumDataStoreRequestType
+	GetSortedAsync: EnumDataStoreRequestType
+	SetIncrementSortedAsync: EnumDataStoreRequestType
+	OnUpdate: EnumDataStoreRequestType
+end
+declare class EnumDebuggerEndReason extends EnumItem end
+declare class EnumDebuggerEndReasonT extends Enum
+	ClientRequest: EnumDebuggerEndReason
+	Timeout: EnumDebuggerEndReason
+	InvalidHost: EnumDebuggerEndReason
+	Disconnected: EnumDebuggerEndReason
+	ServerShutdown: EnumDebuggerEndReason
+	ServerProtocolMismatch: EnumDebuggerEndReason
+	ConfigurationFailed: EnumDebuggerEndReason
+	RpcError: EnumDebuggerEndReason
+end
+declare class EnumDebuggerExceptionBreakMode extends EnumItem end
+declare class EnumDebuggerExceptionBreakModeT extends Enum
+	Never: EnumDebuggerExceptionBreakMode
+	Unhandled: EnumDebuggerExceptionBreakMode
+	Always: EnumDebuggerExceptionBreakMode
+end
+declare class EnumDebuggerFrameType extends EnumItem end
+declare class EnumDebuggerFrameTypeT extends Enum
+	C: EnumDebuggerFrameType
+	Lua: EnumDebuggerFrameType
+end
+declare class EnumDebuggerPauseReason extends EnumItem end
+declare class EnumDebuggerPauseReasonT extends Enum
+	Unknown: EnumDebuggerPauseReason
+	Requested: EnumDebuggerPauseReason
+	Breakpoint: EnumDebuggerPauseReason
+	Exception: EnumDebuggerPauseReason
+	SingleStep: EnumDebuggerPauseReason
+	Entrypoint: EnumDebuggerPauseReason
+end
+declare class EnumDebuggerStatus extends EnumItem end
+declare class EnumDebuggerStatusT extends Enum
+	Success: EnumDebuggerStatus
+	Timeout: EnumDebuggerStatus
+	ConnectionLost: EnumDebuggerStatus
+	InvalidResponse: EnumDebuggerStatus
+	InternalError: EnumDebuggerStatus
+	InvalidState: EnumDebuggerStatus
+	RpcError: EnumDebuggerStatus
+	InvalidArgument: EnumDebuggerStatus
+	ConnectionClosed: EnumDebuggerStatus
+end
+declare class EnumDevCameraOcclusionMode extends EnumItem end
+declare class EnumDevCameraOcclusionModeT extends Enum
+	Zoom: EnumDevCameraOcclusionMode
+	Invisicam: EnumDevCameraOcclusionMode
+end
+declare class EnumDevComputerCameraMovementMode extends EnumItem end
+declare class EnumDevComputerCameraMovementModeT extends Enum
+	UserChoice: EnumDevComputerCameraMovementMode
+	Classic: EnumDevComputerCameraMovementMode
+	Follow: EnumDevComputerCameraMovementMode
+	Orbital: EnumDevComputerCameraMovementMode
+	CameraToggle: EnumDevComputerCameraMovementMode
+end
+declare class EnumDevComputerMovementMode extends EnumItem end
+declare class EnumDevComputerMovementModeT extends Enum
+	UserChoice: EnumDevComputerMovementMode
+	KeyboardMouse: EnumDevComputerMovementMode
+	ClickToMove: EnumDevComputerMovementMode
+	Scriptable: EnumDevComputerMovementMode
+end
+declare class EnumDevTouchCameraMovementMode extends EnumItem end
+declare class EnumDevTouchCameraMovementModeT extends Enum
+	UserChoice: EnumDevTouchCameraMovementMode
+	Classic: EnumDevTouchCameraMovementMode
+	Follow: EnumDevTouchCameraMovementMode
+	Orbital: EnumDevTouchCameraMovementMode
+end
+declare class EnumDevTouchMovementMode extends EnumItem end
+declare class EnumDevTouchMovementModeT extends Enum
+	UserChoice: EnumDevTouchMovementMode
+	Thumbstick: EnumDevTouchMovementMode
+	DPad: EnumDevTouchMovementMode
+	Thumbpad: EnumDevTouchMovementMode
+	ClickToMove: EnumDevTouchMovementMode
+	Scriptable: EnumDevTouchMovementMode
+	DynamicThumbstick: EnumDevTouchMovementMode
+end
+declare class EnumDeveloperMemoryTag extends EnumItem end
+declare class EnumDeveloperMemoryTagT extends Enum
+	Internal: EnumDeveloperMemoryTag
+	HttpCache: EnumDeveloperMemoryTag
+	Instances: EnumDeveloperMemoryTag
+	Signals: EnumDeveloperMemoryTag
+	LuaHeap: EnumDeveloperMemoryTag
+	Script: EnumDeveloperMemoryTag
+	PhysicsCollision: EnumDeveloperMemoryTag
+	PhysicsParts: EnumDeveloperMemoryTag
+	GraphicsSolidModels: EnumDeveloperMemoryTag
+	GraphicsMeshParts: EnumDeveloperMemoryTag
+	GraphicsParticles: EnumDeveloperMemoryTag
+	GraphicsParts: EnumDeveloperMemoryTag
+	GraphicsSpatialHash: EnumDeveloperMemoryTag
+	GraphicsTerrain: EnumDeveloperMemoryTag
+	GraphicsTexture: EnumDeveloperMemoryTag
+	GraphicsTextureCharacter: EnumDeveloperMemoryTag
+	Sounds: EnumDeveloperMemoryTag
+	StreamingSounds: EnumDeveloperMemoryTag
+	TerrainVoxels: EnumDeveloperMemoryTag
+	Gui: EnumDeveloperMemoryTag
+	Animation: EnumDeveloperMemoryTag
+	Navigation: EnumDeveloperMemoryTag
+end
+declare class EnumDeviceType extends EnumItem end
+declare class EnumDeviceTypeT extends Enum
+	Unknown: EnumDeviceType
+	Desktop: EnumDeviceType
+	Tablet: EnumDeviceType
+	Phone: EnumDeviceType
+end
+declare class EnumDialogBehaviorType extends EnumItem end
+declare class EnumDialogBehaviorTypeT extends Enum
+	SinglePlayer: EnumDialogBehaviorType
+	MultiplePlayers: EnumDialogBehaviorType
+end
+declare class EnumDialogPurpose extends EnumItem end
+declare class EnumDialogPurposeT extends Enum
+	Quest: EnumDialogPurpose
+	Help: EnumDialogPurpose
+	Shop: EnumDialogPurpose
+end
+declare class EnumDialogTone extends EnumItem end
+declare class EnumDialogToneT extends Enum
+	Neutral: EnumDialogTone
+	Friendly: EnumDialogTone
+	Enemy: EnumDialogTone
+end
+declare class EnumDominantAxis extends EnumItem end
+declare class EnumDominantAxisT extends Enum
+	Width: EnumDominantAxis
+	Height: EnumDominantAxis
+end
+declare class EnumDraftStatusCode extends EnumItem end
+declare class EnumDraftStatusCodeT extends Enum
+	OK: EnumDraftStatusCode
+	DraftOutdated: EnumDraftStatusCode
+	ScriptRemoved: EnumDraftStatusCode
+	DraftCommitted: EnumDraftStatusCode
+end
+declare class EnumDraggerCoordinateSpace extends EnumItem end
+declare class EnumDraggerCoordinateSpaceT extends Enum
+	Object: EnumDraggerCoordinateSpace
+	World: EnumDraggerCoordinateSpace
+end
+declare class EnumDraggerMovementMode extends EnumItem end
+declare class EnumDraggerMovementModeT extends Enum
+	Geometric: EnumDraggerMovementMode
+	Physical: EnumDraggerMovementMode
+end
+declare class EnumEasingDirection extends EnumItem end
+declare class EnumEasingDirectionT extends Enum
+	In: EnumEasingDirection
+	Out: EnumEasingDirection
+	InOut: EnumEasingDirection
+end
+declare class EnumEasingStyle extends EnumItem end
+declare class EnumEasingStyleT extends Enum
+	Linear: EnumEasingStyle
+	Sine: EnumEasingStyle
+	Back: EnumEasingStyle
+	Quad: EnumEasingStyle
+	Quart: EnumEasingStyle
+	Quint: EnumEasingStyle
+	Bounce: EnumEasingStyle
+	Elastic: EnumEasingStyle
+	Exponential: EnumEasingStyle
+	Circular: EnumEasingStyle
+	Cubic: EnumEasingStyle
+end
+declare class EnumElasticBehavior extends EnumItem end
+declare class EnumElasticBehaviorT extends Enum
+	WhenScrollable: EnumElasticBehavior
+	Always: EnumElasticBehavior
+	Never: EnumElasticBehavior
+end
+declare class EnumEnviromentalPhysicsThrottle extends EnumItem end
+declare class EnumEnviromentalPhysicsThrottleT extends Enum
+	DefaultAuto: EnumEnviromentalPhysicsThrottle
+	Disabled: EnumEnviromentalPhysicsThrottle
+	Always: EnumEnviromentalPhysicsThrottle
+	Skip2: EnumEnviromentalPhysicsThrottle
+	Skip4: EnumEnviromentalPhysicsThrottle
+	Skip8: EnumEnviromentalPhysicsThrottle
+	Skip16: EnumEnviromentalPhysicsThrottle
+end
+declare class EnumExplosionType extends EnumItem end
+declare class EnumExplosionTypeT extends Enum
+	NoCraters: EnumExplosionType
+	Craters: EnumExplosionType
+end
+declare class EnumFieldOfViewMode extends EnumItem end
+declare class EnumFieldOfViewModeT extends Enum
+	Vertical: EnumFieldOfViewMode
+	Diagonal: EnumFieldOfViewMode
+	MaxAxis: EnumFieldOfViewMode
+end
+declare class EnumFillDirection extends EnumItem end
+declare class EnumFillDirectionT extends Enum
+	Horizontal: EnumFillDirection
+	Vertical: EnumFillDirection
+end
+declare class EnumFilterResult extends EnumItem end
+declare class EnumFilterResultT extends Enum
+	Rejected: EnumFilterResult
+	Accepted: EnumFilterResult
+end
+declare class EnumFont extends EnumItem end
+declare class EnumFontT extends Enum
+	Legacy: EnumFont
+	Arial: EnumFont
+	ArialBold: EnumFont
+	SourceSans: EnumFont
+	SourceSansBold: EnumFont
+	SourceSansSemibold: EnumFont
+	SourceSansLight: EnumFont
+	SourceSansItalic: EnumFont
+	Bodoni: EnumFont
+	Garamond: EnumFont
+	Cartoon: EnumFont
+	Code: EnumFont
+	Highway: EnumFont
+	SciFi: EnumFont
+	Arcade: EnumFont
+	Fantasy: EnumFont
+	Antique: EnumFont
+	Gotham: EnumFont
+	GothamSemibold: EnumFont
+	GothamBold: EnumFont
+	GothamBlack: EnumFont
+	AmaticSC: EnumFont
+	Bangers: EnumFont
+	Creepster: EnumFont
+	DenkOne: EnumFont
+	Fondamento: EnumFont
+	FredokaOne: EnumFont
+	GrenzeGotisch: EnumFont
+	IndieFlower: EnumFont
+	JosefinSans: EnumFont
+	Jura: EnumFont
+	Kalam: EnumFont
+	LuckiestGuy: EnumFont
+	Merriweather: EnumFont
+	Michroma: EnumFont
+	Nunito: EnumFont
+	Oswald: EnumFont
+	PatrickHand: EnumFont
+	PermanentMarker: EnumFont
+	Roboto: EnumFont
+	RobotoCondensed: EnumFont
+	RobotoMono: EnumFont
+	Sarpanch: EnumFont
+	SpecialElite: EnumFont
+	TitilliumWeb: EnumFont
+	Ubuntu: EnumFont
+	Unknown: EnumFont
+end
+declare class EnumFontSize extends EnumItem end
+declare class EnumFontSizeT extends Enum
+	Size8: EnumFontSize
+	Size9: EnumFontSize
+	Size10: EnumFontSize
+	Size11: EnumFontSize
+	Size12: EnumFontSize
+	Size14: EnumFontSize
+	Size18: EnumFontSize
+	Size24: EnumFontSize
+	Size36: EnumFontSize
+	Size48: EnumFontSize
+	Size28: EnumFontSize
+	Size32: EnumFontSize
+	Size42: EnumFontSize
+	Size60: EnumFontSize
+	Size96: EnumFontSize
+end
+declare class EnumFontStyle extends EnumItem end
+declare class EnumFontStyleT extends Enum
+	Normal: EnumFontStyle
+	Italic: EnumFontStyle
+end
+declare class EnumFontWeight extends EnumItem end
+declare class EnumFontWeightT extends Enum
+	Thin: EnumFontWeight
+	ExtraLight: EnumFontWeight
+	Light: EnumFontWeight
+	Regular: EnumFontWeight
+	Medium: EnumFontWeight
+	SemiBold: EnumFontWeight
+	Bold: EnumFontWeight
+	ExtraBold: EnumFontWeight
+	Heavy: EnumFontWeight
+end
+declare class EnumFormFactor extends EnumItem end
+declare class EnumFormFactorT extends Enum
+	Symmetric: EnumFormFactor
+	Brick: EnumFormFactor
+	Plate: EnumFormFactor
+	Custom: EnumFormFactor
+end
+declare class EnumFrameStyle extends EnumItem end
+declare class EnumFrameStyleT extends Enum
+	Custom: EnumFrameStyle
+	ChatBlue: EnumFrameStyle
+	RobloxSquare: EnumFrameStyle
+	RobloxRound: EnumFrameStyle
+	ChatGreen: EnumFrameStyle
+	ChatRed: EnumFrameStyle
+	DropShadow: EnumFrameStyle
+end
+declare class EnumFramerateManagerMode extends EnumItem end
+declare class EnumFramerateManagerModeT extends Enum
+	Automatic: EnumFramerateManagerMode
+	On: EnumFramerateManagerMode
+	Off: EnumFramerateManagerMode
+end
+declare class EnumFriendRequestEvent extends EnumItem end
+declare class EnumFriendRequestEventT extends Enum
+	Issue: EnumFriendRequestEvent
+	Revoke: EnumFriendRequestEvent
+	Accept: EnumFriendRequestEvent
+	Deny: EnumFriendRequestEvent
+end
+declare class EnumFriendStatus extends EnumItem end
+declare class EnumFriendStatusT extends Enum
+	Unknown: EnumFriendStatus
+	NotFriend: EnumFriendStatus
+	Friend: EnumFriendStatus
+	FriendRequestSent: EnumFriendStatus
+	FriendRequestReceived: EnumFriendStatus
+end
+declare class EnumFunctionalTestResult extends EnumItem end
+declare class EnumFunctionalTestResultT extends Enum
+	Passed: EnumFunctionalTestResult
+	Warning: EnumFunctionalTestResult
+	Error: EnumFunctionalTestResult
+end
+declare class EnumGameAvatarType extends EnumItem end
+declare class EnumGameAvatarTypeT extends Enum
+	R6: EnumGameAvatarType
+	R15: EnumGameAvatarType
+	PlayerChoice: EnumGameAvatarType
+end
+declare class EnumGearGenreSetting extends EnumItem end
+declare class EnumGearGenreSettingT extends Enum
+	AllGenres: EnumGearGenreSetting
+	MatchingGenreOnly: EnumGearGenreSetting
+end
+declare class EnumGearType extends EnumItem end
+declare class EnumGearTypeT extends Enum
+	MeleeWeapons: EnumGearType
+	RangedWeapons: EnumGearType
+	Explosives: EnumGearType
+	PowerUps: EnumGearType
+	NavigationEnhancers: EnumGearType
+	MusicalInstruments: EnumGearType
+	SocialItems: EnumGearType
+	BuildingTools: EnumGearType
+	Transport: EnumGearType
+end
+declare class EnumGenre extends EnumItem end
+declare class EnumGenreT extends Enum
+	All: EnumGenre
+	TownAndCity: EnumGenre
+	Fantasy: EnumGenre
+	SciFi: EnumGenre
+	Ninja: EnumGenre
+	Scary: EnumGenre
+	Pirate: EnumGenre
+	Adventure: EnumGenre
+	Sports: EnumGenre
+	Funny: EnumGenre
+	WildWest: EnumGenre
+	War: EnumGenre
+	SkatePark: EnumGenre
+	Tutorial: EnumGenre
+end
+declare class EnumGraphicsMode extends EnumItem end
+declare class EnumGraphicsModeT extends Enum
+	Automatic: EnumGraphicsMode
+	Direct3D11: EnumGraphicsMode
+	OpenGL: EnumGraphicsMode
+	Metal: EnumGraphicsMode
+	Vulkan: EnumGraphicsMode
+	NoGraphics: EnumGraphicsMode
+end
+declare class EnumHandlesStyle extends EnumItem end
+declare class EnumHandlesStyleT extends Enum
+	Resize: EnumHandlesStyle
+	Movement: EnumHandlesStyle
+end
+declare class EnumHighlightDepthMode extends EnumItem end
+declare class EnumHighlightDepthModeT extends Enum
+	AlwaysOnTop: EnumHighlightDepthMode
+	Occluded: EnumHighlightDepthMode
+end
+declare class EnumHorizontalAlignment extends EnumItem end
+declare class EnumHorizontalAlignmentT extends Enum
+	Center: EnumHorizontalAlignment
+	Left: EnumHorizontalAlignment
+	Right: EnumHorizontalAlignment
+end
+declare class EnumHoverAnimateSpeed extends EnumItem end
+declare class EnumHoverAnimateSpeedT extends Enum
+	VerySlow: EnumHoverAnimateSpeed
+	Slow: EnumHoverAnimateSpeed
+	Medium: EnumHoverAnimateSpeed
+	Fast: EnumHoverAnimateSpeed
+	VeryFast: EnumHoverAnimateSpeed
+end
+declare class EnumHttpCachePolicy extends EnumItem end
+declare class EnumHttpCachePolicyT extends Enum
+	None: EnumHttpCachePolicy
+	Full: EnumHttpCachePolicy
+	DataOnly: EnumHttpCachePolicy
+	Default: EnumHttpCachePolicy
+	InternalRedirectRefresh: EnumHttpCachePolicy
+end
+declare class EnumHttpContentType extends EnumItem end
+declare class EnumHttpContentTypeT extends Enum
+	ApplicationJson: EnumHttpContentType
+	ApplicationXml: EnumHttpContentType
+	ApplicationUrlEncoded: EnumHttpContentType
+	TextPlain: EnumHttpContentType
+	TextXml: EnumHttpContentType
+end
+declare class EnumHttpError extends EnumItem end
+declare class EnumHttpErrorT extends Enum
+	OK: EnumHttpError
+	InvalidUrl: EnumHttpError
+	DnsResolve: EnumHttpError
+	ConnectFail: EnumHttpError
+	OutOfMemory: EnumHttpError
+	TimedOut: EnumHttpError
+	TooManyRedirects: EnumHttpError
+	InvalidRedirect: EnumHttpError
+	NetFail: EnumHttpError
+	Aborted: EnumHttpError
+	SslConnectFail: EnumHttpError
+	SslVerificationFail: EnumHttpError
+	Unknown: EnumHttpError
+end
+declare class EnumHttpRequestType extends EnumItem end
+declare class EnumHttpRequestTypeT extends Enum
+	Default: EnumHttpRequestType
+	MarketplaceService: EnumHttpRequestType
+	Players: EnumHttpRequestType
+	Chat: EnumHttpRequestType
+	Avatar: EnumHttpRequestType
+	Analytics: EnumHttpRequestType
+	Localization: EnumHttpRequestType
+end
+declare class EnumHumanoidCollisionType extends EnumItem end
+declare class EnumHumanoidCollisionTypeT extends Enum
+	OuterBox: EnumHumanoidCollisionType
+	InnerBox: EnumHumanoidCollisionType
+end
+declare class EnumHumanoidDisplayDistanceType extends EnumItem end
+declare class EnumHumanoidDisplayDistanceTypeT extends Enum
+	Viewer: EnumHumanoidDisplayDistanceType
+	Subject: EnumHumanoidDisplayDistanceType
+	None: EnumHumanoidDisplayDistanceType
+end
+declare class EnumHumanoidHealthDisplayType extends EnumItem end
+declare class EnumHumanoidHealthDisplayTypeT extends Enum
+	DisplayWhenDamaged: EnumHumanoidHealthDisplayType
+	AlwaysOn: EnumHumanoidHealthDisplayType
+	AlwaysOff: EnumHumanoidHealthDisplayType
+end
+declare class EnumHumanoidOnlySetCollisionsOnStateChange extends EnumItem end
+declare class EnumHumanoidOnlySetCollisionsOnStateChangeT extends Enum
+	Default: EnumHumanoidOnlySetCollisionsOnStateChange
+	Disabled: EnumHumanoidOnlySetCollisionsOnStateChange
+	Enabled: EnumHumanoidOnlySetCollisionsOnStateChange
+end
+declare class EnumHumanoidRigType extends EnumItem end
+declare class EnumHumanoidRigTypeT extends Enum
+	R6: EnumHumanoidRigType
+	R15: EnumHumanoidRigType
+end
+declare class EnumHumanoidStateType extends EnumItem end
+declare class EnumHumanoidStateTypeT extends Enum
+	FallingDown: EnumHumanoidStateType
+	Running: EnumHumanoidStateType
+	RunningNoPhysics: EnumHumanoidStateType
+	Climbing: EnumHumanoidStateType
+	StrafingNoPhysics: EnumHumanoidStateType
+	Ragdoll: EnumHumanoidStateType
+	GettingUp: EnumHumanoidStateType
+	Jumping: EnumHumanoidStateType
+	Landed: EnumHumanoidStateType
+	Flying: EnumHumanoidStateType
+	Freefall: EnumHumanoidStateType
+	Seated: EnumHumanoidStateType
+	PlatformStanding: EnumHumanoidStateType
+	Dead: EnumHumanoidStateType
+	Swimming: EnumHumanoidStateType
+	Physics: EnumHumanoidStateType
+	None: EnumHumanoidStateType
+end
+declare class EnumIKCollisionsMode extends EnumItem end
+declare class EnumIKCollisionsModeT extends Enum
+	NoCollisions: EnumIKCollisionsMode
+	OtherMechanismsAnchored: EnumIKCollisionsMode
+	IncludeContactedMechanisms: EnumIKCollisionsMode
+end
+declare class EnumIXPLoadingStatus extends EnumItem end
+declare class EnumIXPLoadingStatusT extends Enum
+	None: EnumIXPLoadingStatus
+	Pending: EnumIXPLoadingStatus
+	Initialized: EnumIXPLoadingStatus
+	ShutOff: EnumIXPLoadingStatus
+	ErrorTimedOut: EnumIXPLoadingStatus
+	ErrorConnection: EnumIXPLoadingStatus
+	ErrorJsonParse: EnumIXPLoadingStatus
+	ErrorInvalidUser: EnumIXPLoadingStatus
+end
+declare class EnumInOut extends EnumItem end
+declare class EnumInOutT extends Enum
+	Edge: EnumInOut
+	Inset: EnumInOut
+	Center: EnumInOut
+end
+declare class EnumInfoType extends EnumItem end
+declare class EnumInfoTypeT extends Enum
+	Asset: EnumInfoType
+	Product: EnumInfoType
+	GamePass: EnumInfoType
+	Subscription: EnumInfoType
+	Bundle: EnumInfoType
+end
+declare class EnumInitialDockState extends EnumItem end
+declare class EnumInitialDockStateT extends Enum
+	Top: EnumInitialDockState
+	Bottom: EnumInitialDockState
+	Left: EnumInitialDockState
+	Right: EnumInitialDockState
+	Float: EnumInitialDockState
+end
+declare class EnumInputType extends EnumItem end
+declare class EnumInputTypeT extends Enum
+	NoInput: EnumInputType
+	Constant: EnumInputType
+	Sin: EnumInputType
+end
+declare class EnumInterpolationThrottlingMode extends EnumItem end
+declare class EnumInterpolationThrottlingModeT extends Enum
+	Default: EnumInterpolationThrottlingMode
+	Disabled: EnumInterpolationThrottlingMode
+	Enabled: EnumInterpolationThrottlingMode
+end
+declare class EnumJointCreationMode extends EnumItem end
+declare class EnumJointCreationModeT extends Enum
+	All: EnumJointCreationMode
+	Surface: EnumJointCreationMode
+	None: EnumJointCreationMode
+end
+declare class EnumKeyCode extends EnumItem end
+declare class EnumKeyCodeT extends Enum
+	Unknown: EnumKeyCode
+	Backspace: EnumKeyCode
+	Tab: EnumKeyCode
+	Clear: EnumKeyCode
+	Return: EnumKeyCode
+	Pause: EnumKeyCode
+	Escape: EnumKeyCode
+	Space: EnumKeyCode
+	QuotedDouble: EnumKeyCode
+	Hash: EnumKeyCode
+	Dollar: EnumKeyCode
+	Percent: EnumKeyCode
+	Ampersand: EnumKeyCode
+	Quote: EnumKeyCode
+	LeftParenthesis: EnumKeyCode
+	RightParenthesis: EnumKeyCode
+	Asterisk: EnumKeyCode
+	Plus: EnumKeyCode
+	Comma: EnumKeyCode
+	Minus: EnumKeyCode
+	Period: EnumKeyCode
+	Slash: EnumKeyCode
+	Zero: EnumKeyCode
+	One: EnumKeyCode
+	Two: EnumKeyCode
+	Three: EnumKeyCode
+	Four: EnumKeyCode
+	Five: EnumKeyCode
+	Six: EnumKeyCode
+	Seven: EnumKeyCode
+	Eight: EnumKeyCode
+	Nine: EnumKeyCode
+	Colon: EnumKeyCode
+	Semicolon: EnumKeyCode
+	LessThan: EnumKeyCode
+	Equals: EnumKeyCode
+	GreaterThan: EnumKeyCode
+	Question: EnumKeyCode
+	At: EnumKeyCode
+	LeftBracket: EnumKeyCode
+	BackSlash: EnumKeyCode
+	RightBracket: EnumKeyCode
+	Caret: EnumKeyCode
+	Underscore: EnumKeyCode
+	Backquote: EnumKeyCode
+	A: EnumKeyCode
+	B: EnumKeyCode
+	C: EnumKeyCode
+	D: EnumKeyCode
+	E: EnumKeyCode
+	F: EnumKeyCode
+	G: EnumKeyCode
+	H: EnumKeyCode
+	I: EnumKeyCode
+	J: EnumKeyCode
+	K: EnumKeyCode
+	L: EnumKeyCode
+	M: EnumKeyCode
+	N: EnumKeyCode
+	O: EnumKeyCode
+	P: EnumKeyCode
+	Q: EnumKeyCode
+	R: EnumKeyCode
+	S: EnumKeyCode
+	T: EnumKeyCode
+	U: EnumKeyCode
+	V: EnumKeyCode
+	W: EnumKeyCode
+	X: EnumKeyCode
+	Y: EnumKeyCode
+	Z: EnumKeyCode
+	LeftCurly: EnumKeyCode
+	Pipe: EnumKeyCode
+	RightCurly: EnumKeyCode
+	Tilde: EnumKeyCode
+	Delete: EnumKeyCode
+	KeypadZero: EnumKeyCode
+	KeypadOne: EnumKeyCode
+	KeypadTwo: EnumKeyCode
+	KeypadThree: EnumKeyCode
+	KeypadFour: EnumKeyCode
+	KeypadFive: EnumKeyCode
+	KeypadSix: EnumKeyCode
+	KeypadSeven: EnumKeyCode
+	KeypadEight: EnumKeyCode
+	KeypadNine: EnumKeyCode
+	KeypadPeriod: EnumKeyCode
+	KeypadDivide: EnumKeyCode
+	KeypadMultiply: EnumKeyCode
+	KeypadMinus: EnumKeyCode
+	KeypadPlus: EnumKeyCode
+	KeypadEnter: EnumKeyCode
+	KeypadEquals: EnumKeyCode
+	Up: EnumKeyCode
+	Down: EnumKeyCode
+	Right: EnumKeyCode
+	Left: EnumKeyCode
+	Insert: EnumKeyCode
+	Home: EnumKeyCode
+	End: EnumKeyCode
+	PageUp: EnumKeyCode
+	PageDown: EnumKeyCode
+	LeftShift: EnumKeyCode
+	RightShift: EnumKeyCode
+	LeftMeta: EnumKeyCode
+	RightMeta: EnumKeyCode
+	LeftAlt: EnumKeyCode
+	RightAlt: EnumKeyCode
+	LeftControl: EnumKeyCode
+	RightControl: EnumKeyCode
+	CapsLock: EnumKeyCode
+	NumLock: EnumKeyCode
+	ScrollLock: EnumKeyCode
+	LeftSuper: EnumKeyCode
+	RightSuper: EnumKeyCode
+	Mode: EnumKeyCode
+	Compose: EnumKeyCode
+	Help: EnumKeyCode
+	Print: EnumKeyCode
+	SysReq: EnumKeyCode
+	Break: EnumKeyCode
+	Menu: EnumKeyCode
+	Power: EnumKeyCode
+	Euro: EnumKeyCode
+	Undo: EnumKeyCode
+	F1: EnumKeyCode
+	F2: EnumKeyCode
+	F3: EnumKeyCode
+	F4: EnumKeyCode
+	F5: EnumKeyCode
+	F6: EnumKeyCode
+	F7: EnumKeyCode
+	F8: EnumKeyCode
+	F9: EnumKeyCode
+	F10: EnumKeyCode
+	F11: EnumKeyCode
+	F12: EnumKeyCode
+	F13: EnumKeyCode
+	F14: EnumKeyCode
+	F15: EnumKeyCode
+	World0: EnumKeyCode
+	World1: EnumKeyCode
+	World2: EnumKeyCode
+	World3: EnumKeyCode
+	World4: EnumKeyCode
+	World5: EnumKeyCode
+	World6: EnumKeyCode
+	World7: EnumKeyCode
+	World8: EnumKeyCode
+	World9: EnumKeyCode
+	World10: EnumKeyCode
+	World11: EnumKeyCode
+	World12: EnumKeyCode
+	World13: EnumKeyCode
+	World14: EnumKeyCode
+	World15: EnumKeyCode
+	World16: EnumKeyCode
+	World17: EnumKeyCode
+	World18: EnumKeyCode
+	World19: EnumKeyCode
+	World20: EnumKeyCode
+	World21: EnumKeyCode
+	World22: EnumKeyCode
+	World23: EnumKeyCode
+	World24: EnumKeyCode
+	World25: EnumKeyCode
+	World26: EnumKeyCode
+	World27: EnumKeyCode
+	World28: EnumKeyCode
+	World29: EnumKeyCode
+	World30: EnumKeyCode
+	World31: EnumKeyCode
+	World32: EnumKeyCode
+	World33: EnumKeyCode
+	World34: EnumKeyCode
+	World35: EnumKeyCode
+	World36: EnumKeyCode
+	World37: EnumKeyCode
+	World38: EnumKeyCode
+	World39: EnumKeyCode
+	World40: EnumKeyCode
+	World41: EnumKeyCode
+	World42: EnumKeyCode
+	World43: EnumKeyCode
+	World44: EnumKeyCode
+	World45: EnumKeyCode
+	World46: EnumKeyCode
+	World47: EnumKeyCode
+	World48: EnumKeyCode
+	World49: EnumKeyCode
+	World50: EnumKeyCode
+	World51: EnumKeyCode
+	World52: EnumKeyCode
+	World53: EnumKeyCode
+	World54: EnumKeyCode
+	World55: EnumKeyCode
+	World56: EnumKeyCode
+	World57: EnumKeyCode
+	World58: EnumKeyCode
+	World59: EnumKeyCode
+	World60: EnumKeyCode
+	World61: EnumKeyCode
+	World62: EnumKeyCode
+	World63: EnumKeyCode
+	World64: EnumKeyCode
+	World65: EnumKeyCode
+	World66: EnumKeyCode
+	World67: EnumKeyCode
+	World68: EnumKeyCode
+	World69: EnumKeyCode
+	World70: EnumKeyCode
+	World71: EnumKeyCode
+	World72: EnumKeyCode
+	World73: EnumKeyCode
+	World74: EnumKeyCode
+	World75: EnumKeyCode
+	World76: EnumKeyCode
+	World77: EnumKeyCode
+	World78: EnumKeyCode
+	World79: EnumKeyCode
+	World80: EnumKeyCode
+	World81: EnumKeyCode
+	World82: EnumKeyCode
+	World83: EnumKeyCode
+	World84: EnumKeyCode
+	World85: EnumKeyCode
+	World86: EnumKeyCode
+	World87: EnumKeyCode
+	World88: EnumKeyCode
+	World89: EnumKeyCode
+	World90: EnumKeyCode
+	World91: EnumKeyCode
+	World92: EnumKeyCode
+	World93: EnumKeyCode
+	World94: EnumKeyCode
+	World95: EnumKeyCode
+	ButtonX: EnumKeyCode
+	ButtonY: EnumKeyCode
+	ButtonA: EnumKeyCode
+	ButtonB: EnumKeyCode
+	ButtonR1: EnumKeyCode
+	ButtonL1: EnumKeyCode
+	ButtonR2: EnumKeyCode
+	ButtonL2: EnumKeyCode
+	ButtonR3: EnumKeyCode
+	ButtonL3: EnumKeyCode
+	ButtonStart: EnumKeyCode
+	ButtonSelect: EnumKeyCode
+	DPadLeft: EnumKeyCode
+	DPadRight: EnumKeyCode
+	DPadUp: EnumKeyCode
+	DPadDown: EnumKeyCode
+	Thumbstick1: EnumKeyCode
+	Thumbstick2: EnumKeyCode
+end
+declare class EnumKeyInterpolationMode extends EnumItem end
+declare class EnumKeyInterpolationModeT extends Enum
+	Constant: EnumKeyInterpolationMode
+	Linear: EnumKeyInterpolationMode
+	Cubic: EnumKeyInterpolationMode
+end
+declare class EnumKeywordFilterType extends EnumItem end
+declare class EnumKeywordFilterTypeT extends Enum
+	Include: EnumKeywordFilterType
+	Exclude: EnumKeywordFilterType
+end
+declare class EnumLSPMethodType extends EnumItem end
+declare class EnumLSPMethodTypeT extends Enum
+	Initialize: EnumLSPMethodType
+	Initialized: EnumLSPMethodType
+	CancelRequest: EnumLSPMethodType
+	TextDocument_didOpen: EnumLSPMethodType
+	TextDocument_didChange: EnumLSPMethodType
+	TextDocument_didClose: EnumLSPMethodType
+	TextDocument_foldingRange: EnumLSPMethodType
+	TextDocument_onTypeFormatting: EnumLSPMethodType
+	TextDocument_formatting: EnumLSPMethodType
+	TextDocument_rangeFormatting: EnumLSPMethodType
+	TextDocument_hover: EnumLSPMethodType
+	TextDocument_signatureHelp: EnumLSPMethodType
+	Workspace_DidChangeConfiguration: EnumLSPMethodType
+	ShutdownRequest: EnumLSPMethodType
+	Completion: EnumLSPMethodType
+	Declaration: EnumLSPMethodType
+	DocumentSymbols: EnumLSPMethodType
+	TextDocument_publishDiagnostics: EnumLSPMethodType
+	Window_showMessage: EnumLSPMethodType
+	Window_showMessageRequest: EnumLSPMethodType
+	Roblox_registerSyntaxCategories: EnumLSPMethodType
+	Roblox_signalQuiescence: EnumLSPMethodType
+	Roblox_syntaxHighlight: EnumLSPMethodType
+	Roblox_suggestExtraSelections: EnumLSPMethodType
+	Roblox_findExecutablePosition: EnumLSPMethodType
+	Roblox_findColor3: EnumLSPMethodType
+end
+declare class EnumLanguage extends EnumItem end
+declare class EnumLanguageT extends Enum
+	Default: EnumLanguage
+end
+declare class EnumLeftRight extends EnumItem end
+declare class EnumLeftRightT extends Enum
+	Left: EnumLeftRight
+	Center: EnumLeftRight
+	Right: EnumLeftRight
+end
+declare class EnumLevelOfDetailSetting extends EnumItem end
+declare class EnumLevelOfDetailSettingT extends Enum
+	High: EnumLevelOfDetailSetting
+	Medium: EnumLevelOfDetailSetting
+	Low: EnumLevelOfDetailSetting
+end
+declare class EnumLimb extends EnumItem end
+declare class EnumLimbT extends Enum
+	Head: EnumLimb
+	Torso: EnumLimb
+	LeftArm: EnumLimb
+	RightArm: EnumLimb
+	LeftLeg: EnumLimb
+	RightLeg: EnumLimb
+	Unknown: EnumLimb
+end
+declare class EnumLineJoinMode extends EnumItem end
+declare class EnumLineJoinModeT extends Enum
+	Round: EnumLineJoinMode
+	Bevel: EnumLineJoinMode
+	Miter: EnumLineJoinMode
+end
+declare class EnumListDisplayMode extends EnumItem end
+declare class EnumListDisplayModeT extends Enum
+	Horizontal: EnumListDisplayMode
+	Vertical: EnumListDisplayMode
+end
+declare class EnumListenerType extends EnumItem end
+declare class EnumListenerTypeT extends Enum
+	Camera: EnumListenerType
+	CFrame: EnumListenerType
+	ObjectPosition: EnumListenerType
+	ObjectCFrame: EnumListenerType
+end
+declare class EnumLoadCharacterLayeredClothing extends EnumItem end
+declare class EnumLoadCharacterLayeredClothingT extends Enum
+	Default: EnumLoadCharacterLayeredClothing
+	Disabled: EnumLoadCharacterLayeredClothing
+	Enabled: EnumLoadCharacterLayeredClothing
+end
+declare class EnumMaterial extends EnumItem end
+declare class EnumMaterialT extends Enum
+	Plastic: EnumMaterial
+	Wood: EnumMaterial
+	Slate: EnumMaterial
+	Concrete: EnumMaterial
+	CorrodedMetal: EnumMaterial
+	DiamondPlate: EnumMaterial
+	Foil: EnumMaterial
+	Grass: EnumMaterial
+	Ice: EnumMaterial
+	Marble: EnumMaterial
+	Granite: EnumMaterial
+	Brick: EnumMaterial
+	Pebble: EnumMaterial
+	Sand: EnumMaterial
+	Fabric: EnumMaterial
+	SmoothPlastic: EnumMaterial
+	Metal: EnumMaterial
+	WoodPlanks: EnumMaterial
+	Cobblestone: EnumMaterial
+	Air: EnumMaterial
+	Water: EnumMaterial
+	Rock: EnumMaterial
+	Glacier: EnumMaterial
+	Snow: EnumMaterial
+	Sandstone: EnumMaterial
+	Mud: EnumMaterial
+	Basalt: EnumMaterial
+	Ground: EnumMaterial
+	CrackedLava: EnumMaterial
+	Neon: EnumMaterial
+	Glass: EnumMaterial
+	Asphalt: EnumMaterial
+	LeafyGrass: EnumMaterial
+	Salt: EnumMaterial
+	Limestone: EnumMaterial
+	Pavement: EnumMaterial
+	ForceField: EnumMaterial
+end
+declare class EnumMaterialPattern extends EnumItem end
+declare class EnumMaterialPatternT extends Enum
+	Regular: EnumMaterialPattern
+	Organic: EnumMaterialPattern
+end
+declare class EnumMembershipType extends EnumItem end
+declare class EnumMembershipTypeT extends Enum
+	None: EnumMembershipType
+	BuildersClub: EnumMembershipType
+	TurboBuildersClub: EnumMembershipType
+	OutrageousBuildersClub: EnumMembershipType
+	Premium: EnumMembershipType
+end
+declare class EnumMeshPartDetailLevel extends EnumItem end
+declare class EnumMeshPartDetailLevelT extends Enum
+	DistanceBased: EnumMeshPartDetailLevel
+	Level01: EnumMeshPartDetailLevel
+	Level02: EnumMeshPartDetailLevel
+	Level03: EnumMeshPartDetailLevel
+	Level04: EnumMeshPartDetailLevel
+end
+declare class EnumMeshPartHeadsAndAccessories extends EnumItem end
+declare class EnumMeshPartHeadsAndAccessoriesT extends Enum
+	Default: EnumMeshPartHeadsAndAccessories
+	Disabled: EnumMeshPartHeadsAndAccessories
+	Enabled: EnumMeshPartHeadsAndAccessories
+end
+declare class EnumMeshScaleUnit extends EnumItem end
+declare class EnumMeshScaleUnitT extends Enum
+	Stud: EnumMeshScaleUnit
+	Meter: EnumMeshScaleUnit
+	CM: EnumMeshScaleUnit
+	MM: EnumMeshScaleUnit
+	Foot: EnumMeshScaleUnit
+	Inch: EnumMeshScaleUnit
+end
+declare class EnumMeshType extends EnumItem end
+declare class EnumMeshTypeT extends Enum
+	Head: EnumMeshType
+	Torso: EnumMeshType
+	Wedge: EnumMeshType
+	Prism: EnumMeshType
+	Pyramid: EnumMeshType
+	ParallelRamp: EnumMeshType
+	RightAngleRamp: EnumMeshType
+	CornerWedge: EnumMeshType
+	Brick: EnumMeshType
+	Sphere: EnumMeshType
+	Cylinder: EnumMeshType
+	FileMesh: EnumMeshType
+end
+declare class EnumMessageType extends EnumItem end
+declare class EnumMessageTypeT extends Enum
+	MessageOutput: EnumMessageType
+	MessageInfo: EnumMessageType
+	MessageWarning: EnumMessageType
+	MessageError: EnumMessageType
+end
+declare class EnumModelLevelOfDetail extends EnumItem end
+declare class EnumModelLevelOfDetailT extends Enum
+	Automatic: EnumModelLevelOfDetail
+	StreamingMesh: EnumModelLevelOfDetail
+	Disabled: EnumModelLevelOfDetail
+end
+declare class EnumModifierKey extends EnumItem end
+declare class EnumModifierKeyT extends Enum
+	Alt: EnumModifierKey
+	Ctrl: EnumModifierKey
+	Meta: EnumModifierKey
+	Shift: EnumModifierKey
+end
+declare class EnumMouseBehavior extends EnumItem end
+declare class EnumMouseBehaviorT extends Enum
+	Default: EnumMouseBehavior
+	LockCenter: EnumMouseBehavior
+	LockCurrentPosition: EnumMouseBehavior
+end
+declare class EnumMoveState extends EnumItem end
+declare class EnumMoveStateT extends Enum
+	Stopped: EnumMoveState
+	Coasting: EnumMoveState
+	Pushing: EnumMoveState
+	Stopping: EnumMoveState
+	AirFree: EnumMoveState
+end
+declare class EnumNameOcclusion extends EnumItem end
+declare class EnumNameOcclusionT extends Enum
+	OccludeAll: EnumNameOcclusion
+	EnemyOcclusion: EnumNameOcclusion
+	NoOcclusion: EnumNameOcclusion
+end
+declare class EnumNetworkOwnership extends EnumItem end
+declare class EnumNetworkOwnershipT extends Enum
+	Automatic: EnumNetworkOwnership
+	Manual: EnumNetworkOwnership
+	OnContact: EnumNetworkOwnership
+end
+declare class EnumNewAnimationRuntimeSetting extends EnumItem end
+declare class EnumNewAnimationRuntimeSettingT extends Enum
+	Default: EnumNewAnimationRuntimeSetting
+	Disabled: EnumNewAnimationRuntimeSetting
+	Enabled: EnumNewAnimationRuntimeSetting
+end
+declare class EnumNormalId extends EnumItem end
+declare class EnumNormalIdT extends Enum
+	Top: EnumNormalId
+	Bottom: EnumNormalId
+	Back: EnumNormalId
+	Front: EnumNormalId
+	Right: EnumNormalId
+	Left: EnumNormalId
+end
+declare class EnumOrientationAlignmentMode extends EnumItem end
+declare class EnumOrientationAlignmentModeT extends Enum
+	OneAttachment: EnumOrientationAlignmentMode
+	TwoAttachment: EnumOrientationAlignmentMode
+end
+declare class EnumOutfitSource extends EnumItem end
+declare class EnumOutfitSourceT extends Enum
+	All: EnumOutfitSource
+	Created: EnumOutfitSource
+	Purchased: EnumOutfitSource
+end
+declare class EnumOutputLayoutMode extends EnumItem end
+declare class EnumOutputLayoutModeT extends Enum
+	Horizontal: EnumOutputLayoutMode
+	Vertical: EnumOutputLayoutMode
+end
+declare class EnumOverrideMouseIconBehavior extends EnumItem end
+declare class EnumOverrideMouseIconBehaviorT extends Enum
+	None: EnumOverrideMouseIconBehavior
+	ForceShow: EnumOverrideMouseIconBehavior
+	ForceHide: EnumOverrideMouseIconBehavior
+end
+declare class EnumPackagePermission extends EnumItem end
+declare class EnumPackagePermissionT extends Enum
+	None: EnumPackagePermission
+	NoAccess: EnumPackagePermission
+	Revoked: EnumPackagePermission
+	UseView: EnumPackagePermission
+	Edit: EnumPackagePermission
+	Own: EnumPackagePermission
+end
+declare class EnumPartType extends EnumItem end
+declare class EnumPartTypeT extends Enum
+	Ball: EnumPartType
+	Block: EnumPartType
+	Cylinder: EnumPartType
+end
+declare class EnumParticleEmitterShape extends EnumItem end
+declare class EnumParticleEmitterShapeT extends Enum
+	Box: EnumParticleEmitterShape
+	Sphere: EnumParticleEmitterShape
+	Cylinder: EnumParticleEmitterShape
+	Disc: EnumParticleEmitterShape
+end
+declare class EnumParticleEmitterShapeInOut extends EnumItem end
+declare class EnumParticleEmitterShapeInOutT extends Enum
+	Outward: EnumParticleEmitterShapeInOut
+	Inward: EnumParticleEmitterShapeInOut
+	InAndOut: EnumParticleEmitterShapeInOut
+end
+declare class EnumParticleEmitterShapeStyle extends EnumItem end
+declare class EnumParticleEmitterShapeStyleT extends Enum
+	Volume: EnumParticleEmitterShapeStyle
+	Surface: EnumParticleEmitterShapeStyle
+end
+declare class EnumParticleFlipbookLayout extends EnumItem end
+declare class EnumParticleFlipbookLayoutT extends Enum
+	None: EnumParticleFlipbookLayout
+	TwoByTwo: EnumParticleFlipbookLayout
+	FourByFour: EnumParticleFlipbookLayout
+	EightByEight: EnumParticleFlipbookLayout
+end
+declare class EnumParticleFlipbookMode extends EnumItem end
+declare class EnumParticleFlipbookModeT extends Enum
+	Loop: EnumParticleFlipbookMode
+	OneShot: EnumParticleFlipbookMode
+	PingPong: EnumParticleFlipbookMode
+	Random: EnumParticleFlipbookMode
+end
+declare class EnumParticleOrientation extends EnumItem end
+declare class EnumParticleOrientationT extends Enum
+	FacingCamera: EnumParticleOrientation
+	FacingCameraWorldUp: EnumParticleOrientation
+	VelocityParallel: EnumParticleOrientation
+	VelocityPerpendicular: EnumParticleOrientation
+end
+declare class EnumPathStatus extends EnumItem end
+declare class EnumPathStatusT extends Enum
+	Success: EnumPathStatus
+	ClosestNoPath: EnumPathStatus
+	ClosestOutOfRange: EnumPathStatus
+	FailStartNotEmpty: EnumPathStatus
+	FailFinishNotEmpty: EnumPathStatus
+	NoPath: EnumPathStatus
+end
+declare class EnumPathWaypointAction extends EnumItem end
+declare class EnumPathWaypointActionT extends Enum
+	Walk: EnumPathWaypointAction
+	Jump: EnumPathWaypointAction
+	Custom: EnumPathWaypointAction
+end
+declare class EnumPermissionLevelShown extends EnumItem end
+declare class EnumPermissionLevelShownT extends Enum
+	Game: EnumPermissionLevelShown
+	RobloxGame: EnumPermissionLevelShown
+	RobloxScript: EnumPermissionLevelShown
+	Studio: EnumPermissionLevelShown
+	Roblox: EnumPermissionLevelShown
+end
+declare class EnumPhysicsSimulationRate extends EnumItem end
+declare class EnumPhysicsSimulationRateT extends Enum
+	Fixed240Hz: EnumPhysicsSimulationRate
+	Fixed120Hz: EnumPhysicsSimulationRate
+	Fixed60Hz: EnumPhysicsSimulationRate
+end
+declare class EnumPhysicsSteppingMethod extends EnumItem end
+declare class EnumPhysicsSteppingMethodT extends Enum
+	Default: EnumPhysicsSteppingMethod
+	Fixed: EnumPhysicsSteppingMethod
+	Adaptive: EnumPhysicsSteppingMethod
+end
+declare class EnumPlatform extends EnumItem end
+declare class EnumPlatformT extends Enum
+	Windows: EnumPlatform
+	OSX: EnumPlatform
+	IOS: EnumPlatform
+	Android: EnumPlatform
+	XBoxOne: EnumPlatform
+	PS4: EnumPlatform
+	PS3: EnumPlatform
+	XBox360: EnumPlatform
+	WiiU: EnumPlatform
+	NX: EnumPlatform
+	Ouya: EnumPlatform
+	AndroidTV: EnumPlatform
+	Chromecast: EnumPlatform
+	Linux: EnumPlatform
+	SteamOS: EnumPlatform
+	WebOS: EnumPlatform
+	DOS: EnumPlatform
+	BeOS: EnumPlatform
+	UWP: EnumPlatform
+	None: EnumPlatform
+end
+declare class EnumPlaybackState extends EnumItem end
+declare class EnumPlaybackStateT extends Enum
+	Begin: EnumPlaybackState
+	Delayed: EnumPlaybackState
+	Playing: EnumPlaybackState
+	Paused: EnumPlaybackState
+	Completed: EnumPlaybackState
+	Cancelled: EnumPlaybackState
+end
+declare class EnumPlayerActions extends EnumItem end
+declare class EnumPlayerActionsT extends Enum
+	CharacterForward: EnumPlayerActions
+	CharacterBackward: EnumPlayerActions
+	CharacterLeft: EnumPlayerActions
+	CharacterRight: EnumPlayerActions
+	CharacterJump: EnumPlayerActions
+end
+declare class EnumPlayerChatType extends EnumItem end
+declare class EnumPlayerChatTypeT extends Enum
+	All: EnumPlayerChatType
+	Team: EnumPlayerChatType
+	Whisper: EnumPlayerChatType
+end
+declare class EnumPoseEasingDirection extends EnumItem end
+declare class EnumPoseEasingDirectionT extends Enum
+	Out: EnumPoseEasingDirection
+	InOut: EnumPoseEasingDirection
+	In: EnumPoseEasingDirection
+end
+declare class EnumPoseEasingStyle extends EnumItem end
+declare class EnumPoseEasingStyleT extends Enum
+	Linear: EnumPoseEasingStyle
+	Constant: EnumPoseEasingStyle
+	Elastic: EnumPoseEasingStyle
+	Cubic: EnumPoseEasingStyle
+	Bounce: EnumPoseEasingStyle
+end
+declare class EnumPositionAlignmentMode extends EnumItem end
+declare class EnumPositionAlignmentModeT extends Enum
+	OneAttachment: EnumPositionAlignmentMode
+	TwoAttachment: EnumPositionAlignmentMode
+end
+declare class EnumPrivilegeType extends EnumItem end
+declare class EnumPrivilegeTypeT extends Enum
+	Owner: EnumPrivilegeType
+	Admin: EnumPrivilegeType
+	Member: EnumPrivilegeType
+	Visitor: EnumPrivilegeType
+	Banned: EnumPrivilegeType
+end
+declare class EnumProductLocationRestriction extends EnumItem end
+declare class EnumProductLocationRestrictionT extends Enum
+	AvatarShop: EnumProductLocationRestriction
+	AllowedGames: EnumProductLocationRestriction
+	AllGames: EnumProductLocationRestriction
+end
+declare class EnumProductPurchaseDecision extends EnumItem end
+declare class EnumProductPurchaseDecisionT extends Enum
+	NotProcessedYet: EnumProductPurchaseDecision
+	PurchaseGranted: EnumProductPurchaseDecision
+end
+declare class EnumPropertyStatus extends EnumItem end
+declare class EnumPropertyStatusT extends Enum
+	Ok: EnumPropertyStatus
+	Warning: EnumPropertyStatus
+	Error: EnumPropertyStatus
+end
+declare class EnumProximityPromptExclusivity extends EnumItem end
+declare class EnumProximityPromptExclusivityT extends Enum
+	OnePerButton: EnumProximityPromptExclusivity
+	OneGlobally: EnumProximityPromptExclusivity
+	AlwaysShow: EnumProximityPromptExclusivity
+end
+declare class EnumProximityPromptInputType extends EnumItem end
+declare class EnumProximityPromptInputTypeT extends Enum
+	Keyboard: EnumProximityPromptInputType
+	Gamepad: EnumProximityPromptInputType
+	Touch: EnumProximityPromptInputType
+end
+declare class EnumProximityPromptStyle extends EnumItem end
+declare class EnumProximityPromptStyleT extends Enum
+	Default: EnumProximityPromptStyle
+	Custom: EnumProximityPromptStyle
+end
+declare class EnumQualityLevel extends EnumItem end
+declare class EnumQualityLevelT extends Enum
+	Automatic: EnumQualityLevel
+	Level01: EnumQualityLevel
+	Level02: EnumQualityLevel
+	Level03: EnumQualityLevel
+	Level04: EnumQualityLevel
+	Level05: EnumQualityLevel
+	Level06: EnumQualityLevel
+	Level07: EnumQualityLevel
+	Level08: EnumQualityLevel
+	Level09: EnumQualityLevel
+	Level10: EnumQualityLevel
+	Level11: EnumQualityLevel
+	Level12: EnumQualityLevel
+	Level13: EnumQualityLevel
+	Level14: EnumQualityLevel
+	Level15: EnumQualityLevel
+	Level16: EnumQualityLevel
+	Level17: EnumQualityLevel
+	Level18: EnumQualityLevel
+	Level19: EnumQualityLevel
+	Level20: EnumQualityLevel
+	Level21: EnumQualityLevel
+end
+declare class EnumR15CollisionType extends EnumItem end
+declare class EnumR15CollisionTypeT extends Enum
+	OuterBox: EnumR15CollisionType
+	InnerBox: EnumR15CollisionType
+end
+declare class EnumRaycastFilterType extends EnumItem end
+declare class EnumRaycastFilterTypeT extends Enum
+	Blacklist: EnumRaycastFilterType
+	Whitelist: EnumRaycastFilterType
+end
+declare class EnumRenderFidelity extends EnumItem end
+declare class EnumRenderFidelityT extends Enum
+	Automatic: EnumRenderFidelity
+	Precise: EnumRenderFidelity
+	Performance: EnumRenderFidelity
+end
+declare class EnumRenderPriority extends EnumItem end
+declare class EnumRenderPriorityT extends Enum
+	First: EnumRenderPriority
+	Input: EnumRenderPriority
+	Camera: EnumRenderPriority
+	Character: EnumRenderPriority
+	Last: EnumRenderPriority
+end
+declare class EnumRenderingTestComparisonMethod extends EnumItem end
+declare class EnumRenderingTestComparisonMethodT extends Enum
+	psnr: EnumRenderingTestComparisonMethod
+	diff: EnumRenderingTestComparisonMethod
+end
+declare class EnumReplicateInstanceDestroySetting extends EnumItem end
+declare class EnumReplicateInstanceDestroySettingT extends Enum
+	Default: EnumReplicateInstanceDestroySetting
+	Disabled: EnumReplicateInstanceDestroySetting
+	Enabled: EnumReplicateInstanceDestroySetting
+end
+declare class EnumResamplerMode extends EnumItem end
+declare class EnumResamplerModeT extends Enum
+	Default: EnumResamplerMode
+	Pixelated: EnumResamplerMode
+end
+declare class EnumReturnKeyType extends EnumItem end
+declare class EnumReturnKeyTypeT extends Enum
+	Default: EnumReturnKeyType
+	Done: EnumReturnKeyType
+	Go: EnumReturnKeyType
+	Next: EnumReturnKeyType
+	Search: EnumReturnKeyType
+	Send: EnumReturnKeyType
+end
+declare class EnumReverbType extends EnumItem end
+declare class EnumReverbTypeT extends Enum
+	NoReverb: EnumReverbType
+	GenericReverb: EnumReverbType
+	PaddedCell: EnumReverbType
+	Room: EnumReverbType
+	Bathroom: EnumReverbType
+	LivingRoom: EnumReverbType
+	StoneRoom: EnumReverbType
+	Auditorium: EnumReverbType
+	ConcertHall: EnumReverbType
+	Cave: EnumReverbType
+	Arena: EnumReverbType
+	Hangar: EnumReverbType
+	CarpettedHallway: EnumReverbType
+	Hallway: EnumReverbType
+	StoneCorridor: EnumReverbType
+	Alley: EnumReverbType
+	Forest: EnumReverbType
+	City: EnumReverbType
+	Mountains: EnumReverbType
+	Quarry: EnumReverbType
+	Plain: EnumReverbType
+	ParkingLot: EnumReverbType
+	SewerPipe: EnumReverbType
+	UnderWater: EnumReverbType
+end
+declare class EnumRibbonTool extends EnumItem end
+declare class EnumRibbonToolT extends Enum
+	Select: EnumRibbonTool
+	Scale: EnumRibbonTool
+	Rotate: EnumRibbonTool
+	Move: EnumRibbonTool
+	Transform: EnumRibbonTool
+	ColorPicker: EnumRibbonTool
+	MaterialPicker: EnumRibbonTool
+	Group: EnumRibbonTool
+	Ungroup: EnumRibbonTool
+	None: EnumRibbonTool
+end
+declare class EnumRigType extends EnumItem end
+declare class EnumRigTypeT extends Enum
+	R15: EnumRigType
+	Rthro: EnumRigType
+	RthroNarrow: EnumRigType
+	Custom: EnumRigType
+	None: EnumRigType
+end
+declare class EnumRollOffMode extends EnumItem end
+declare class EnumRollOffModeT extends Enum
+	Inverse: EnumRollOffMode
+	Linear: EnumRollOffMode
+	InverseTapered: EnumRollOffMode
+	LinearSquare: EnumRollOffMode
+end
+declare class EnumRotationOrder extends EnumItem end
+declare class EnumRotationOrderT extends Enum
+	XYZ: EnumRotationOrder
+	XZY: EnumRotationOrder
+	YZX: EnumRotationOrder
+	YXZ: EnumRotationOrder
+	ZXY: EnumRotationOrder
+	ZYX: EnumRotationOrder
+end
+declare class EnumRotationType extends EnumItem end
+declare class EnumRotationTypeT extends Enum
+	MovementRelative: EnumRotationType
+	CameraRelative: EnumRotationType
+end
+declare class EnumRuntimeUndoBehavior extends EnumItem end
+declare class EnumRuntimeUndoBehaviorT extends Enum
+	Aggregate: EnumRuntimeUndoBehavior
+	Snapshot: EnumRuntimeUndoBehavior
+	Hybrid: EnumRuntimeUndoBehavior
+end
+declare class EnumSaveFilter extends EnumItem end
+declare class EnumSaveFilterT extends Enum
+	SaveAll: EnumSaveFilter
+	SaveWorld: EnumSaveFilter
+	SaveGame: EnumSaveFilter
+end
+declare class EnumSavedQualitySetting extends EnumItem end
+declare class EnumSavedQualitySettingT extends Enum
+	Automatic: EnumSavedQualitySetting
+	QualityLevel1: EnumSavedQualitySetting
+	QualityLevel2: EnumSavedQualitySetting
+	QualityLevel3: EnumSavedQualitySetting
+	QualityLevel4: EnumSavedQualitySetting
+	QualityLevel5: EnumSavedQualitySetting
+	QualityLevel6: EnumSavedQualitySetting
+	QualityLevel7: EnumSavedQualitySetting
+	QualityLevel8: EnumSavedQualitySetting
+	QualityLevel9: EnumSavedQualitySetting
+	QualityLevel10: EnumSavedQualitySetting
+end
+declare class EnumScaleType extends EnumItem end
+declare class EnumScaleTypeT extends Enum
+	Stretch: EnumScaleType
+	Slice: EnumScaleType
+	Tile: EnumScaleType
+	Fit: EnumScaleType
+	Crop: EnumScaleType
+end
+declare class EnumScreenOrientation extends EnumItem end
+declare class EnumScreenOrientationT extends Enum
+	LandscapeLeft: EnumScreenOrientation
+	LandscapeRight: EnumScreenOrientation
+	LandscapeSensor: EnumScreenOrientation
+	Portrait: EnumScreenOrientation
+	Sensor: EnumScreenOrientation
+end
+declare class EnumScrollBarInset extends EnumItem end
+declare class EnumScrollBarInsetT extends Enum
+	None: EnumScrollBarInset
+	ScrollBar: EnumScrollBarInset
+	Always: EnumScrollBarInset
+end
+declare class EnumScrollingDirection extends EnumItem end
+declare class EnumScrollingDirectionT extends Enum
+	X: EnumScrollingDirection
+	Y: EnumScrollingDirection
+	XY: EnumScrollingDirection
+end
+declare class EnumSelectionBehavior extends EnumItem end
+declare class EnumSelectionBehaviorT extends Enum
+	Escape: EnumSelectionBehavior
+	Stop: EnumSelectionBehavior
+end
+declare class EnumServerAudioBehavior extends EnumItem end
+declare class EnumServerAudioBehaviorT extends Enum
+	Enabled: EnumServerAudioBehavior
+	Muted: EnumServerAudioBehavior
+	OnlineGame: EnumServerAudioBehavior
+end
+declare class EnumSignalBehavior extends EnumItem end
+declare class EnumSignalBehaviorT extends Enum
+	Default: EnumSignalBehavior
+	Immediate: EnumSignalBehavior
+	Deferred: EnumSignalBehavior
+	AncestryDeferred: EnumSignalBehavior
+end
+declare class EnumSizeConstraint extends EnumItem end
+declare class EnumSizeConstraintT extends Enum
+	RelativeXY: EnumSizeConstraint
+	RelativeXX: EnumSizeConstraint
+	RelativeYY: EnumSizeConstraint
+end
+declare class EnumSortDirection extends EnumItem end
+declare class EnumSortDirectionT extends Enum
+	Ascending: EnumSortDirection
+	Descending: EnumSortDirection
+end
+declare class EnumSortOrder extends EnumItem end
+declare class EnumSortOrderT extends Enum
+	LayoutOrder: EnumSortOrder
+	Name: EnumSortOrder
+	Custom: EnumSortOrder
+end
+declare class EnumSpecialKey extends EnumItem end
+declare class EnumSpecialKeyT extends Enum
+	Insert: EnumSpecialKey
+	Home: EnumSpecialKey
+	End: EnumSpecialKey
+	PageUp: EnumSpecialKey
+	PageDown: EnumSpecialKey
+	ChatHotkey: EnumSpecialKey
+end
+declare class EnumStartCorner extends EnumItem end
+declare class EnumStartCornerT extends Enum
+	TopLeft: EnumStartCorner
+	TopRight: EnumStartCorner
+	BottomLeft: EnumStartCorner
+	BottomRight: EnumStartCorner
+end
+declare class EnumStatus extends EnumItem end
+declare class EnumStatusT extends Enum
+	Poison: EnumStatus
+	Confusion: EnumStatus
+end
+declare class EnumStreamOutBehavior extends EnumItem end
+declare class EnumStreamOutBehaviorT extends Enum
+	Default: EnumStreamOutBehavior
+	LowMemory: EnumStreamOutBehavior
+	Opportunistic: EnumStreamOutBehavior
+end
+declare class EnumStreamingPauseMode extends EnumItem end
+declare class EnumStreamingPauseModeT extends Enum
+	Default: EnumStreamingPauseMode
+	Disabled: EnumStreamingPauseMode
+	ClientPhysicsPause: EnumStreamingPauseMode
+end
+declare class EnumStudioCloseMode extends EnumItem end
+declare class EnumStudioCloseModeT extends Enum
+	None: EnumStudioCloseMode
+	CloseStudio: EnumStudioCloseMode
+	CloseDoc: EnumStudioCloseMode
+end
+declare class EnumStudioDataModelType extends EnumItem end
+declare class EnumStudioDataModelTypeT extends Enum
+	Edit: EnumStudioDataModelType
+	PlayClient: EnumStudioDataModelType
+	PlayServer: EnumStudioDataModelType
+	Standalone: EnumStudioDataModelType
+	None: EnumStudioDataModelType
+end
+declare class EnumStudioScriptEditorColorCategories extends EnumItem end
+declare class EnumStudioScriptEditorColorCategoriesT extends Enum
+	Default: EnumStudioScriptEditorColorCategories
+	Operator: EnumStudioScriptEditorColorCategories
+	Number: EnumStudioScriptEditorColorCategories
+	String: EnumStudioScriptEditorColorCategories
+	Comment: EnumStudioScriptEditorColorCategories
+	Keyword: EnumStudioScriptEditorColorCategories
+	Builtin: EnumStudioScriptEditorColorCategories
+	Method: EnumStudioScriptEditorColorCategories
+	Property: EnumStudioScriptEditorColorCategories
+	Nil: EnumStudioScriptEditorColorCategories
+	Bool: EnumStudioScriptEditorColorCategories
+	Function: EnumStudioScriptEditorColorCategories
+	Local: EnumStudioScriptEditorColorCategories
+	Self: EnumStudioScriptEditorColorCategories
+	LuauKeyword: EnumStudioScriptEditorColorCategories
+	FunctionName: EnumStudioScriptEditorColorCategories
+	TODO: EnumStudioScriptEditorColorCategories
+	Background: EnumStudioScriptEditorColorCategories
+	SelectionText: EnumStudioScriptEditorColorCategories
+	SelectionBackground: EnumStudioScriptEditorColorCategories
+	FindSelectionBackground: EnumStudioScriptEditorColorCategories
+	MatchingWordBackground: EnumStudioScriptEditorColorCategories
+	Warning: EnumStudioScriptEditorColorCategories
+	Error: EnumStudioScriptEditorColorCategories
+	Whitespace: EnumStudioScriptEditorColorCategories
+	ActiveLine: EnumStudioScriptEditorColorCategories
+	DebuggerCurrentLine: EnumStudioScriptEditorColorCategories
+	DebuggerErrorLine: EnumStudioScriptEditorColorCategories
+	Ruler: EnumStudioScriptEditorColorCategories
+	Bracket: EnumStudioScriptEditorColorCategories
+	MenuPrimaryText: EnumStudioScriptEditorColorCategories
+	MenuSecondaryText: EnumStudioScriptEditorColorCategories
+	MenuSelectedText: EnumStudioScriptEditorColorCategories
+	MenuBackground: EnumStudioScriptEditorColorCategories
+	MenuSelectedBackground: EnumStudioScriptEditorColorCategories
+	MenuScrollbarBackground: EnumStudioScriptEditorColorCategories
+	MenuScrollbarHandle: EnumStudioScriptEditorColorCategories
+	MenuBorder: EnumStudioScriptEditorColorCategories
+	DocViewCodeBackground: EnumStudioScriptEditorColorCategories
+end
+declare class EnumStudioScriptEditorColorPresets extends EnumItem end
+declare class EnumStudioScriptEditorColorPresetsT extends Enum
+	RobloxDefault: EnumStudioScriptEditorColorPresets
+	Extra1: EnumStudioScriptEditorColorPresets
+	Extra2: EnumStudioScriptEditorColorPresets
+	Custom: EnumStudioScriptEditorColorPresets
+end
+declare class EnumStudioStyleGuideColor extends EnumItem end
+declare class EnumStudioStyleGuideColorT extends Enum
+	MainBackground: EnumStudioStyleGuideColor
+	Titlebar: EnumStudioStyleGuideColor
+	Dropdown: EnumStudioStyleGuideColor
+	Tooltip: EnumStudioStyleGuideColor
+	Notification: EnumStudioStyleGuideColor
+	ScrollBar: EnumStudioStyleGuideColor
+	ScrollBarBackground: EnumStudioStyleGuideColor
+	TabBar: EnumStudioStyleGuideColor
+	Tab: EnumStudioStyleGuideColor
+	FilterButtonDefault: EnumStudioStyleGuideColor
+	FilterButtonHover: EnumStudioStyleGuideColor
+	FilterButtonChecked: EnumStudioStyleGuideColor
+	FilterButtonAccent: EnumStudioStyleGuideColor
+	FilterButtonBorder: EnumStudioStyleGuideColor
+	FilterButtonBorderAlt: EnumStudioStyleGuideColor
+	RibbonTab: EnumStudioStyleGuideColor
+	RibbonTabTopBar: EnumStudioStyleGuideColor
+	Button: EnumStudioStyleGuideColor
+	MainButton: EnumStudioStyleGuideColor
+	RibbonButton: EnumStudioStyleGuideColor
+	ViewPortBackground: EnumStudioStyleGuideColor
+	InputFieldBackground: EnumStudioStyleGuideColor
+	Item: EnumStudioStyleGuideColor
+	TableItem: EnumStudioStyleGuideColor
+	CategoryItem: EnumStudioStyleGuideColor
+	GameSettingsTableItem: EnumStudioStyleGuideColor
+	GameSettingsTooltip: EnumStudioStyleGuideColor
+	EmulatorBar: EnumStudioStyleGuideColor
+	EmulatorDropDown: EnumStudioStyleGuideColor
+	ColorPickerFrame: EnumStudioStyleGuideColor
+	CurrentMarker: EnumStudioStyleGuideColor
+	Border: EnumStudioStyleGuideColor
+	DropShadow: EnumStudioStyleGuideColor
+	Shadow: EnumStudioStyleGuideColor
+	Light: EnumStudioStyleGuideColor
+	Dark: EnumStudioStyleGuideColor
+	Mid: EnumStudioStyleGuideColor
+	MainText: EnumStudioStyleGuideColor
+	SubText: EnumStudioStyleGuideColor
+	TitlebarText: EnumStudioStyleGuideColor
+	BrightText: EnumStudioStyleGuideColor
+	DimmedText: EnumStudioStyleGuideColor
+	LinkText: EnumStudioStyleGuideColor
+	WarningText: EnumStudioStyleGuideColor
+	ErrorText: EnumStudioStyleGuideColor
+	InfoText: EnumStudioStyleGuideColor
+	SensitiveText: EnumStudioStyleGuideColor
+	ScriptSideWidget: EnumStudioStyleGuideColor
+	ScriptBackground: EnumStudioStyleGuideColor
+	ScriptText: EnumStudioStyleGuideColor
+	ScriptSelectionText: EnumStudioStyleGuideColor
+	ScriptSelectionBackground: EnumStudioStyleGuideColor
+	ScriptFindSelectionBackground: EnumStudioStyleGuideColor
+	ScriptMatchingWordSelectionBackground: EnumStudioStyleGuideColor
+	ScriptOperator: EnumStudioStyleGuideColor
+	ScriptNumber: EnumStudioStyleGuideColor
+	ScriptString: EnumStudioStyleGuideColor
+	ScriptComment: EnumStudioStyleGuideColor
+	ScriptKeyword: EnumStudioStyleGuideColor
+	ScriptBuiltInFunction: EnumStudioStyleGuideColor
+	ScriptWarning: EnumStudioStyleGuideColor
+	ScriptError: EnumStudioStyleGuideColor
+	ScriptWhitespace: EnumStudioStyleGuideColor
+	ScriptRuler: EnumStudioStyleGuideColor
+	DocViewCodeBackground: EnumStudioStyleGuideColor
+	DebuggerCurrentLine: EnumStudioStyleGuideColor
+	DebuggerErrorLine: EnumStudioStyleGuideColor
+	ScriptEditorCurrentLine: EnumStudioStyleGuideColor
+	DiffFilePathText: EnumStudioStyleGuideColor
+	DiffTextHunkInfo: EnumStudioStyleGuideColor
+	DiffTextNoChange: EnumStudioStyleGuideColor
+	DiffTextAddition: EnumStudioStyleGuideColor
+	DiffTextDeletion: EnumStudioStyleGuideColor
+	DiffTextSeparatorBackground: EnumStudioStyleGuideColor
+	DiffTextNoChangeBackground: EnumStudioStyleGuideColor
+	DiffTextAdditionBackground: EnumStudioStyleGuideColor
+	DiffTextDeletionBackground: EnumStudioStyleGuideColor
+	DiffLineNum: EnumStudioStyleGuideColor
+	DiffLineNumSeparatorBackground: EnumStudioStyleGuideColor
+	DiffLineNumNoChangeBackground: EnumStudioStyleGuideColor
+	DiffLineNumAdditionBackground: EnumStudioStyleGuideColor
+	DiffLineNumDeletionBackground: EnumStudioStyleGuideColor
+	DiffFilePathBackground: EnumStudioStyleGuideColor
+	DiffFilePathBorder: EnumStudioStyleGuideColor
+	ChatIncomingBgColor: EnumStudioStyleGuideColor
+	ChatIncomingTextColor: EnumStudioStyleGuideColor
+	ChatOutgoingBgColor: EnumStudioStyleGuideColor
+	ChatOutgoingTextColor: EnumStudioStyleGuideColor
+	ChatModeratedMessageColor: EnumStudioStyleGuideColor
+	Separator: EnumStudioStyleGuideColor
+	ButtonBorder: EnumStudioStyleGuideColor
+	ButtonText: EnumStudioStyleGuideColor
+	InputFieldBorder: EnumStudioStyleGuideColor
+	CheckedFieldBackground: EnumStudioStyleGuideColor
+	CheckedFieldBorder: EnumStudioStyleGuideColor
+	CheckedFieldIndicator: EnumStudioStyleGuideColor
+	HeaderSection: EnumStudioStyleGuideColor
+	Midlight: EnumStudioStyleGuideColor
+	StatusBar: EnumStudioStyleGuideColor
+	DialogButton: EnumStudioStyleGuideColor
+	DialogButtonText: EnumStudioStyleGuideColor
+	DialogButtonBorder: EnumStudioStyleGuideColor
+	DialogMainButton: EnumStudioStyleGuideColor
+	DialogMainButtonText: EnumStudioStyleGuideColor
+	InfoBarWarningBackground: EnumStudioStyleGuideColor
+	InfoBarWarningText: EnumStudioStyleGuideColor
+	ScriptMethod: EnumStudioStyleGuideColor
+	ScriptProperty: EnumStudioStyleGuideColor
+	ScriptNil: EnumStudioStyleGuideColor
+	ScriptBool: EnumStudioStyleGuideColor
+	ScriptFunction: EnumStudioStyleGuideColor
+	ScriptLocal: EnumStudioStyleGuideColor
+	ScriptSelf: EnumStudioStyleGuideColor
+	ScriptLuauKeyword: EnumStudioStyleGuideColor
+	ScriptFunctionName: EnumStudioStyleGuideColor
+	ScriptTodo: EnumStudioStyleGuideColor
+	ScriptBracket: EnumStudioStyleGuideColor
+	AttributeCog: EnumStudioStyleGuideColor
+end
+declare class EnumStudioStyleGuideModifier extends EnumItem end
+declare class EnumStudioStyleGuideModifierT extends Enum
+	Default: EnumStudioStyleGuideModifier
+	Selected: EnumStudioStyleGuideModifier
+	Pressed: EnumStudioStyleGuideModifier
+	Disabled: EnumStudioStyleGuideModifier
+	Hover: EnumStudioStyleGuideModifier
+end
+declare class EnumStyle extends EnumItem end
+declare class EnumStyleT extends Enum
+	AlternatingSupports: EnumStyle
+	BridgeStyleSupports: EnumStyle
+	NoSupports: EnumStyle
+end
+declare class EnumSurfaceConstraint extends EnumItem end
+declare class EnumSurfaceConstraintT extends Enum
+	None: EnumSurfaceConstraint
+	Hinge: EnumSurfaceConstraint
+	SteppingMotor: EnumSurfaceConstraint
+	Motor: EnumSurfaceConstraint
+end
+declare class EnumSurfaceGuiSizingMode extends EnumItem end
+declare class EnumSurfaceGuiSizingModeT extends Enum
+	FixedSize: EnumSurfaceGuiSizingMode
+	PixelsPerStud: EnumSurfaceGuiSizingMode
+end
+declare class EnumSurfaceType extends EnumItem end
+declare class EnumSurfaceTypeT extends Enum
+	Smooth: EnumSurfaceType
+	Glue: EnumSurfaceType
+	Weld: EnumSurfaceType
+	Studs: EnumSurfaceType
+	Inlet: EnumSurfaceType
+	Universal: EnumSurfaceType
+	Hinge: EnumSurfaceType
+	Motor: EnumSurfaceType
+	SteppingMotor: EnumSurfaceType
+	SmoothNoOutlines: EnumSurfaceType
+end
+declare class EnumSwipeDirection extends EnumItem end
+declare class EnumSwipeDirectionT extends Enum
+	Right: EnumSwipeDirection
+	Left: EnumSwipeDirection
+	Up: EnumSwipeDirection
+	Down: EnumSwipeDirection
+	None: EnumSwipeDirection
+end
+declare class EnumTableMajorAxis extends EnumItem end
+declare class EnumTableMajorAxisT extends Enum
+	RowMajor: EnumTableMajorAxis
+	ColumnMajor: EnumTableMajorAxis
+end
+declare class EnumTechnology extends EnumItem end
+declare class EnumTechnologyT extends Enum
+	Compatibility: EnumTechnology
+	Voxel: EnumTechnology
+	ShadowMap: EnumTechnology
+	Legacy: EnumTechnology
+	Future: EnumTechnology
+end
+declare class EnumTeleportMethod extends EnumItem end
+declare class EnumTeleportMethodT extends Enum
+	TeleportToSpawnByName: EnumTeleportMethod
+	TeleportToPlaceInstance: EnumTeleportMethod
+	TeleportToPrivateServer: EnumTeleportMethod
+	TeleportPartyAsync: EnumTeleportMethod
+	TeleportUnknown: EnumTeleportMethod
+end
+declare class EnumTeleportResult extends EnumItem end
+declare class EnumTeleportResultT extends Enum
+	Success: EnumTeleportResult
+	Failure: EnumTeleportResult
+	GameNotFound: EnumTeleportResult
+	GameEnded: EnumTeleportResult
+	GameFull: EnumTeleportResult
+	Unauthorized: EnumTeleportResult
+	Flooded: EnumTeleportResult
+	IsTeleporting: EnumTeleportResult
+end
+declare class EnumTeleportState extends EnumItem end
+declare class EnumTeleportStateT extends Enum
+	RequestedFromServer: EnumTeleportState
+	Started: EnumTeleportState
+	WaitingForServer: EnumTeleportState
+	Failed: EnumTeleportState
+	InProgress: EnumTeleportState
+end
+declare class EnumTeleportType extends EnumItem end
+declare class EnumTeleportTypeT extends Enum
+	ToPlace: EnumTeleportType
+	ToInstance: EnumTeleportType
+	ToReservedServer: EnumTeleportType
+end
+declare class EnumTerrainAcquisitionMethod extends EnumItem end
+declare class EnumTerrainAcquisitionMethodT extends Enum
+	None: EnumTerrainAcquisitionMethod
+	Legacy: EnumTerrainAcquisitionMethod
+	Template: EnumTerrainAcquisitionMethod
+	Generate: EnumTerrainAcquisitionMethod
+	Import: EnumTerrainAcquisitionMethod
+	Convert: EnumTerrainAcquisitionMethod
+	EditAddTool: EnumTerrainAcquisitionMethod
+	EditSeaLevelTool: EnumTerrainAcquisitionMethod
+	EditReplaceTool: EnumTerrainAcquisitionMethod
+	RegionFillTool: EnumTerrainAcquisitionMethod
+	RegionPasteTool: EnumTerrainAcquisitionMethod
+	Other: EnumTerrainAcquisitionMethod
+end
+declare class EnumTerrainFace extends EnumItem end
+declare class EnumTerrainFaceT extends Enum
+	Top: EnumTerrainFace
+	Side: EnumTerrainFace
+	Bottom: EnumTerrainFace
+end
+declare class EnumTextChatMessageStatus extends EnumItem end
+declare class EnumTextChatMessageStatusT extends Enum
+	Unknown: EnumTextChatMessageStatus
+	Success: EnumTextChatMessageStatus
+	Sending: EnumTextChatMessageStatus
+	TextFilterFailed: EnumTextChatMessageStatus
+	Floodchecked: EnumTextChatMessageStatus
+	InvalidPrivacySettings: EnumTextChatMessageStatus
+	InvalidTextChannelPermissions: EnumTextChatMessageStatus
+	MessageTooLong: EnumTextChatMessageStatus
+end
+declare class EnumTextFilterContext extends EnumItem end
+declare class EnumTextFilterContextT extends Enum
+	PublicChat: EnumTextFilterContext
+	PrivateChat: EnumTextFilterContext
+end
+declare class EnumTextInputType extends EnumItem end
+declare class EnumTextInputTypeT extends Enum
+	Default: EnumTextInputType
+	NoSuggestions: EnumTextInputType
+	Number: EnumTextInputType
+	Email: EnumTextInputType
+	Phone: EnumTextInputType
+	Password: EnumTextInputType
+	PasswordShown: EnumTextInputType
+	Username: EnumTextInputType
+	OneTimePassword: EnumTextInputType
+end
+declare class EnumTextTruncate extends EnumItem end
+declare class EnumTextTruncateT extends Enum
+	None: EnumTextTruncate
+	AtEnd: EnumTextTruncate
+end
+declare class EnumTextXAlignment extends EnumItem end
+declare class EnumTextXAlignmentT extends Enum
+	Left: EnumTextXAlignment
+	Center: EnumTextXAlignment
+	Right: EnumTextXAlignment
+end
+declare class EnumTextYAlignment extends EnumItem end
+declare class EnumTextYAlignmentT extends Enum
+	Top: EnumTextYAlignment
+	Center: EnumTextYAlignment
+	Bottom: EnumTextYAlignment
+end
+declare class EnumTextureMode extends EnumItem end
+declare class EnumTextureModeT extends Enum
+	Stretch: EnumTextureMode
+	Wrap: EnumTextureMode
+	Static: EnumTextureMode
+end
+declare class EnumTextureQueryType extends EnumItem end
+declare class EnumTextureQueryTypeT extends Enum
+	NonHumanoid: EnumTextureQueryType
+	NonHumanoidOrphaned: EnumTextureQueryType
+	Humanoid: EnumTextureQueryType
+	HumanoidOrphaned: EnumTextureQueryType
+end
+declare class EnumThreadPoolConfig extends EnumItem end
+declare class EnumThreadPoolConfigT extends Enum
+	Auto: EnumThreadPoolConfig
+	PerCore1: EnumThreadPoolConfig
+	PerCore2: EnumThreadPoolConfig
+	PerCore3: EnumThreadPoolConfig
+	PerCore4: EnumThreadPoolConfig
+	Threads1: EnumThreadPoolConfig
+	Threads2: EnumThreadPoolConfig
+	Threads3: EnumThreadPoolConfig
+	Threads4: EnumThreadPoolConfig
+	Threads8: EnumThreadPoolConfig
+	Threads16: EnumThreadPoolConfig
+end
+declare class EnumThrottlingPriority extends EnumItem end
+declare class EnumThrottlingPriorityT extends Enum
+	Extreme: EnumThrottlingPriority
+	ElevatedOnServer: EnumThrottlingPriority
+	Default: EnumThrottlingPriority
+end
+declare class EnumThumbnailSize extends EnumItem end
+declare class EnumThumbnailSizeT extends Enum
+	Size48x48: EnumThumbnailSize
+	Size180x180: EnumThumbnailSize
+	Size420x420: EnumThumbnailSize
+	Size60x60: EnumThumbnailSize
+	Size100x100: EnumThumbnailSize
+	Size150x150: EnumThumbnailSize
+	Size352x352: EnumThumbnailSize
+end
+declare class EnumThumbnailType extends EnumItem end
+declare class EnumThumbnailTypeT extends Enum
+	HeadShot: EnumThumbnailType
+	AvatarBust: EnumThumbnailType
+	AvatarThumbnail: EnumThumbnailType
+end
+declare class EnumTickCountSampleMethod extends EnumItem end
+declare class EnumTickCountSampleMethodT extends Enum
+	Fast: EnumTickCountSampleMethod
+	Benchmark: EnumTickCountSampleMethod
+	Precise: EnumTickCountSampleMethod
+end
+declare class EnumTopBottom extends EnumItem end
+declare class EnumTopBottomT extends Enum
+	Top: EnumTopBottom
+	Center: EnumTopBottom
+	Bottom: EnumTopBottom
+end
+declare class EnumTouchCameraMovementMode extends EnumItem end
+declare class EnumTouchCameraMovementModeT extends Enum
+	Default: EnumTouchCameraMovementMode
+	Follow: EnumTouchCameraMovementMode
+	Classic: EnumTouchCameraMovementMode
+	Orbital: EnumTouchCameraMovementMode
+end
+declare class EnumTouchMovementMode extends EnumItem end
+declare class EnumTouchMovementModeT extends Enum
+	Default: EnumTouchMovementMode
+	Thumbstick: EnumTouchMovementMode
+	DPad: EnumTouchMovementMode
+	Thumbpad: EnumTouchMovementMode
+	ClickToMove: EnumTouchMovementMode
+	DynamicThumbstick: EnumTouchMovementMode
+end
+declare class EnumTriStateBoolean extends EnumItem end
+declare class EnumTriStateBooleanT extends Enum
+	Unknown: EnumTriStateBoolean
+	True: EnumTriStateBoolean
+	False: EnumTriStateBoolean
+end
+declare class EnumTweenStatus extends EnumItem end
+declare class EnumTweenStatusT extends Enum
+	Canceled: EnumTweenStatus
+	Completed: EnumTweenStatus
+end
+declare class EnumUITheme extends EnumItem end
+declare class EnumUIThemeT extends Enum
+	Light: EnumUITheme
+	Dark: EnumUITheme
+end
+declare class EnumUiMessageType extends EnumItem end
+declare class EnumUiMessageTypeT extends Enum
+	UiMessageError: EnumUiMessageType
+	UiMessageInfo: EnumUiMessageType
+end
+declare class EnumUsageContext extends EnumItem end
+declare class EnumUsageContextT extends Enum
+	Default: EnumUsageContext
+	Preview: EnumUsageContext
+end
+declare class EnumUserCFrame extends EnumItem end
+declare class EnumUserCFrameT extends Enum
+	Head: EnumUserCFrame
+	LeftHand: EnumUserCFrame
+	RightHand: EnumUserCFrame
+end
+declare class EnumUserInputState extends EnumItem end
+declare class EnumUserInputStateT extends Enum
+	Begin: EnumUserInputState
+	Change: EnumUserInputState
+	End: EnumUserInputState
+	Cancel: EnumUserInputState
+	None: EnumUserInputState
+end
+declare class EnumUserInputType extends EnumItem end
+declare class EnumUserInputTypeT extends Enum
+	MouseButton1: EnumUserInputType
+	MouseButton2: EnumUserInputType
+	MouseButton3: EnumUserInputType
+	MouseWheel: EnumUserInputType
+	MouseMovement: EnumUserInputType
+	Touch: EnumUserInputType
+	Keyboard: EnumUserInputType
+	Focus: EnumUserInputType
+	Accelerometer: EnumUserInputType
+	Gyro: EnumUserInputType
+	Gamepad1: EnumUserInputType
+	Gamepad2: EnumUserInputType
+	Gamepad3: EnumUserInputType
+	Gamepad4: EnumUserInputType
+	Gamepad5: EnumUserInputType
+	Gamepad6: EnumUserInputType
+	Gamepad7: EnumUserInputType
+	Gamepad8: EnumUserInputType
+	TextInput: EnumUserInputType
+	InputMethod: EnumUserInputType
+	None: EnumUserInputType
+end
+declare class EnumVRTouchpad extends EnumItem end
+declare class EnumVRTouchpadT extends Enum
+	Left: EnumVRTouchpad
+	Right: EnumVRTouchpad
+end
+declare class EnumVRTouchpadMode extends EnumItem end
+declare class EnumVRTouchpadModeT extends Enum
+	Touch: EnumVRTouchpadMode
+	VirtualThumbstick: EnumVRTouchpadMode
+	ABXY: EnumVRTouchpadMode
+end
+declare class EnumVelocityConstraintMode extends EnumItem end
+declare class EnumVelocityConstraintModeT extends Enum
+	Line: EnumVelocityConstraintMode
+	Plane: EnumVelocityConstraintMode
+	Vector: EnumVelocityConstraintMode
+end
+declare class EnumVerticalAlignment extends EnumItem end
+declare class EnumVerticalAlignmentT extends Enum
+	Center: EnumVerticalAlignment
+	Top: EnumVerticalAlignment
+	Bottom: EnumVerticalAlignment
+end
+declare class EnumVerticalScrollBarPosition extends EnumItem end
+declare class EnumVerticalScrollBarPositionT extends Enum
+	Left: EnumVerticalScrollBarPosition
+	Right: EnumVerticalScrollBarPosition
+end
+declare class EnumVibrationMotor extends EnumItem end
+declare class EnumVibrationMotorT extends Enum
+	Large: EnumVibrationMotor
+	Small: EnumVibrationMotor
+	LeftTrigger: EnumVibrationMotor
+	RightTrigger: EnumVibrationMotor
+	LeftHand: EnumVibrationMotor
+	RightHand: EnumVibrationMotor
+end
+declare class EnumVirtualCursorMode extends EnumItem end
+declare class EnumVirtualCursorModeT extends Enum
+	Default: EnumVirtualCursorMode
+	Disabled: EnumVirtualCursorMode
+	Enabled: EnumVirtualCursorMode
+end
+declare class EnumVirtualInputMode extends EnumItem end
+declare class EnumVirtualInputModeT extends Enum
+	Recording: EnumVirtualInputMode
+	Playing: EnumVirtualInputMode
+	None: EnumVirtualInputMode
+end
+declare class EnumVoiceChatState extends EnumItem end
+declare class EnumVoiceChatStateT extends Enum
+	Idle: EnumVoiceChatState
+	Joining: EnumVoiceChatState
+	JoiningRetry: EnumVoiceChatState
+	Joined: EnumVoiceChatState
+	Leaving: EnumVoiceChatState
+	Ended: EnumVoiceChatState
+	Failed: EnumVoiceChatState
+end
+declare class EnumWaterDirection extends EnumItem end
+declare class EnumWaterDirectionT extends Enum
+	NegX: EnumWaterDirection
+	X: EnumWaterDirection
+	NegY: EnumWaterDirection
+	Y: EnumWaterDirection
+	NegZ: EnumWaterDirection
+	Z: EnumWaterDirection
+end
+declare class EnumWaterForce extends EnumItem end
+declare class EnumWaterForceT extends Enum
+	None: EnumWaterForce
+	Small: EnumWaterForce
+	Medium: EnumWaterForce
+	Strong: EnumWaterForce
+	Max: EnumWaterForce
+end
+declare class EnumWrapLayerDebugMode extends EnumItem end
+declare class EnumWrapLayerDebugModeT extends Enum
+	None: EnumWrapLayerDebugMode
+	BoundCage: EnumWrapLayerDebugMode
+	LayerCage: EnumWrapLayerDebugMode
+	BoundCageAndLinks: EnumWrapLayerDebugMode
+	Reference: EnumWrapLayerDebugMode
+	Rbf: EnumWrapLayerDebugMode
+	OuterCage: EnumWrapLayerDebugMode
+	ReferenceMeshAfterMorph: EnumWrapLayerDebugMode
+	HSROuterDetail: EnumWrapLayerDebugMode
+	HSROuter: EnumWrapLayerDebugMode
+	HSRInner: EnumWrapLayerDebugMode
+	HSRInnerReverse: EnumWrapLayerDebugMode
+end
+declare class EnumWrapTargetDebugMode extends EnumItem end
+declare class EnumWrapTargetDebugModeT extends Enum
+	None: EnumWrapTargetDebugMode
+	TargetCageOriginal: EnumWrapTargetDebugMode
+	TargetCageCompressed: EnumWrapTargetDebugMode
+	TargetCageInterface: EnumWrapTargetDebugMode
+	TargetLayerCageOriginal: EnumWrapTargetDebugMode
+	TargetLayerCageCompressed: EnumWrapTargetDebugMode
+	TargetLayerInterface: EnumWrapTargetDebugMode
+	Rbf: EnumWrapTargetDebugMode
+	OuterCageDetail: EnumWrapTargetDebugMode
+end
+declare class EnumZIndexBehavior extends EnumItem end
+declare class EnumZIndexBehaviorT extends Enum
+	Global: EnumZIndexBehavior
+	Sibling: EnumZIndexBehavior
+end
 
 
 declare Enum: {
-	ABTestLoadingStatus: EnumABTestLoadingStatus,
-	AccessoryType: EnumAccessoryType,
-	ActionType: EnumActionType,
-	ActuatorRelativeTo: EnumActuatorRelativeTo,
-	ActuatorType: EnumActuatorType,
-	AdornCullingMode: EnumAdornCullingMode,
-	AlignType: EnumAlignType,
-	AlphaMode: EnumAlphaMode,
-	AnalyticsEconomyAction: EnumAnalyticsEconomyAction,
-	AnalyticsLogLevel: EnumAnalyticsLogLevel,
-	AnalyticsProgressionStatus: EnumAnalyticsProgressionStatus,
-	AnimationPriority: EnumAnimationPriority,
-	AnimatorRetargetingMode: EnumAnimatorRetargetingMode,
-	AppShellActionType: EnumAppShellActionType,
-	AppShellFeature: EnumAppShellFeature,
-	AppUpdateStatus: EnumAppUpdateStatus,
-	ApplyStrokeMode: EnumApplyStrokeMode,
-	AspectType: EnumAspectType,
-	AssetFetchStatus: EnumAssetFetchStatus,
-	AssetType: EnumAssetType,
-	AssetTypeVerification: EnumAssetTypeVerification,
-	AutoIndentRule: EnumAutoIndentRule,
-	AutomaticSize: EnumAutomaticSize,
-	AvatarAssetType: EnumAvatarAssetType,
-	AvatarContextMenuOption: EnumAvatarContextMenuOption,
-	AvatarItemType: EnumAvatarItemType,
-	AvatarPromptResult: EnumAvatarPromptResult,
-	Axis: EnumAxis,
-	BinType: EnumBinType,
-	BodyPart: EnumBodyPart,
-	BodyPartR15: EnumBodyPartR15,
-	BorderMode: EnumBorderMode,
-	BreakReason: EnumBreakReason,
-	BreakpointRemoveReason: EnumBreakpointRemoveReason,
-	BulkMoveMode: EnumBulkMoveMode,
-	BundleType: EnumBundleType,
-	Button: EnumButton,
-	ButtonStyle: EnumButtonStyle,
-	CageType: EnumCageType,
-	CameraMode: EnumCameraMode,
-	CameraPanMode: EnumCameraPanMode,
-	CameraType: EnumCameraType,
-	CatalogCategoryFilter: EnumCatalogCategoryFilter,
-	CatalogSortType: EnumCatalogSortType,
-	CellBlock: EnumCellBlock,
-	CellMaterial: EnumCellMaterial,
-	CellOrientation: EnumCellOrientation,
-	CenterDialogType: EnumCenterDialogType,
-	ChatCallbackType: EnumChatCallbackType,
-	ChatColor: EnumChatColor,
-	ChatMode: EnumChatMode,
-	ChatPrivacyMode: EnumChatPrivacyMode,
-	ChatStyle: EnumChatStyle,
-	ChatVersion: EnumChatVersion,
-	ClientAnimatorThrottlingMode: EnumClientAnimatorThrottlingMode,
-	CollisionFidelity: EnumCollisionFidelity,
-	CommandPermission: EnumCommandPermission,
-	ComputerCameraMovementMode: EnumComputerCameraMovementMode,
-	ComputerMovementMode: EnumComputerMovementMode,
-	ConnectionError: EnumConnectionError,
-	ConnectionState: EnumConnectionState,
-	ContextActionPriority: EnumContextActionPriority,
-	ContextActionResult: EnumContextActionResult,
-	ControlMode: EnumControlMode,
-	CoreGuiType: EnumCoreGuiType,
-	CreateOutfitFailure: EnumCreateOutfitFailure,
-	CreatorType: EnumCreatorType,
-	CurrencyType: EnumCurrencyType,
-	CustomCameraMode: EnumCustomCameraMode,
-	DataStoreRequestType: EnumDataStoreRequestType,
-	DebuggerEndReason: EnumDebuggerEndReason,
-	DebuggerExceptionBreakMode: EnumDebuggerExceptionBreakMode,
-	DebuggerFrameType: EnumDebuggerFrameType,
-	DebuggerPauseReason: EnumDebuggerPauseReason,
-	DebuggerStatus: EnumDebuggerStatus,
-	DevCameraOcclusionMode: EnumDevCameraOcclusionMode,
-	DevComputerCameraMovementMode: EnumDevComputerCameraMovementMode,
-	DevComputerMovementMode: EnumDevComputerMovementMode,
-	DevTouchCameraMovementMode: EnumDevTouchCameraMovementMode,
-	DevTouchMovementMode: EnumDevTouchMovementMode,
-	DeveloperMemoryTag: EnumDeveloperMemoryTag,
-	DeviceType: EnumDeviceType,
-	DialogBehaviorType: EnumDialogBehaviorType,
-	DialogPurpose: EnumDialogPurpose,
-	DialogTone: EnumDialogTone,
-	DominantAxis: EnumDominantAxis,
-	DraftStatusCode: EnumDraftStatusCode,
-	DraggerCoordinateSpace: EnumDraggerCoordinateSpace,
-	DraggerMovementMode: EnumDraggerMovementMode,
-	EasingDirection: EnumEasingDirection,
-	EasingStyle: EnumEasingStyle,
-	ElasticBehavior: EnumElasticBehavior,
-	EnviromentalPhysicsThrottle: EnumEnviromentalPhysicsThrottle,
-	ExplosionType: EnumExplosionType,
-	FieldOfViewMode: EnumFieldOfViewMode,
-	FillDirection: EnumFillDirection,
-	FilterResult: EnumFilterResult,
-	Font: EnumFont,
-	FontSize: EnumFontSize,
-	FontStyle: EnumFontStyle,
-	FontWeight: EnumFontWeight,
-	FormFactor: EnumFormFactor,
-	FrameStyle: EnumFrameStyle,
-	FramerateManagerMode: EnumFramerateManagerMode,
-	FriendRequestEvent: EnumFriendRequestEvent,
-	FriendStatus: EnumFriendStatus,
-	FunctionalTestResult: EnumFunctionalTestResult,
-	GameAvatarType: EnumGameAvatarType,
-	GearGenreSetting: EnumGearGenreSetting,
-	GearType: EnumGearType,
-	Genre: EnumGenre,
-	GraphicsMode: EnumGraphicsMode,
-	HandlesStyle: EnumHandlesStyle,
-	HighlightDepthMode: EnumHighlightDepthMode,
-	HorizontalAlignment: EnumHorizontalAlignment,
-	HoverAnimateSpeed: EnumHoverAnimateSpeed,
-	HttpCachePolicy: EnumHttpCachePolicy,
-	HttpContentType: EnumHttpContentType,
-	HttpError: EnumHttpError,
-	HttpRequestType: EnumHttpRequestType,
-	HumanoidCollisionType: EnumHumanoidCollisionType,
-	HumanoidDisplayDistanceType: EnumHumanoidDisplayDistanceType,
-	HumanoidHealthDisplayType: EnumHumanoidHealthDisplayType,
-	HumanoidOnlySetCollisionsOnStateChange: EnumHumanoidOnlySetCollisionsOnStateChange,
-	HumanoidRigType: EnumHumanoidRigType,
-	HumanoidStateType: EnumHumanoidStateType,
-	IKCollisionsMode: EnumIKCollisionsMode,
-	IXPLoadingStatus: EnumIXPLoadingStatus,
-	InOut: EnumInOut,
-	InfoType: EnumInfoType,
-	InitialDockState: EnumInitialDockState,
-	InputType: EnumInputType,
-	InterpolationThrottlingMode: EnumInterpolationThrottlingMode,
-	JointCreationMode: EnumJointCreationMode,
-	KeyCode: EnumKeyCode,
-	KeyInterpolationMode: EnumKeyInterpolationMode,
-	KeywordFilterType: EnumKeywordFilterType,
-	LSPMethodType: EnumLSPMethodType,
-	Language: EnumLanguage,
-	LeftRight: EnumLeftRight,
-	LevelOfDetailSetting: EnumLevelOfDetailSetting,
-	Limb: EnumLimb,
-	LineJoinMode: EnumLineJoinMode,
-	ListDisplayMode: EnumListDisplayMode,
-	ListenerType: EnumListenerType,
-	LoadCharacterLayeredClothing: EnumLoadCharacterLayeredClothing,
-	Material: EnumMaterial,
-	MaterialPattern: EnumMaterialPattern,
-	MembershipType: EnumMembershipType,
-	MeshPartDetailLevel: EnumMeshPartDetailLevel,
-	MeshPartHeadsAndAccessories: EnumMeshPartHeadsAndAccessories,
-	MeshScaleUnit: EnumMeshScaleUnit,
-	MeshType: EnumMeshType,
-	MessageType: EnumMessageType,
-	ModelLevelOfDetail: EnumModelLevelOfDetail,
-	ModifierKey: EnumModifierKey,
-	MouseBehavior: EnumMouseBehavior,
-	MoveState: EnumMoveState,
-	NameOcclusion: EnumNameOcclusion,
-	NetworkOwnership: EnumNetworkOwnership,
-	NewAnimationRuntimeSetting: EnumNewAnimationRuntimeSetting,
-	NormalId: EnumNormalId,
-	OrientationAlignmentMode: EnumOrientationAlignmentMode,
-	OutfitSource: EnumOutfitSource,
-	OutputLayoutMode: EnumOutputLayoutMode,
-	OverrideMouseIconBehavior: EnumOverrideMouseIconBehavior,
-	PackagePermission: EnumPackagePermission,
-	PartType: EnumPartType,
-	ParticleEmitterShape: EnumParticleEmitterShape,
-	ParticleEmitterShapeInOut: EnumParticleEmitterShapeInOut,
-	ParticleEmitterShapeStyle: EnumParticleEmitterShapeStyle,
-	ParticleFlipbookLayout: EnumParticleFlipbookLayout,
-	ParticleFlipbookMode: EnumParticleFlipbookMode,
-	ParticleOrientation: EnumParticleOrientation,
-	PathStatus: EnumPathStatus,
-	PathWaypointAction: EnumPathWaypointAction,
-	PermissionLevelShown: EnumPermissionLevelShown,
-	PhysicsSimulationRate: EnumPhysicsSimulationRate,
-	PhysicsSteppingMethod: EnumPhysicsSteppingMethod,
-	Platform: EnumPlatform,
-	PlaybackState: EnumPlaybackState,
-	PlayerActions: EnumPlayerActions,
-	PlayerChatType: EnumPlayerChatType,
-	PoseEasingDirection: EnumPoseEasingDirection,
-	PoseEasingStyle: EnumPoseEasingStyle,
-	PositionAlignmentMode: EnumPositionAlignmentMode,
-	PrivilegeType: EnumPrivilegeType,
-	ProductLocationRestriction: EnumProductLocationRestriction,
-	ProductPurchaseDecision: EnumProductPurchaseDecision,
-	PropertyStatus: EnumPropertyStatus,
-	ProximityPromptExclusivity: EnumProximityPromptExclusivity,
-	ProximityPromptInputType: EnumProximityPromptInputType,
-	ProximityPromptStyle: EnumProximityPromptStyle,
-	QualityLevel: EnumQualityLevel,
-	R15CollisionType: EnumR15CollisionType,
-	RaycastFilterType: EnumRaycastFilterType,
-	RenderFidelity: EnumRenderFidelity,
-	RenderPriority: EnumRenderPriority,
-	RenderingTestComparisonMethod: EnumRenderingTestComparisonMethod,
-	ReplicateInstanceDestroySetting: EnumReplicateInstanceDestroySetting,
-	ResamplerMode: EnumResamplerMode,
-	ReturnKeyType: EnumReturnKeyType,
-	ReverbType: EnumReverbType,
-	RibbonTool: EnumRibbonTool,
-	RigType: EnumRigType,
-	RollOffMode: EnumRollOffMode,
-	RotationOrder: EnumRotationOrder,
-	RotationType: EnumRotationType,
-	RuntimeUndoBehavior: EnumRuntimeUndoBehavior,
-	SaveFilter: EnumSaveFilter,
-	SavedQualitySetting: EnumSavedQualitySetting,
-	ScaleType: EnumScaleType,
-	ScreenOrientation: EnumScreenOrientation,
-	ScrollBarInset: EnumScrollBarInset,
-	ScrollingDirection: EnumScrollingDirection,
-	SelectionBehavior: EnumSelectionBehavior,
-	ServerAudioBehavior: EnumServerAudioBehavior,
-	SignalBehavior: EnumSignalBehavior,
-	SizeConstraint: EnumSizeConstraint,
-	SortDirection: EnumSortDirection,
-	SortOrder: EnumSortOrder,
-	SpecialKey: EnumSpecialKey,
-	StartCorner: EnumStartCorner,
-	Status: EnumStatus,
-	StreamOutBehavior: EnumStreamOutBehavior,
-	StreamingPauseMode: EnumStreamingPauseMode,
-	StudioCloseMode: EnumStudioCloseMode,
-	StudioDataModelType: EnumStudioDataModelType,
-	StudioScriptEditorColorCategories: EnumStudioScriptEditorColorCategories,
-	StudioScriptEditorColorPresets: EnumStudioScriptEditorColorPresets,
-	StudioStyleGuideColor: EnumStudioStyleGuideColor,
-	StudioStyleGuideModifier: EnumStudioStyleGuideModifier,
-	Style: EnumStyle,
-	SurfaceConstraint: EnumSurfaceConstraint,
-	SurfaceGuiSizingMode: EnumSurfaceGuiSizingMode,
-	SurfaceType: EnumSurfaceType,
-	SwipeDirection: EnumSwipeDirection,
-	TableMajorAxis: EnumTableMajorAxis,
-	Technology: EnumTechnology,
-	TeleportMethod: EnumTeleportMethod,
-	TeleportResult: EnumTeleportResult,
-	TeleportState: EnumTeleportState,
-	TeleportType: EnumTeleportType,
-	TerrainAcquisitionMethod: EnumTerrainAcquisitionMethod,
-	TerrainFace: EnumTerrainFace,
-	TextChatMessageStatus: EnumTextChatMessageStatus,
-	TextFilterContext: EnumTextFilterContext,
-	TextInputType: EnumTextInputType,
-	TextTruncate: EnumTextTruncate,
-	TextXAlignment: EnumTextXAlignment,
-	TextYAlignment: EnumTextYAlignment,
-	TextureMode: EnumTextureMode,
-	TextureQueryType: EnumTextureQueryType,
-	ThreadPoolConfig: EnumThreadPoolConfig,
-	ThrottlingPriority: EnumThrottlingPriority,
-	ThumbnailSize: EnumThumbnailSize,
-	ThumbnailType: EnumThumbnailType,
-	TickCountSampleMethod: EnumTickCountSampleMethod,
-	TopBottom: EnumTopBottom,
-	TouchCameraMovementMode: EnumTouchCameraMovementMode,
-	TouchMovementMode: EnumTouchMovementMode,
-	TriStateBoolean: EnumTriStateBoolean,
-	TweenStatus: EnumTweenStatus,
-	UITheme: EnumUITheme,
-	UiMessageType: EnumUiMessageType,
-	UsageContext: EnumUsageContext,
-	UserCFrame: EnumUserCFrame,
-	UserInputState: EnumUserInputState,
-	UserInputType: EnumUserInputType,
-	VRTouchpad: EnumVRTouchpad,
-	VRTouchpadMode: EnumVRTouchpadMode,
-	VelocityConstraintMode: EnumVelocityConstraintMode,
-	VerticalAlignment: EnumVerticalAlignment,
-	VerticalScrollBarPosition: EnumVerticalScrollBarPosition,
-	VibrationMotor: EnumVibrationMotor,
-	VirtualCursorMode: EnumVirtualCursorMode,
-	VirtualInputMode: EnumVirtualInputMode,
-	VoiceChatState: EnumVoiceChatState,
-	WaterDirection: EnumWaterDirection,
-	WaterForce: EnumWaterForce,
-	WrapLayerDebugMode: EnumWrapLayerDebugMode,
-	WrapTargetDebugMode: EnumWrapTargetDebugMode,
-	ZIndexBehavior: EnumZIndexBehavior,
+	ABTestLoadingStatus: EnumABTestLoadingStatusT,
+	AccessoryType: EnumAccessoryTypeT,
+	ActionType: EnumActionTypeT,
+	ActuatorRelativeTo: EnumActuatorRelativeToT,
+	ActuatorType: EnumActuatorTypeT,
+	AdornCullingMode: EnumAdornCullingModeT,
+	AlignType: EnumAlignTypeT,
+	AlphaMode: EnumAlphaModeT,
+	AnalyticsEconomyAction: EnumAnalyticsEconomyActionT,
+	AnalyticsLogLevel: EnumAnalyticsLogLevelT,
+	AnalyticsProgressionStatus: EnumAnalyticsProgressionStatusT,
+	AnimationPriority: EnumAnimationPriorityT,
+	AnimatorRetargetingMode: EnumAnimatorRetargetingModeT,
+	AppShellActionType: EnumAppShellActionTypeT,
+	AppShellFeature: EnumAppShellFeatureT,
+	AppUpdateStatus: EnumAppUpdateStatusT,
+	ApplyStrokeMode: EnumApplyStrokeModeT,
+	AspectType: EnumAspectTypeT,
+	AssetFetchStatus: EnumAssetFetchStatusT,
+	AssetType: EnumAssetTypeT,
+	AssetTypeVerification: EnumAssetTypeVerificationT,
+	AutoIndentRule: EnumAutoIndentRuleT,
+	AutomaticSize: EnumAutomaticSizeT,
+	AvatarAssetType: EnumAvatarAssetTypeT,
+	AvatarContextMenuOption: EnumAvatarContextMenuOptionT,
+	AvatarItemType: EnumAvatarItemTypeT,
+	AvatarPromptResult: EnumAvatarPromptResultT,
+	Axis: EnumAxisT,
+	BinType: EnumBinTypeT,
+	BodyPart: EnumBodyPartT,
+	BodyPartR15: EnumBodyPartR15T,
+	BorderMode: EnumBorderModeT,
+	BreakReason: EnumBreakReasonT,
+	BreakpointRemoveReason: EnumBreakpointRemoveReasonT,
+	BulkMoveMode: EnumBulkMoveModeT,
+	BundleType: EnumBundleTypeT,
+	Button: EnumButtonT,
+	ButtonStyle: EnumButtonStyleT,
+	CageType: EnumCageTypeT,
+	CameraMode: EnumCameraModeT,
+	CameraPanMode: EnumCameraPanModeT,
+	CameraType: EnumCameraTypeT,
+	CatalogCategoryFilter: EnumCatalogCategoryFilterT,
+	CatalogSortType: EnumCatalogSortTypeT,
+	CellBlock: EnumCellBlockT,
+	CellMaterial: EnumCellMaterialT,
+	CellOrientation: EnumCellOrientationT,
+	CenterDialogType: EnumCenterDialogTypeT,
+	ChatCallbackType: EnumChatCallbackTypeT,
+	ChatColor: EnumChatColorT,
+	ChatMode: EnumChatModeT,
+	ChatPrivacyMode: EnumChatPrivacyModeT,
+	ChatStyle: EnumChatStyleT,
+	ChatVersion: EnumChatVersionT,
+	ClientAnimatorThrottlingMode: EnumClientAnimatorThrottlingModeT,
+	CollisionFidelity: EnumCollisionFidelityT,
+	CommandPermission: EnumCommandPermissionT,
+	ComputerCameraMovementMode: EnumComputerCameraMovementModeT,
+	ComputerMovementMode: EnumComputerMovementModeT,
+	ConnectionError: EnumConnectionErrorT,
+	ConnectionState: EnumConnectionStateT,
+	ContextActionPriority: EnumContextActionPriorityT,
+	ContextActionResult: EnumContextActionResultT,
+	ControlMode: EnumControlModeT,
+	CoreGuiType: EnumCoreGuiTypeT,
+	CreateOutfitFailure: EnumCreateOutfitFailureT,
+	CreatorType: EnumCreatorTypeT,
+	CurrencyType: EnumCurrencyTypeT,
+	CustomCameraMode: EnumCustomCameraModeT,
+	DataStoreRequestType: EnumDataStoreRequestTypeT,
+	DebuggerEndReason: EnumDebuggerEndReasonT,
+	DebuggerExceptionBreakMode: EnumDebuggerExceptionBreakModeT,
+	DebuggerFrameType: EnumDebuggerFrameTypeT,
+	DebuggerPauseReason: EnumDebuggerPauseReasonT,
+	DebuggerStatus: EnumDebuggerStatusT,
+	DevCameraOcclusionMode: EnumDevCameraOcclusionModeT,
+	DevComputerCameraMovementMode: EnumDevComputerCameraMovementModeT,
+	DevComputerMovementMode: EnumDevComputerMovementModeT,
+	DevTouchCameraMovementMode: EnumDevTouchCameraMovementModeT,
+	DevTouchMovementMode: EnumDevTouchMovementModeT,
+	DeveloperMemoryTag: EnumDeveloperMemoryTagT,
+	DeviceType: EnumDeviceTypeT,
+	DialogBehaviorType: EnumDialogBehaviorTypeT,
+	DialogPurpose: EnumDialogPurposeT,
+	DialogTone: EnumDialogToneT,
+	DominantAxis: EnumDominantAxisT,
+	DraftStatusCode: EnumDraftStatusCodeT,
+	DraggerCoordinateSpace: EnumDraggerCoordinateSpaceT,
+	DraggerMovementMode: EnumDraggerMovementModeT,
+	EasingDirection: EnumEasingDirectionT,
+	EasingStyle: EnumEasingStyleT,
+	ElasticBehavior: EnumElasticBehaviorT,
+	EnviromentalPhysicsThrottle: EnumEnviromentalPhysicsThrottleT,
+	ExplosionType: EnumExplosionTypeT,
+	FieldOfViewMode: EnumFieldOfViewModeT,
+	FillDirection: EnumFillDirectionT,
+	FilterResult: EnumFilterResultT,
+	Font: EnumFontT,
+	FontSize: EnumFontSizeT,
+	FontStyle: EnumFontStyleT,
+	FontWeight: EnumFontWeightT,
+	FormFactor: EnumFormFactorT,
+	FrameStyle: EnumFrameStyleT,
+	FramerateManagerMode: EnumFramerateManagerModeT,
+	FriendRequestEvent: EnumFriendRequestEventT,
+	FriendStatus: EnumFriendStatusT,
+	FunctionalTestResult: EnumFunctionalTestResultT,
+	GameAvatarType: EnumGameAvatarTypeT,
+	GearGenreSetting: EnumGearGenreSettingT,
+	GearType: EnumGearTypeT,
+	Genre: EnumGenreT,
+	GraphicsMode: EnumGraphicsModeT,
+	HandlesStyle: EnumHandlesStyleT,
+	HighlightDepthMode: EnumHighlightDepthModeT,
+	HorizontalAlignment: EnumHorizontalAlignmentT,
+	HoverAnimateSpeed: EnumHoverAnimateSpeedT,
+	HttpCachePolicy: EnumHttpCachePolicyT,
+	HttpContentType: EnumHttpContentTypeT,
+	HttpError: EnumHttpErrorT,
+	HttpRequestType: EnumHttpRequestTypeT,
+	HumanoidCollisionType: EnumHumanoidCollisionTypeT,
+	HumanoidDisplayDistanceType: EnumHumanoidDisplayDistanceTypeT,
+	HumanoidHealthDisplayType: EnumHumanoidHealthDisplayTypeT,
+	HumanoidOnlySetCollisionsOnStateChange: EnumHumanoidOnlySetCollisionsOnStateChangeT,
+	HumanoidRigType: EnumHumanoidRigTypeT,
+	HumanoidStateType: EnumHumanoidStateTypeT,
+	IKCollisionsMode: EnumIKCollisionsModeT,
+	IXPLoadingStatus: EnumIXPLoadingStatusT,
+	InOut: EnumInOutT,
+	InfoType: EnumInfoTypeT,
+	InitialDockState: EnumInitialDockStateT,
+	InputType: EnumInputTypeT,
+	InterpolationThrottlingMode: EnumInterpolationThrottlingModeT,
+	JointCreationMode: EnumJointCreationModeT,
+	KeyCode: EnumKeyCodeT,
+	KeyInterpolationMode: EnumKeyInterpolationModeT,
+	KeywordFilterType: EnumKeywordFilterTypeT,
+	LSPMethodType: EnumLSPMethodTypeT,
+	Language: EnumLanguageT,
+	LeftRight: EnumLeftRightT,
+	LevelOfDetailSetting: EnumLevelOfDetailSettingT,
+	Limb: EnumLimbT,
+	LineJoinMode: EnumLineJoinModeT,
+	ListDisplayMode: EnumListDisplayModeT,
+	ListenerType: EnumListenerTypeT,
+	LoadCharacterLayeredClothing: EnumLoadCharacterLayeredClothingT,
+	Material: EnumMaterialT,
+	MaterialPattern: EnumMaterialPatternT,
+	MembershipType: EnumMembershipTypeT,
+	MeshPartDetailLevel: EnumMeshPartDetailLevelT,
+	MeshPartHeadsAndAccessories: EnumMeshPartHeadsAndAccessoriesT,
+	MeshScaleUnit: EnumMeshScaleUnitT,
+	MeshType: EnumMeshTypeT,
+	MessageType: EnumMessageTypeT,
+	ModelLevelOfDetail: EnumModelLevelOfDetailT,
+	ModifierKey: EnumModifierKeyT,
+	MouseBehavior: EnumMouseBehaviorT,
+	MoveState: EnumMoveStateT,
+	NameOcclusion: EnumNameOcclusionT,
+	NetworkOwnership: EnumNetworkOwnershipT,
+	NewAnimationRuntimeSetting: EnumNewAnimationRuntimeSettingT,
+	NormalId: EnumNormalIdT,
+	OrientationAlignmentMode: EnumOrientationAlignmentModeT,
+	OutfitSource: EnumOutfitSourceT,
+	OutputLayoutMode: EnumOutputLayoutModeT,
+	OverrideMouseIconBehavior: EnumOverrideMouseIconBehaviorT,
+	PackagePermission: EnumPackagePermissionT,
+	PartType: EnumPartTypeT,
+	ParticleEmitterShape: EnumParticleEmitterShapeT,
+	ParticleEmitterShapeInOut: EnumParticleEmitterShapeInOutT,
+	ParticleEmitterShapeStyle: EnumParticleEmitterShapeStyleT,
+	ParticleFlipbookLayout: EnumParticleFlipbookLayoutT,
+	ParticleFlipbookMode: EnumParticleFlipbookModeT,
+	ParticleOrientation: EnumParticleOrientationT,
+	PathStatus: EnumPathStatusT,
+	PathWaypointAction: EnumPathWaypointActionT,
+	PermissionLevelShown: EnumPermissionLevelShownT,
+	PhysicsSimulationRate: EnumPhysicsSimulationRateT,
+	PhysicsSteppingMethod: EnumPhysicsSteppingMethodT,
+	Platform: EnumPlatformT,
+	PlaybackState: EnumPlaybackStateT,
+	PlayerActions: EnumPlayerActionsT,
+	PlayerChatType: EnumPlayerChatTypeT,
+	PoseEasingDirection: EnumPoseEasingDirectionT,
+	PoseEasingStyle: EnumPoseEasingStyleT,
+	PositionAlignmentMode: EnumPositionAlignmentModeT,
+	PrivilegeType: EnumPrivilegeTypeT,
+	ProductLocationRestriction: EnumProductLocationRestrictionT,
+	ProductPurchaseDecision: EnumProductPurchaseDecisionT,
+	PropertyStatus: EnumPropertyStatusT,
+	ProximityPromptExclusivity: EnumProximityPromptExclusivityT,
+	ProximityPromptInputType: EnumProximityPromptInputTypeT,
+	ProximityPromptStyle: EnumProximityPromptStyleT,
+	QualityLevel: EnumQualityLevelT,
+	R15CollisionType: EnumR15CollisionTypeT,
+	RaycastFilterType: EnumRaycastFilterTypeT,
+	RenderFidelity: EnumRenderFidelityT,
+	RenderPriority: EnumRenderPriorityT,
+	RenderingTestComparisonMethod: EnumRenderingTestComparisonMethodT,
+	ReplicateInstanceDestroySetting: EnumReplicateInstanceDestroySettingT,
+	ResamplerMode: EnumResamplerModeT,
+	ReturnKeyType: EnumReturnKeyTypeT,
+	ReverbType: EnumReverbTypeT,
+	RibbonTool: EnumRibbonToolT,
+	RigType: EnumRigTypeT,
+	RollOffMode: EnumRollOffModeT,
+	RotationOrder: EnumRotationOrderT,
+	RotationType: EnumRotationTypeT,
+	RuntimeUndoBehavior: EnumRuntimeUndoBehaviorT,
+	SaveFilter: EnumSaveFilterT,
+	SavedQualitySetting: EnumSavedQualitySettingT,
+	ScaleType: EnumScaleTypeT,
+	ScreenOrientation: EnumScreenOrientationT,
+	ScrollBarInset: EnumScrollBarInsetT,
+	ScrollingDirection: EnumScrollingDirectionT,
+	SelectionBehavior: EnumSelectionBehaviorT,
+	ServerAudioBehavior: EnumServerAudioBehaviorT,
+	SignalBehavior: EnumSignalBehaviorT,
+	SizeConstraint: EnumSizeConstraintT,
+	SortDirection: EnumSortDirectionT,
+	SortOrder: EnumSortOrderT,
+	SpecialKey: EnumSpecialKeyT,
+	StartCorner: EnumStartCornerT,
+	Status: EnumStatusT,
+	StreamOutBehavior: EnumStreamOutBehaviorT,
+	StreamingPauseMode: EnumStreamingPauseModeT,
+	StudioCloseMode: EnumStudioCloseModeT,
+	StudioDataModelType: EnumStudioDataModelTypeT,
+	StudioScriptEditorColorCategories: EnumStudioScriptEditorColorCategoriesT,
+	StudioScriptEditorColorPresets: EnumStudioScriptEditorColorPresetsT,
+	StudioStyleGuideColor: EnumStudioStyleGuideColorT,
+	StudioStyleGuideModifier: EnumStudioStyleGuideModifierT,
+	Style: EnumStyleT,
+	SurfaceConstraint: EnumSurfaceConstraintT,
+	SurfaceGuiSizingMode: EnumSurfaceGuiSizingModeT,
+	SurfaceType: EnumSurfaceTypeT,
+	SwipeDirection: EnumSwipeDirectionT,
+	TableMajorAxis: EnumTableMajorAxisT,
+	Technology: EnumTechnologyT,
+	TeleportMethod: EnumTeleportMethodT,
+	TeleportResult: EnumTeleportResultT,
+	TeleportState: EnumTeleportStateT,
+	TeleportType: EnumTeleportTypeT,
+	TerrainAcquisitionMethod: EnumTerrainAcquisitionMethodT,
+	TerrainFace: EnumTerrainFaceT,
+	TextChatMessageStatus: EnumTextChatMessageStatusT,
+	TextFilterContext: EnumTextFilterContextT,
+	TextInputType: EnumTextInputTypeT,
+	TextTruncate: EnumTextTruncateT,
+	TextXAlignment: EnumTextXAlignmentT,
+	TextYAlignment: EnumTextYAlignmentT,
+	TextureMode: EnumTextureModeT,
+	TextureQueryType: EnumTextureQueryTypeT,
+	ThreadPoolConfig: EnumThreadPoolConfigT,
+	ThrottlingPriority: EnumThrottlingPriorityT,
+	ThumbnailSize: EnumThumbnailSizeT,
+	ThumbnailType: EnumThumbnailTypeT,
+	TickCountSampleMethod: EnumTickCountSampleMethodT,
+	TopBottom: EnumTopBottomT,
+	TouchCameraMovementMode: EnumTouchCameraMovementModeT,
+	TouchMovementMode: EnumTouchMovementModeT,
+	TriStateBoolean: EnumTriStateBooleanT,
+	TweenStatus: EnumTweenStatusT,
+	UITheme: EnumUIThemeT,
+	UiMessageType: EnumUiMessageTypeT,
+	UsageContext: EnumUsageContextT,
+	UserCFrame: EnumUserCFrameT,
+	UserInputState: EnumUserInputStateT,
+	UserInputType: EnumUserInputTypeT,
+	VRTouchpad: EnumVRTouchpadT,
+	VRTouchpadMode: EnumVRTouchpadModeT,
+	VelocityConstraintMode: EnumVelocityConstraintModeT,
+	VerticalAlignment: EnumVerticalAlignmentT,
+	VerticalScrollBarPosition: EnumVerticalScrollBarPositionT,
+	VibrationMotor: EnumVibrationMotorT,
+	VirtualCursorMode: EnumVirtualCursorModeT,
+	VirtualInputMode: EnumVirtualInputModeT,
+	VoiceChatState: EnumVoiceChatStateT,
+	WaterDirection: EnumWaterDirectionT,
+	WaterForce: EnumWaterForceT,
+	WrapLayerDebugMode: EnumWrapLayerDebugModeT,
+	WrapTargetDebugMode: EnumWrapTargetDebugModeT,
+	ZIndexBehavior: EnumZIndexBehaviorT,
 }
 
 type Ray = any

@@ -450,17 +450,19 @@ def printEnums(dump: ApiDump):
     # Declare each enum individually
     out = ""
     for enum, items in enums.items():
-        out += "type Enum" + enum + " = {\n"
+        # Declare an atom for the enum
+        out += f"declare class Enum{enum} extends EnumItem end\n"
+        out += f"declare class Enum{enum}T extends Enum\n"
         for item in items:
-            out += f"\t{item}: EnumItem,\n"
-        out += "}\n"
+            out += f"\t{item}: Enum{enum}\n"
+        out += "end\n"
     print(out)
     print()
 
     # Declare enums as a whole
     out = "declare Enum: {\n"
     for enum in enums:
-        out += f"\t{enum}: Enum{enum},\n"
+        out += f"\t{enum}: Enum{enum}T,\n"
     out += "}"
     print(out)
     print()
