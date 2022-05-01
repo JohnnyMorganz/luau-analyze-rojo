@@ -47,8 +47,8 @@ DEFERRED_CLASSES: List[str] = [
     "UserSettings",
 ]
 
-# Metamethods to add in to classes
-METAMETHODS = {
+# Extra methods to add in to classes, commonly used to add in metamethods
+EXTRA_METHODS = {
     "Vector3": [
         "function __add(self, other: Vector3): Vector3",
         "function __sub(self, other: Vector3): Vector3",
@@ -92,6 +92,9 @@ METAMETHODS = {
         "function __sub(self, other: Vector3): CFrame",
         "function __mul(self, other: CFrame): CFrame",
         "function __mul(self, other: Vector3): Vector3",
+    ],
+    "UserSettings": [
+        'function GetService(self, service: "UserGameSettings"): UserGameSettings'
     ],
 }
 
@@ -429,6 +432,10 @@ def declareClass(klass: ApiClass):
         for service in SERVICES:
             out += f'\tfunction GetService(self, service: "{service}"): {service}\n'
 
+    if klass["Name"] in EXTRA_METHODS:
+        for method in EXTRA_METHODS[klass["Name"]]:
+            out += f"\t{method}\n"
+
     out += "end"
 
     return out
@@ -504,8 +511,8 @@ def printDataTypes(types: DataTypesDump):
             elif member["MemberType"] == "Callback":
                 out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"
 
-        if name in METAMETHODS:
-            for method in METAMETHODS[name]:
+        if name in EXTRA_METHODS:
+            for method in EXTRA_METHODS[name]:
                 out += f"\t{method}\n"
 
         out += "end"

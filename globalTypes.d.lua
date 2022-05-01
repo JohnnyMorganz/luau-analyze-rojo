@@ -9740,6 +9740,7 @@ end
 declare class UserSettings extends GenericSettings
 	function IsUserFeatureEnabled(self, name: string): boolean
 	function Reset(self): nil
+	function GetService(self, service: "UserGameSettings"): UserGameSettings
 end
 
 declare Instance: {
