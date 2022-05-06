@@ -812,6 +812,7 @@ declare class EnumDeveloperMemoryTagT extends Enum
 	Gui: EnumDeveloperMemoryTag
 	Animation: EnumDeveloperMemoryTag
 	Navigation: EnumDeveloperMemoryTag
+	GeometryCSG: EnumDeveloperMemoryTag
 end
 declare class EnumDeviceType extends EnumItem end
 declare class EnumDeviceTypeT extends Enum
@@ -3646,6 +3647,7 @@ type DraggerService = any
 type EulerRotationCurve = any
 type EventIngestService = any
 type Explosion = any
+type FaceAnimatorService = any
 type FaceControls = any
 type FaceInstance = any
 type Decal = any
@@ -3930,6 +3932,7 @@ type RuntimeScriptService = any
 type ScriptChangeService = any
 type ScriptCloneWatcher = any
 type ScriptCloneWatcherHelper = any
+type ScriptCloneWatcherHelperV2 = any
 type ScriptContext = any
 type ScriptDebugger = any
 type ScriptRegistrationService = any
@@ -4081,7 +4084,6 @@ declare class Instance
 	DataCost: number
 	Name: string
 	Parent: Instance
-	PropertyStatusStudio: EnumPropertyStatus
 	RobloxLocked: boolean
 	SourceAssetId: number
 	archivable: boolean
@@ -4853,6 +4855,7 @@ end
 
 declare class CollectionService extends Instance
 	function AddTag(self, instance: Instance, tag: string): nil
+	function GetAllTags(self): { any }
 	function GetCollection(self, class: string): Objects
 	function GetInstanceAddedSignal(self, tag: string): RBXScriptSignal
 	function GetInstanceRemovedSignal(self, tag: string): RBXScriptSignal
@@ -4862,6 +4865,8 @@ declare class CollectionService extends Instance
 	function RemoveTag(self, instance: Instance, tag: string): nil
 	ItemAdded: RBXScriptSignal<Instance>
 	ItemRemoved: RBXScriptSignal<Instance>
+	TagAdded: RBXScriptSignal<string>
+	TagRemoved: RBXScriptSignal<string>
 end
 
 declare class CommandInstance extends Instance
@@ -5506,6 +5511,12 @@ declare class Explosion extends Instance
 	Hit: RBXScriptSignal<BasePart, number>
 end
 
+declare class FaceAnimatorService extends Instance
+	AudioAnimationEnabled: boolean
+	FlipHeadOrientation: boolean
+	VideoAnimationEnabled: boolean
+end
+
 declare class FaceControls extends Instance
 	ChinRaiser: number
 	ChinRaiserUpperLip: number
@@ -5726,6 +5737,7 @@ declare class GuiBase2d extends GuiBase
 	SelectionBehaviorUp: EnumSelectionBehavior
 	SelectionGroup: boolean
 	TotalGroupScale: number
+	SelectionChanged: RBXScriptSignal<boolean, GuiObject, GuiObject>
 end
 
 declare class GuiObject extends GuiBase2d
@@ -8239,6 +8251,7 @@ declare class ReflectionMetadataItem extends Instance
 	PropertyOrder: number
 	ScriptContext: string
 	ServerOnly: boolean
+	SliderScaling: string
 	UIMaximum: number
 	UIMinimum: number
 	UINumTicks: number
@@ -8393,6 +8406,9 @@ declare class ScriptCloneWatcher extends Instance
 end
 
 declare class ScriptCloneWatcherHelper extends Instance
+end
+
+declare class ScriptCloneWatcherHelperV2 extends Instance
 end
 
 declare class ScriptContext extends Instance
@@ -9822,6 +9838,7 @@ declare class ServiceProvider extends Instance
 	function GetService(self, service: "DraftsService"): DraftsService
 	function GetService(self, service: "DraggerService"): DraggerService
 	function GetService(self, service: "EventIngestService"): EventIngestService
+	function GetService(self, service: "FaceAnimatorService"): FaceAnimatorService
 	function GetService(self, service: "FlagStandService"): FlagStandService
 	function GetService(self, service: "FlyweightService"): FlyweightService
 	function GetService(self, service: "CSGDictionaryService"): CSGDictionaryService
@@ -9899,6 +9916,7 @@ declare class ServiceProvider extends Instance
 	function GetService(self, service: "ScriptChangeService"): ScriptChangeService
 	function GetService(self, service: "ScriptCloneWatcher"): ScriptCloneWatcher
 	function GetService(self, service: "ScriptCloneWatcherHelper"): ScriptCloneWatcherHelper
+	function GetService(self, service: "ScriptCloneWatcherHelperV2"): ScriptCloneWatcherHelperV2
 	function GetService(self, service: "ScriptContext"): ScriptContext
 	function GetService(self, service: "ScriptRegistrationService"): ScriptRegistrationService
 	function GetService(self, service: "ScriptService"): ScriptService
