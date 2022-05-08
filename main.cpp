@@ -396,8 +396,11 @@ struct CliConfigResolver : Luau::ConfigResolver
 {
     Luau::Config defaultConfig;
 
+    std::optional<SourceNodePtr> sourceMapRoot;
+    std::optional<std::filesystem::path> stdinFilepath;
+
     mutable std::unordered_map<std::string, Luau::Config> configCache;
-    mutable std::vector<std::pair<std::string, std::string>> configErrors;
+    mutable std::vector<std::pair<std::filesystem::path, std::string>> configErrors;
 
     CliConfigResolver()
     {
@@ -406,23 +409,36 @@ struct CliConfigResolver : Luau::ConfigResolver
 
     const Luau::Config& getConfig(const Luau::ModuleName& name) const override
     {
-        std::optional<std::string> path = getParentPath(name);
-        if (!path)
+        std::optional<std::filesystem::path> realPath;
+        if (name == "-")
+        {
+            // Handle stdin
+            realPath = stdinFilepath;
+        }
+        else if (isManagedModule(name))
+        {
+            if (sourceMapRoot.has_value())
+                realPath = RojoResolver::resolveRequireToRealPath(name, *sourceMapRoot);
+        }
+        else
+        {
+            realPath = name;
+        }
+
+        if (!realPath.has_value() || !realPath->has_parent_path())
             return defaultConfig;
 
-        return readConfigRec(*path);
+        return readConfigRec(realPath->parent_path());
     }
 
-    const Luau::Config& readConfigRec(const std::string& path) const
+    const Luau::Config& readConfigRec(const std::filesystem::path& path) const
     {
-        auto it = configCache.find(path);
+        auto it = configCache.find(path.generic_string());
         if (it != configCache.end())
             return it->second;
 
-        std::optional<std::string> parent = getParentPath(path);
-        Luau::Config result = parent ? readConfigRec(*parent) : defaultConfig;
-
-        std::string configPath = joinPaths(path, Luau::kConfigName);
+        Luau::Config result = path.has_parent_path() ? readConfigRec(path.parent_path()) : defaultConfig;
+        auto configPath = path / Luau::kConfigName;
 
         if (std::optional<std::string> contents = readFile(configPath))
         {
@@ -431,7 +447,7 @@ struct CliConfigResolver : Luau::ConfigResolver
                 configErrors.push_back({configPath, *error});
         }
 
-        return configCache[path] = result;
+        return configCache[path.generic_string()] = result;
     }
 };
 
@@ -729,33 +745,34 @@ int main(int argc, char** argv)
     Luau::FrontendOptions frontendOptions;
     frontendOptions.retainFullTypeGraphs = annotate;
 
+    CliConfigResolver configResolver;
+    configResolver.stdinFilepath = stdinFilepath;
+
     CliFileResolver fileResolver;
     fileResolver.excludeVirtualPath = excludeVirtualPath;
     fileResolver.stdinFilepath = stdinFilepath;
-    if (sourcemapPath.has_value())
+    if (sourcemapPath.has_value() || projectPath.has_value())
     {
-        auto sourceMap = RojoResolver::parseSourceMap(sourcemapPath.value());
-        if (sourceMap)
+        std::optional<ResolvedSourceMap> sourceMap;
+        if (sourcemapPath)
         {
-            fileResolver.sourceMap = sourceMap.value();
-            fileResolver.sourceMapRegistered = true;
-            if (dumpMap)
-                dumpSourceMap(*fileResolver.sourceMap.root, 0);
+            sourceMap = RojoResolver::parseSourceMap(sourcemapPath.value());
         }
-    }
-    else if (projectPath.has_value())
-    {
-        auto sourceMap = RojoResolver::parseProjectFile(projectPath.value());
-        if (sourceMap)
+        else if (projectPath)
+        {
+            sourceMap = RojoResolver::parseProjectFile(projectPath.value());
+        }
+
+        if (sourceMap.has_value())
         {
             fileResolver.sourceMap = sourceMap.value();
             fileResolver.sourceMapRegistered = true;
             if (dumpMap)
                 dumpSourceMap(*fileResolver.sourceMap.root, 0);
+            configResolver.sourceMapRoot = sourceMap->root;
         }
     }
 
-    CliConfigResolver configResolver;
     Luau::Frontend frontend(&fileResolver, &configResolver, frontendOptions);
     Luau::registerBuiltinTypes(frontend.typeChecker);
 
@@ -876,8 +893,8 @@ int main(int argc, char** argv)
     {
         failed += int(configResolver.configErrors.size());
 
-        for (const auto& pair : configResolver.configErrors)
-            fprintf(stderr, "%s: %s\n", pair.first.c_str(), pair.second.c_str());
+        for (const auto& [path, err] : configResolver.configErrors)
+            fprintf(stderr, "%s: %s\n", path.generic_string().c_str(), err.c_str());
     }
 
     if (format == ReportFormat::Luacheck)
