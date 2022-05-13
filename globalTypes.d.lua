@@ -2808,6 +2808,12 @@ declare class EnumWaterForceT extends Enum
 	Strong: EnumWaterForce
 	Max: EnumWaterForce
 end
+declare class EnumWrapLayerAutoSkin extends EnumItem end
+declare class EnumWrapLayerAutoSkinT extends Enum
+	Disabled: EnumWrapLayerAutoSkin
+	EnabledPreserve: EnumWrapLayerAutoSkin
+	EnabledOverride: EnumWrapLayerAutoSkin
+end
 declare class EnumWrapLayerDebugMode extends EnumItem end
 declare class EnumWrapLayerDebugModeT extends Enum
 	None: EnumWrapLayerDebugMode
@@ -3123,6 +3129,7 @@ declare Enum: {
 	VoiceChatState: EnumVoiceChatStateT,
 	WaterDirection: EnumWaterDirectionT,
 	WaterForce: EnumWaterForceT,
+	WrapLayerAutoSkin: EnumWrapLayerAutoSkinT,
 	WrapLayerDebugMode: EnumWrapLayerDebugModeT,
 	WrapTargetDebugMode: EnumWrapTargetDebugModeT,
 	ZIndexBehavior: EnumZIndexBehaviorT,
@@ -3922,7 +3929,6 @@ type RemoteFunction = any
 type RenderSettings = any
 type RenderingTest = any
 type ReplicatedFirst = any
-type ReplicatedScriptService = any
 type ReplicatedStorage = any
 type RobloxPluginGuiService = any
 type RobloxReplicatedStorage = any
@@ -4271,6 +4277,7 @@ declare class AssetDeliveryProxy extends Instance
 end
 
 declare class AssetImportService extends Instance
+	function Cancel(self): nil
 	function GetCurrentImportMap(self): { [any]: any }
 	function ImportMesh(self, fileName: string): any
 	function IsAvatar(self): boolean
@@ -4534,6 +4541,7 @@ declare class BaseWrap extends Instance
 end
 
 declare class WrapLayer extends BaseWrap
+	AutoSkin: EnumWrapLayerAutoSkin
 	BindOffset: CFrame
 	Color: Color3
 	DebugMode: EnumWrapLayerDebugMode
@@ -5669,8 +5677,6 @@ declare class GamePassService extends Instance
 end
 
 declare class GameSettings extends Instance
-	AdditionalCoreIncludeDirs: string
-	OverrideStarterScript: string
 	VideoCaptureEnabled: boolean
 	VideoRecording: boolean
 	VideoRecordingChangeRequest: RBXScriptSignal<boolean>
@@ -7137,6 +7143,7 @@ declare class MetaBreakpoint extends Instance
 	Script: string
 	function GetContextBreakpoints(self): { [any]: any }
 	function Remove(self, status: Function): number
+	function SetContextEnabled(self, context: number, enabled: boolean): nil
 	function SetContinueExecution(self, enabled: boolean): nil
 	function SetEnabled(self, enabled: boolean): nil
 	function SetLine(self, line: number, status: Function): number
@@ -8339,9 +8346,6 @@ declare class ReplicatedFirst extends Instance
 	RemoveDefaultLoadingGuiSignal: RBXScriptSignal<>
 end
 
-declare class ReplicatedScriptService extends Instance
-end
-
 declare class ReplicatedStorage extends Instance
 end
 
@@ -8477,6 +8481,7 @@ declare class SessionService extends Instance
 	function GetRootSID(self): string
 	function RemoveMetadata(self, sid: string, key: string): nil
 	function RemoveSession(self, sid: string): nil
+	function RemoveSessionsWithMetadataKey(self, key: string): nil
 	function ReplaceSession(self, sid: string, tag: string): nil
 	function SessionExists(self, sid: string): boolean
 	function SetMetadata(self, sid: string, key: string, value: any): nil
@@ -8847,6 +8852,7 @@ declare class Studio extends Instance
 	LuaDebuggerEnabled: boolean
 	LuaDebuggerEnabledAtStartup: boolean
 	Luau_Keyword_Color: Color3
+	Main_Volume: number
 	Matching_Word_Background_Color: Color3
 	Maximum_Output_Lines: number
 	Menu_Item_Background_Color: Color3
@@ -8856,8 +8862,6 @@ declare class Studio extends Instance
 	Operator_Color: Color3
 	Output_Font: QFont
 	Output_Layout_Mode: EnumOutputLayoutMode
-	OverrideCoreScripts: boolean
-	OverrideCoreScriptsDir: QDir
 	PermissionLevelShown: EnumPermissionLevelShown
 	Physical_Draggers_Select_Scope_By_Default: boolean
 	Pivot_Snap_To_Geometry_Color: Color3
@@ -8895,7 +8899,7 @@ declare class Studio extends Instance
 	Show_Hidden_Objects_in_Explorer: boolean
 	Show_Hover_Over: boolean
 	Show_Light_Guides: boolean
-	Show_Navigation_Areas: boolean
+	Show_Navigation_Labels: boolean
 	Show_Navigation_Mesh: boolean
 	Show_Pathfinding_Links: boolean
 	Show_Plugin_GUI_Service_in_Explorer: boolean
@@ -9907,7 +9911,6 @@ declare class ServiceProvider extends Instance
 	function GetService(self, service: "RemoteDebuggerServer"): RemoteDebuggerServer
 	function GetService(self, service: "RenderSettings"): RenderSettings
 	function GetService(self, service: "ReplicatedFirst"): ReplicatedFirst
-	function GetService(self, service: "ReplicatedScriptService"): ReplicatedScriptService
 	function GetService(self, service: "ReplicatedStorage"): ReplicatedStorage
 	function GetService(self, service: "RobloxPluginGuiService"): RobloxPluginGuiService
 	function GetService(self, service: "RobloxReplicatedStorage"): RobloxReplicatedStorage
