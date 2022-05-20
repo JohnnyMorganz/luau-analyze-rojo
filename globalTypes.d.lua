@@ -3453,6 +3453,7 @@ declare class OverlapParams
 end
 
 declare class RaycastResult
+	Distance: number
 	Instance: Instance
 	Position: Vector3
 	Material: EnumMaterial
