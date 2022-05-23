@@ -47,8 +47,11 @@ DEFERRED_CLASSES: List[str] = [
     "UserSettings",
 ]
 
-# Extra methods to add in to classes, commonly used to add in metamethods
-EXTRA_METHODS = {
+# Methods / Properties ignored in classes. Commonly used to add corrections
+IGNORED_MEMBERS = {"Model": ["PrimaryPart"]}
+
+# Extra members to add in to classes, commonly used to add in metamethods, and add corrections
+EXTRA_MEMBERS = {
     "Vector3": [
         "function __add(self, other: Vector3): Vector3",
         "function __sub(self, other: Vector3): Vector3",
@@ -96,6 +99,7 @@ EXTRA_METHODS = {
     "UserSettings": [
         'function GetService(self, service: "UserGameSettings"): UserGameSettings'
     ],
+    "Model": ["PrimaryPart: BasePart?"],
 }
 
 # Hardcoded types
@@ -409,6 +413,11 @@ def declareClass(klass: ApiClass):
             and "Deprecated" in member["Tags"]
         ):
             continue
+        if (
+            klass["Name"] in IGNORED_MEMBERS
+            and member["Name"] in IGNORED_MEMBERS[klass["Name"]]
+        ):
+            continue
 
         if member["MemberType"] == "Property":
             out += (
@@ -432,8 +441,8 @@ def declareClass(klass: ApiClass):
         for service in SERVICES:
             out += f'\tfunction GetService(self, service: "{service}"): {service}\n'
 
-    if klass["Name"] in EXTRA_METHODS:
-        for method in EXTRA_METHODS[klass["Name"]]:
+    if klass["Name"] in EXTRA_MEMBERS:
+        for method in EXTRA_MEMBERS[klass["Name"]]:
             out += f"\t{method}\n"
 
     out += "end"
@@ -513,8 +522,8 @@ def printDataTypes(types: DataTypesDump):
             elif member["MemberType"] == "Callback":
                 out += f"\t{escapeName(member['Name'])}: ({resolveParameterList(member['Parameters'])}) -> {resolveReturnType(member)}\n"
 
-        if name in EXTRA_METHODS:
-            for method in EXTRA_METHODS[name]:
+        if name in EXTRA_MEMBERS:
+            for method in EXTRA_MEMBERS[name]:
                 out += f"\t{method}\n"
 
         out += "end"
