@@ -45,6 +45,7 @@ TYPE_INDEX = {
 
 IGNORED_INSTANCES: List[str] = [
     "RBXScriptSignal",  # Redefined using generics
+    "BlockMesh",  # its superclass is marked as deprecated but it isn't, so its broken
 ]
 
 # These classes are deferred to the very end of the dump, so that they have access to all the types
@@ -656,9 +657,16 @@ def applyCorrections(dump: ApiDump, corrections: CorrectionsDump):
 
 def loadClassesIntoStructures(dump: ApiDump):
     for klass in dump["Classes"]:
+        if klass["Name"] in IGNORED_INSTANCES:
+            continue
+
         isCreatable = True
         if "Tags" in klass:
-            if "Deprecated" in klass and not INCLUDE_DEPRECATED_METHODS:
+            if (
+                "Deprecated" in klass
+                and not INCLUDE_DEPRECATED_METHODS
+                and not klass["Name"] in OVERRIDE_DEPRECATED_REMOVAL
+            ):
                 continue
             if "Service" in klass["Tags"]:
                 SERVICES.append(klass["Name"])
