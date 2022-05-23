@@ -10,7 +10,18 @@ DATA_TYPES_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/mast
 API_DUMP_URL = "https://raw.githubusercontent.com/CloneTrooper1019/Roblox-Client-Tracker/roblox/API-Dump.json"
 CORRECTIONS_URL = "https://raw.githubusercontent.com/NightrainsRbx/RobloxLsp/master/server/api/Corrections.json"
 
-INCLUDE_DEPRECATED_METHODS = True
+INCLUDE_DEPRECATED_METHODS = False
+# Classes which should still be kept even though they are marked deprecated: (mainly the bodymovers)
+OVERRIDE_DEPRECATED_REMOVAL = [
+    "BodyMover",
+    "BodyAngularVelocity",
+    "BodyForce",
+    "BodyGyro",
+    "BodyPosition",
+    "BodyThrust",
+    "BodyVelocity",
+    # "RocketPropulsion",
+]
 
 TYPE_INDEX = {
     "Tuple": "any",
@@ -396,6 +407,7 @@ def declareClass(klass: ApiClass):
         not INCLUDE_DEPRECATED_METHODS
         and "Tags" in klass
         and "Deprecated" in klass["Tags"]
+        and not klass["Name"] in OVERRIDE_DEPRECATED_REMOVAL
     ):
         return ""
 
