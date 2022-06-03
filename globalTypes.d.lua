@@ -4566,13 +4566,13 @@ declare class Beam extends Instance
 end
 
 declare class BindableEvent extends Instance
-	function Fire(self, arguments: any): nil
-	Event: RBXScriptSignal<any>
+	function Fire(self, ...: any): ()
+	Event: RBXScriptSignal<...any>
 end
 
 declare class BindableFunction extends Instance
-	function Invoke(self, arguments: any): any
-	OnInvoke: (arguments: any) -> any
+	function Invoke(self, ...: any): ()
+	OnInvoke: <A..., R...>(A...) -> R...
 end
 
 declare class BodyMover extends Instance
@@ -7923,18 +7923,18 @@ declare class RemoteDebuggerServer extends Instance
 end
 
 declare class RemoteEvent extends Instance
-	function FireAllClients(self, arguments: any): nil
-	function FireClient(self, player: Player, arguments: any): nil
-	function FireServer(self, arguments: any): nil
-	OnClientEvent: RBXScriptSignal<any>
-	OnServerEvent: RBXScriptSignal<Player, any>
+	function FireAllClients(self, ...: any): ()
+	function FireClient(self, player: Player, ...: any): ()
+	function FireServer(self, ...: any): ()
+	OnClientEvent: RBXScriptSignal<...any>
+	OnServerEvent: RBXScriptSignal<(Player, ...any)>
 end
 
 declare class RemoteFunction extends Instance
-	function InvokeClient(self, player: Player, arguments: any): any
-	function InvokeServer(self, arguments: any): any
-	OnClientInvoke: (arguments: any) -> any
-	OnServerInvoke: (player: Player, arguments: any) -> any
+	function InvokeClient(self, player: Player, ...: any): ()
+	function InvokeServer(self, ...: any): ()
+	OnClientInvoke: <A..., R...>(A...) -> R...
+	OnServerInvoke: <A..., R...>(player: Player, A...) -> R...
 end
 
 declare class RenderSettings extends Instance

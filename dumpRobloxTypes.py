@@ -60,7 +60,30 @@ DEFERRED_CLASSES: List[str] = [
 ]
 
 # Methods / Properties ignored in classes. Commonly used to add corrections
-IGNORED_MEMBERS = {"Model": ["PrimaryPart"]}
+IGNORED_MEMBERS = {
+    "Model": ["PrimaryPart"],
+    "RemoteEvent": [
+        "FireAllClients",
+        "FireClient",
+        "FireServer",
+        "OnClientEvent",
+        "OnServerEvent",
+    ],
+    "RemoteFunction": [
+        "InvokeClient",
+        "InvokeServer",
+        "OnClientInvoke",
+        "OnServerInvoke",
+    ],
+    "BindableEvent": [
+        "Fire",
+        "Event",
+    ],
+    "BindableFunction": [
+        "Invoke",
+        "OnInvoke",
+    ],
+}
 
 # Extra members to add in to classes, commonly used to add in metamethods, and add corrections
 EXTRA_MEMBERS = {
@@ -112,6 +135,27 @@ EXTRA_MEMBERS = {
         'function GetService(self, service: "UserGameSettings"): UserGameSettings'
     ],
     "Model": ["PrimaryPart: BasePart?"],
+    "RemoteEvent": [
+        "function FireAllClients(self, ...: any): ()",
+        "function FireClient(self, player: Player, ...: any): ()",
+        "function FireServer(self, ...: any): ()",
+        "OnClientEvent: RBXScriptSignal<...any>",
+        "OnServerEvent: RBXScriptSignal<(Player, ...any)>",
+    ],
+    "RemoteFunction": [
+        "function InvokeClient(self, player: Player, ...: any): ()",
+        "function InvokeServer(self, ...: any): ()",
+        "OnClientInvoke: <A..., R...>(A...) -> R...",
+        "OnServerInvoke: <A..., R...>(player: Player, A...) -> R...",
+    ],
+    "BindableEvent": [
+        "function Fire(self, ...: any): ()",
+        "Event: RBXScriptSignal<...any>",
+    ],
+    "BindableFunction": [
+        "function Invoke(self, ...: any): ()",
+        "OnInvoke: <A..., R...>(A...) -> R...",
+    ],
 }
 
 # Hardcoded types
