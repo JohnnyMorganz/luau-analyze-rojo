@@ -8086,6 +8086,7 @@ declare class ScriptDocument extends Instance
 	function GetNumLines(self): number
 	function GetScript(self): LuaSourceContainer
 	function GetText(self): string
+	function EditTextAsync(self, newText: string, startLine: number, startCharacter: number, endLine: number, endCharacter: number): boolean
 end
 
 declare class ScriptEditorService extends Instance
@@ -8580,8 +8581,14 @@ end
 
 declare class StudioPublishService extends Instance
 	function PublishAs(self, universeId: number, placeId: number, groupId: number, isPublish: boolean, publishParameters: any): nil
+	function RefreshDocumentDisplayName(self): nil
 	function SetTeamCreateOnPublishInfo(self, shouldTurnOnTcOnPublish: boolean, newPlaceName: string): nil
+	function SetUniverseDisplayName(self, newName: string): nil
 	function SetUploadNames(self, placeName: string, universeName: string): nil
+	function ShowSaveOrPublishPlaceToRoblox(self, showGameSelect: boolean, isPublish: boolean, closeMode: EnumStudioCloseMode): nil
+	GameNameUpdated: RBXScriptSignal<string>
+	GamePublishFinished: RBXScriptSignal<boolean, number>
+	OnSaveOrPublishPlaceToRoblox: RBXScriptSignal<boolean, boolean, EnumStudioCloseMode>
 end
 
 declare class StudioScriptDebugEventListener extends Instance
@@ -8603,7 +8610,11 @@ declare class StudioService extends Instance
 	UseLocalSpace: boolean
 	function AnimationIdSelected(self, id: number): nil
 	function CopyToClipboard(self, stringToCopy: string): nil
-	function EmitPlacePublishedSignal(self): nil
+	function DEPRECATED_EmitPlacePublishedSignal(self): nil
+	function DEPRECATED_RefreshDocumentDisplayName(self): nil
+	function DEPRECATED_SetUniverseDisplayName(self, newName: string): nil
+	function DEPRECATED_ShowSaveOrPublishPlaceToRoblox(self, showGameSelect: boolean, isPublish: boolean, closeMode: EnumStudioCloseMode): nil
+	function DEPRECATED_publishAs(self, universeId: number, placeId: number, groupId: number): nil
 	function GetBadgeConfigureUrl(self, badgeId: number): string
 	function GetBadgeUploadUrl(self): string
 	function GetClassIcon(self, className: string): { [any]: any }
@@ -8618,29 +8629,25 @@ declare class StudioService extends Instance
 	function IsPluginInstalled(self, assetId: number): boolean
 	function IsPluginUpToDate(self, assetId: number, currentAssetVersion: number): boolean
 	function OpenInBrowser_DONOTUSE(self, url: string): nil
-	function PublishAs(self, universeId: number, placeId: number, groupId: number): nil
-	function RefreshDocumentDisplayName(self): nil
 	function RequestClose(self, closeMode: EnumStudioCloseMode): nil
 	function SetPluginEnabled(self, assetId: number, state: boolean): nil
-	function SetUniverseDisplayName(self, newName: string): nil
 	function ShowPlaceVersionHistoryDialog(self, placeId: number): nil
 	function ShowPublishToRoblox(self): nil
-	function ShowSaveOrPublishPlaceToRoblox(self, showGameSelect: boolean, isPublish: boolean, closeMode: EnumStudioCloseMode): nil
 	function UninstallPlugin(self, assetId: number): nil
 	function UpdatePluginManagement(self): nil
 	function PromptImportFile(self, fileTypeFilter: { any }?): Instance
 	function PromptImportFiles(self, fileTypeFilter: { any }?): Objects
 	function TryInstallPlugin(self, assetId: number, assetVersionId: number): nil
-	GameNameUpdated: RBXScriptSignal<string>
-	GamePublishFinished: RBXScriptSignal<boolean, number>
+	DEPRECATED_GameNameUpdated: RBXScriptSignal<string>
+	DEPRECATED_GamePublishFinished: RBXScriptSignal<boolean, number>
+	DEPRECATED_OnPublishPlaceToRoblox: RBXScriptSignal<boolean>
+	DEPRECATED_OnSaveOrPublishPlaceToRoblox: RBXScriptSignal<boolean, boolean, EnumStudioCloseMode>
 	OnImportFromRoblox: RBXScriptSignal<>
 	OnOpenGameSettings: RBXScriptSignal<string>
 	OnOpenManagePackagePlugin: RBXScriptSignal<number, number>
 	OnPluginInstalledFromToolbox: RBXScriptSignal<>
 	OnPluginInstalledFromWeb: RBXScriptSignal<string>
 	OnPublishAsPlugin: RBXScriptSignal<Objects>
-	OnPublishPlaceToRoblox: RBXScriptSignal<boolean>
-	OnSaveOrPublishPlaceToRoblox: RBXScriptSignal<boolean, boolean, EnumStudioCloseMode>
 	OnSaveToRoblox: RBXScriptSignal<Objects>
 	PromptTransformPluginCheckEnable: RBXScriptSignal<>
 	SaveLocallyAsComplete: RBXScriptSignal<boolean>
