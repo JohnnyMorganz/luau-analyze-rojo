@@ -26,8 +26,8 @@ OVERRIDE_DEPRECATED_REMOVAL = [
 TYPE_INDEX = {
     "Tuple": "any",
     "Variant": "any",
-    "Function": "(any) -> (any)",
-    "function": "(any) -> (any)",
+    "Function": "<A..., R...>(A...) -> R...",
+    "function": "<A..., R...>(A...) -> R...",
     "bool": "boolean",
     "int": "number",
     "int64": "number",
@@ -40,7 +40,6 @@ TYPE_INDEX = {
     "Array": "{ any }",
     "table": "{ any }",
     "CoordinateFrame": "CFrame",
-    "RBXScriptSignal": "RBXScriptSignal",
 }
 
 IGNORED_INSTANCES: List[str] = [
@@ -166,10 +165,8 @@ type ProtectedString = string
 type BinaryString = string
 type QDir = string
 type QFont = string
-type Function = (any) -> any
 type FloatCurveKey = any
 type RotationCurveKey = any
-type CoordinateFrame = CFrame
 
 declare class Enum
 	function GetEnumItems(self): { any }
@@ -422,8 +419,6 @@ def resolveType(type: Union[ApiValueType, CorrectionsValueType]) -> str:
 
     if category == "Enum":
         return "Enum" + name
-    elif category == "DataType":
-        return name
     else:
         return TYPE_INDEX[name] if name in TYPE_INDEX else name
 
@@ -540,8 +535,6 @@ def printClasses(dump: ApiDump):
         if klass["Name"] in IGNORED_INSTANCES:
             continue
         print(f"type {klass['Name']} = any")
-
-    print("type Objects = { Instance }")
 
     for klass in dump["Classes"]:
         if klass["Name"] in DEFERRED_CLASSES or klass["Name"] in IGNORED_INSTANCES:
