@@ -5066,8 +5066,6 @@ declare class ContentProvider extends Instance
 end
 
 declare class ContextActionService extends Instance
-	function BindAction(self, actionName: string, functionToBind: <A..., R...>(A...) -> R..., createTouchButton: boolean, inputTypes: any): nil
-	function BindActionAtPriority(self, actionName: string, functionToBind: <A..., R...>(A...) -> R..., createTouchButton: boolean, priorityLevel: number, inputTypes: any): nil
 	function BindActivate(self, userInputTypeForActivation: EnumUserInputType, keyCodeForActivation: EnumKeyCode?): nil
 	function BindCoreAction(self, actionName: string, functionToBind: <A..., R...>(A...) -> R..., createTouchButton: boolean, inputTypes: any): nil
 	function BindCoreActionAtPriority(self, actionName: string, functionToBind: <A..., R...>(A...) -> R..., createTouchButton: boolean, priorityLevel: number, inputTypes: any): nil
@@ -5093,6 +5091,8 @@ declare class ContextActionService extends Instance
 	GetActionButtonEvent: RBXScriptSignal<string>
 	LocalToolEquipped: RBXScriptSignal<Tool>
 	LocalToolUnequipped: RBXScriptSignal<Tool>
+	function BindAction(self, actionName: string, functionToBind: (actionName: string, inputState: EnumUserInputState, inputObject: InputObject) -> EnumContextActionResult?, createTouchButton: boolean, ...(EnumUserInputType | EnumKeyCode)): ()
+	function BindActionAtPriority(self, actionName: string, functionToBind: (actionName: string, inputState: EnumUserInputState, inputObject: InputObject) -> EnumContextActionResult?, createTouchButton: boolean, priorityLevel: number, ...(EnumUserInputType | EnumKeyCode)): ()
 end
 
 declare class Controller extends Instance

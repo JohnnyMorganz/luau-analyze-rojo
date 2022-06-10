@@ -83,6 +83,7 @@ IGNORED_MEMBERS = {
         "OnInvoke",
     ],
     "Players": ["GetPlayers"],
+    "ContextActionService": ["BindAction", "BindActionAtPriority"],
 }
 
 # Extra members to add in to classes, commonly used to add in metamethods, and add corrections
@@ -157,6 +158,10 @@ EXTRA_MEMBERS = {
         "OnInvoke: <A..., R...>(A...) -> R...",
     ],
     "Players": ["function GetPlayers(self): { Player }"],
+    "ContextActionService": [
+        "function BindAction(self, actionName: string, functionToBind: (actionName: string, inputState: EnumUserInputState, inputObject: InputObject) -> EnumContextActionResult?, createTouchButton: boolean, ...(EnumUserInputType | EnumKeyCode)): ()",
+        "function BindActionAtPriority(self, actionName: string, functionToBind: (actionName: string, inputState: EnumUserInputState, inputObject: InputObject) -> EnumContextActionResult?, createTouchButton: boolean, priorityLevel: number, ...(EnumUserInputType | EnumKeyCode)): ()",
+    ],
 }
 
 # Hardcoded types
