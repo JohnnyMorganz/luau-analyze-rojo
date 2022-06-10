@@ -82,6 +82,7 @@ IGNORED_MEMBERS = {
         "Invoke",
         "OnInvoke",
     ],
+    "Players": ["GetPlayers"],
 }
 
 # Extra members to add in to classes, commonly used to add in metamethods, and add corrections
@@ -155,6 +156,7 @@ EXTRA_MEMBERS = {
         "function Invoke(self, ...: any): ()",
         "OnInvoke: <A..., R...>(A...) -> R...",
     ],
+    "Players": ["function GetPlayers(self): { Players }"],
 }
 
 # Hardcoded types

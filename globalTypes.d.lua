@@ -7597,7 +7597,6 @@ declare class Players extends Instance
 	function CreateLocalPlayer(self): Player
 	function GetPlayerByUserId(self, userId: number): Player
 	function GetPlayerFromCharacter(self, character: Model): Player
-	function GetPlayers(self): { Instance }
 	function ReportAbuse(self, player: Player, reason: string, optionalMessage: string): nil
 	function SetChatStyle(self, style: EnumChatStyle?): nil
 	function SetLocalPlayerInfo(self, userId: number, userName: string, displayName: string, membershipType: EnumMembershipType, isUnder13: boolean): nil
@@ -7621,6 +7620,7 @@ declare class Players extends Instance
 	PlayerMembershipChanged: RBXScriptSignal<Player>
 	PlayerRejoining: RBXScriptSignal<Player>
 	PlayerRemoving: RBXScriptSignal<Player>
+	function GetPlayers(self): { Players }
 end
 
 declare class Plugin extends Instance
