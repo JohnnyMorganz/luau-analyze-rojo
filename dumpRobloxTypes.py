@@ -143,8 +143,8 @@ EXTRA_MEMBERS = {
         "OnServerEvent: RBXScriptSignal<(Player, ...any)>",
     ],
     "RemoteFunction": [
-        "function InvokeClient(self, player: Player, ...: any): ()",
-        "function InvokeServer(self, ...: any): ()",
+        "function InvokeClient(self, player: Player, ...: any): ...any",
+        "function InvokeServer(self, ...: any): ...any",
         "OnClientInvoke: <A..., R...>(A...) -> R...",
         "OnServerInvoke: <A..., R...>(player: Player, A...) -> R...",
     ],
@@ -153,7 +153,7 @@ EXTRA_MEMBERS = {
         "Event: RBXScriptSignal<...any>",
     ],
     "BindableFunction": [
-        "function Invoke(self, ...: any): ()",
+        "function Invoke(self, ...: any): ...any",
         "OnInvoke: <A..., R...>(A...) -> R...",
     ],
     "Players": ["function GetPlayers(self): { Player }"],

@@ -4568,7 +4568,7 @@ declare class BindableEvent extends Instance
 end
 
 declare class BindableFunction extends Instance
-	function Invoke(self, ...: any): ()
+	function Invoke(self, ...: any): ...any
 	OnInvoke: <A..., R...>(A...) -> R...
 end
 
@@ -7928,8 +7928,8 @@ declare class RemoteEvent extends Instance
 end
 
 declare class RemoteFunction extends Instance
-	function InvokeClient(self, player: Player, ...: any): ()
-	function InvokeServer(self, ...: any): ()
+	function InvokeClient(self, player: Player, ...: any): ...any
+	function InvokeServer(self, ...: any): ...any
 	OnClientInvoke: <A..., R...>(A...) -> R...
 	OnServerInvoke: <A..., R...>(player: Player, A...) -> R...
 end
