@@ -156,7 +156,7 @@ EXTRA_MEMBERS = {
         "function Invoke(self, ...: any): ()",
         "OnInvoke: <A..., R...>(A...) -> R...",
     ],
-    "Players": ["function GetPlayers(self): { Players }"],
+    "Players": ["function GetPlayers(self): { Player }"],
 }
 
 # Hardcoded types

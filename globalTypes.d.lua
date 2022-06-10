@@ -7620,7 +7620,7 @@ declare class Players extends Instance
 	PlayerMembershipChanged: RBXScriptSignal<Player>
 	PlayerRejoining: RBXScriptSignal<Player>
 	PlayerRemoving: RBXScriptSignal<Player>
-	function GetPlayers(self): { Players }
+	function GetPlayers(self): { Player }
 end
 
 declare class Plugin extends Instance
