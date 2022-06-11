@@ -1,3 +1,5 @@
+## This project has be deprecated in favour of https://github.com/JohnnyMorganz/luau-lsp#standalone - functionality has been merged there to ease maintainability
+
 # luau-analyze with Rojo support
 
 A fork of [Luau's](https://github.com/Roblox/luau) `luau-analyze` tool, with Rojo support
